@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35728.132 d17.12
+VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedSync-API", "MedSync-API\MedSync-API.csproj", "{3969B114-F10A-4A49-89C7-6032F568B833}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedSync-ClassLibraries", "MedSync-ClassLibraries\MedSync-ClassLibraries.csproj", "{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3969B114-F10A-4A49-89C7-6032F568B833}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3969B114-F10A-4A49-89C7-6032F568B833}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3969B114-F10A-4A49-89C7-6032F568B833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

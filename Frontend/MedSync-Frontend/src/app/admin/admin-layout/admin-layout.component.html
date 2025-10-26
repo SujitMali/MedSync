@@ -1,0 +1,44 @@
+<div class="admin-layout" [class.sidebar-collapsed]="isCollapsed" [class.sidebar-locked]="isLocked">
+    <aside class="admin-sidebar" (mouseenter)="onSidebarHover(true)" (mouseleave)="onSidebarHover(false)">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fa-solid fa-stethoscope logo-icon"></i>
+                <span class="logo-text">MedSync</span>
+            </div>
+            <button class="toggle-btn" (click)="toggleSidebarLock()"
+                [attr.title]="isLocked ? 'Collapse Sidebar' : 'Expand Sidebar'">
+                <i class="fa-solid" [ngClass]="isLocked ? 'fa-angles-left' : 'fa-angles-right'"></i>
+                <!-- <i class="fa-solid fa-sidebar fa-flip"></i> -->
+                <!-- <i class="fa-solid fa-bars"></i> -->
+
+            </button>
+        </div>
+
+        <ul class="menu">
+            <li class="menu-item" *ngFor="let item of menuItems" [class.active]="activeMenu === item.label"
+                (click)="navigate(item)">
+                <i class="fa-solid icon" [ngClass]="item.icon"></i>
+                <span class="label">{{ item.label }}</span>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="admin-main">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2>{{ activeMenu }}</h2>
+            </div>
+            <div class="topbar-right">
+                <input type="text" placeholder="Search..." class="search-bar" />
+                <div class="topbar-actions">
+                    <i class="fa-solid fa-bell notification"></i>
+                    <i class="fa-solid fa-user-circle avatar"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

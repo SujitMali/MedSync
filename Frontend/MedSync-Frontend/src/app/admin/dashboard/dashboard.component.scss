@@ -1,0 +1,40 @@
+@import '../../../styles/_variables.scss';
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: $space-lg;
+
+    .card {
+        display: flex;
+        align-items: center;
+        gap: $space-md;
+        background: $card-background;
+        padding: $space-md;
+        border-radius: $border-radius-md;
+        box-shadow: $shadow-level1;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: $shadow-level2;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: $primary-color;
+        }
+
+        .card-info {
+            h3 {
+                color: $secondary-color;
+            }
+
+            p {
+                font-weight: $heading-font-weight;
+                font-size: 1.3rem;
+            }
+        }
+    }
+}

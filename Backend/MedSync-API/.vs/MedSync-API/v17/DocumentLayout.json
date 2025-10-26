@@ -1,7 +1,44 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3969B114-F10A-4A49-89C7-6032F568B833}|MedSync-API\\MedSync-API.csproj|c:\\users\\malis\\desktop\\medsync\\backend\\medsync-api\\medsync-api\\controllers\\patientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3969B114-F10A-4A49-89C7-6032F568B833}|MedSync-API\\MedSync-API.csproj|solutionrelative:medsync-api\\controllers\\patientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|c:\\users\\malis\\desktop\\medsync\\backend\\medsync-api\\medsync-classlibraries\\models\\doctorsmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|solutionrelative:medsync-classlibraries\\models\\doctorsmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\medsync-classlibraries\\dal\\doctor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|solutionrelative:medsync-classlibraries\\dal\\doctor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\medsync-classlibraries\\dal\\doctorschedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|solutionrelative:medsync-classlibraries\\dal\\doctorschedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3969B114-F10A-4A49-89C7-6032F568B833}|MedSync-API\\MedSync-API.csproj|C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\medsync-api\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3969B114-F10A-4A49-89C7-6032F568B833}|MedSync-API\\MedSync-API.csproj|solutionrelative:medsync-api\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|c:\\users\\malis\\desktop\\medsync\\backend\\medsync-api\\medsync-classlibraries\\models\\slotdurationmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|solutionrelative:medsync-classlibraries\\models\\slotdurationmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\medsync-classlibraries\\models\\doctorschedulemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|solutionrelative:medsync-classlibraries\\models\\doctorschedulemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|c:\\users\\malis\\desktop\\medsync\\backend\\medsync-api\\medsync-classlibraries\\dal\\slotduration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A94562C6-6CB1-48E1-9E04-65C8ED8109F4}|MedSync-ClassLibraries\\MedSync-ClassLibraries.csproj|solutionrelative:medsync-classlibraries\\dal\\slotduration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3969B114-F10A-4A49-89C7-6032F568B833}|MedSync-API\\MedSync-API.csproj|C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\medsync-api\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{3969B114-F10A-4A49-89C7-6032F568B833}|MedSync-API\\MedSync-API.csproj|solutionrelative:medsync-api\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,6 +75,123 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PatientController.cs",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-API\\Controllers\\PatientController.cs",
+              "RelativeDocumentMoniker": "MedSync-API\\Controllers\\PatientController.cs",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-API\\Controllers\\PatientController.cs",
+              "RelativeToolTip": "MedSync-API\\Controllers\\PatientController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-26T06:45:31.026Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SlotDurationModel.cs",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\Models\\SlotDurationModel.cs",
+              "RelativeDocumentMoniker": "MedSync-ClassLibraries\\Models\\SlotDurationModel.cs",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\Models\\SlotDurationModel.cs",
+              "RelativeToolTip": "MedSync-ClassLibraries\\Models\\SlotDurationModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T05:50:39.476Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DoctorSchedule.cs",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\DAL\\DoctorSchedule.cs",
+              "RelativeDocumentMoniker": "MedSync-ClassLibraries\\DAL\\DoctorSchedule.cs",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\DAL\\DoctorSchedule.cs",
+              "RelativeToolTip": "MedSync-ClassLibraries\\DAL\\DoctorSchedule.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAApwGwAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T11:52:51.69Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DoctorScheduleModel.cs",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\Models\\DoctorScheduleModel.cs",
+              "RelativeDocumentMoniker": "MedSync-ClassLibraries\\Models\\DoctorScheduleModel.cs",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\Models\\DoctorScheduleModel.cs",
+              "RelativeToolTip": "MedSync-ClassLibraries\\Models\\DoctorScheduleModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T11:51:50.521Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DoctorsModel.cs",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\Models\\DoctorsModel.cs",
+              "RelativeDocumentMoniker": "MedSync-ClassLibraries\\Models\\DoctorsModel.cs",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\Models\\DoctorsModel.cs",
+              "RelativeToolTip": "MedSync-ClassLibraries\\Models\\DoctorsModel.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAA5wDMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T06:12:46.913Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-API\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "MedSync-API\\Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-API\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "MedSync-API\\Controllers\\AdminController.cs",
+              "ViewState": "AgIAAM8BAAAAAAAAAAApwN0BAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T09:38:17.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Web.config",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-API\\Web.config",
+              "RelativeDocumentMoniker": "MedSync-API\\Web.config",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-API\\Web.config",
+              "RelativeToolTip": "MedSync-API\\Web.config",
+              "ViewState": "AgIAABQAAAAAAAAAAAAwwB4AAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-10-24T06:13:41.39Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Doctor.cs",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\DAL\\Doctor.cs",
+              "RelativeDocumentMoniker": "MedSync-ClassLibraries\\DAL\\Doctor.cs",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\DAL\\Doctor.cs",
+              "RelativeToolTip": "MedSync-ClassLibraries\\DAL\\Doctor.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAgwOQAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T05:37:42.02Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SlotDuration.cs",
+              "DocumentMoniker": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\DAL\\SlotDuration.cs",
+              "RelativeDocumentMoniker": "MedSync-ClassLibraries\\DAL\\SlotDuration.cs",
+              "ToolTip": "C:\\Users\\malis\\Desktop\\MedSync\\Backend\\MedSync-API\\MedSync-ClassLibraries\\DAL\\SlotDuration.cs",
+              "RelativeToolTip": "MedSync-ClassLibraries\\DAL\\SlotDuration.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAwBgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T05:51:10.928Z",
+              "EditorCaption": ""
             }
           ]
         }

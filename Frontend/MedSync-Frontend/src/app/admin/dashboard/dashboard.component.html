@@ -1,0 +1,11 @@
+<div class="cards">
+    <div class="card" *ngFor="let card of dashboardCards">
+        <div class="card-icon">
+            <i class="fa-solid" [ngClass]="card.icon"></i>
+        </div>
+        <div class="card-info">
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.value }}</p>
+        </div>
+    </div>
+</div>

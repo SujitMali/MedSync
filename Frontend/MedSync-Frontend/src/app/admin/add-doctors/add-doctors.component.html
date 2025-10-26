@@ -1,0 +1,200 @@
+<div class="container-fluid">
+    <div class="card shadow-sm p-4">
+        <h3 class="mb-4 text-primary">Add Doctor</h3>
+
+        <form #doctorForm="ngForm" (ngSubmit)="submitDoctor(doctorForm)" novalidate>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Profile Picture</label>
+                <input type="file" accept="image/*" (change)="onFileSelected($event)" class="form-control" />
+
+                <!-- Preview Image -->
+                <div *ngIf="previewUrl" class="mt-2">
+                    <img [src]="previewUrl" alt="Profile Preview" class="img-thumbnail"
+                        style="max-width: 150px; height: auto;">
+                </div>
+            </div>
+
+
+            <!-- Personal Info Section -->
+            <div class="border rounded-3 p-3 mb-4 bg-light">
+                <h5 class="mb-3 text-secondary">Personal Info</h5>
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">First Name</label>
+                        <input type="text" name="firstName" class="form-control" [(ngModel)]="doctor.firstName" required
+                            #firstNameCtrl="ngModel" [ngClass]="{
+                'is-invalid': firstNameCtrl.invalid && firstNameCtrl.touched,
+                'is-valid': firstNameCtrl.valid && firstNameCtrl.touched
+              }" />
+                        <div class="invalid-feedback">First Name is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" name="lastName" class="form-control" [(ngModel)]="doctor.lastName" required
+                            #lastNameCtrl="ngModel" [ngClass]="{
+                'is-invalid': lastNameCtrl.invalid && lastNameCtrl.touched,
+                'is-valid': lastNameCtrl.valid && lastNameCtrl.touched
+              }" />
+                        <div class="invalid-feedback">Last Name is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" [(ngModel)]="doctor.email" required email
+                            #emailCtrl="ngModel" [ngClass]="{
+                'is-invalid': emailCtrl.invalid && emailCtrl.touched,
+                'is-valid': emailCtrl.valid && emailCtrl.touched
+              }" />
+                        <div class="invalid-feedback">Valid Email is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" name="phoneNumber" class="form-control" [(ngModel)]="doctor.phoneNumber"
+                            required pattern="[0-9]{10}" #phoneCtrl="ngModel" [ngClass]="{
+                'is-invalid': phoneCtrl.invalid && phoneCtrl.touched,
+                'is-valid': phoneCtrl.valid && phoneCtrl.touched
+              }" />
+                        <div class="invalid-feedback">Valid 10-digit phone number required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" name="dateOfBirth" class="form-control" [(ngModel)]="doctor.dateOfBirth"
+                            required #dobCtrl="ngModel"
+                            [ngClass]="{'is-invalid': dobCtrl.invalid && dobCtrl.touched,'is-valid': dobCtrl.valid && dobCtrl.touched}" />
+                        <div class="invalid-feedback">Date of Birth is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Blood Group</label>
+                        <select class="form-select" name="bloodGroupID" [(ngModel)]="doctor.bloodGroupID" required
+                            #bloodCtrl="ngModel" [ngClass]="{
+                                    'is-invalid': bloodCtrl.invalid && bloodCtrl.touched,
+                                    'is-valid': bloodCtrl.valid && bloodCtrl.touched
+                                  }">
+                            <option [ngValue]="null" disabled selected>Select Blood Group</option>
+                            <option *ngFor="let bg of bloodGroups" [ngValue]="bg.id">{{ bg.name }}</option>
+                        </select>
+                        <div class="invalid-feedback">Blood Group is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Info Section -->
+            <div class="border rounded-3 p-3 mb-4 bg-light">
+                <h5 class="mb-3 text-secondary">Professional Info</h5>
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select" name="genderID" [(ngModel)]="doctor.genderID" required
+                            #genderCtrl="ngModel" [ngClass]="{
+                'is-invalid': genderCtrl.invalid && genderCtrl.touched,
+                'is-valid': genderCtrl.valid && genderCtrl.touched
+              }">
+                            <option [ngValue]="null" disabled selected>Select Gender</option>
+                            <option *ngFor="let g of genders" [ngValue]="g.id">{{ g.name }}</option>
+                        </select>
+                        <div class="invalid-feedback">Gender is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Qualification</label>
+                        <select class="form-select" name="qualificationID" [(ngModel)]="doctor.qualificationID" required
+                            #qualCtrl="ngModel" [ngClass]="{
+                'is-invalid': qualCtrl.invalid && qualCtrl.touched,
+                'is-valid': qualCtrl.valid && qualCtrl.touched
+              }">
+                            <option [ngValue]="null" disabled selected>Select Qualification</option>
+                            <option *ngFor="let q of qualifications" [ngValue]="q.id">{{ q.name }}</option>
+                        </select>
+                        <div class="invalid-feedback">Qualification is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">CRRI Start Date</label>
+                        <input type="date" name="CRRIStartDate" class="form-control" [(ngModel)]="doctor.crriStartDate"
+                            #crriCtrl="ngModel"
+                            [ngClass]="{'is-invalid': crriCtrl.invalid && crriCtrl.touched,'is-valid': crriCtrl.valid && crriCtrl.touched}" />
+                        <div class="invalid-feedback">CRRI Start Date is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Consultation Fee</label>
+                        <input type="number" name="consultationFee" class="form-control"
+                            [(ngModel)]="doctor.consultationFee" required #feeCtrl="ngModel" [ngClass]="{
+                'is-invalid': feeCtrl.invalid && feeCtrl.touched,
+                'is-valid': feeCtrl.valid && feeCtrl.touched
+              }" />
+                        <div class="invalid-feedback">Consultation Fee is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Address Info Section -->
+            <div class="border rounded-3 p-3 mb-4 bg-light">
+                <h5 class="mb-3 text-secondary">Address Info</h5>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">State</label>
+                        <select class="form-select" (change)="onStateChange($event)" required>
+                            <option value="" disabled selected>Select State</option>
+                            <option *ngFor="let s of states" [value]="s.id">{{ s.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">District</label>
+                        <select class="form-select" (change)="onDistrictChange($event)" required>
+                            <option value="" disabled selected>Select District</option>
+                            <option *ngFor="let d of filteredDistricts" [value]="d.id">{{ d.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Taluka</label>
+                        <select class="form-select" required [(ngModel)]="doctor.talukaID" name="talukaID">
+                            <option value="" disabled selected>Select Taluka</option>
+                            <option *ngFor="let t of filteredTalukas" [value]="t.id">{{ t.name }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-control" rows="2" name="address" [(ngModel)]="doctor.address"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Submit Buttons -->
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary" [disabled]="doctorForm.invalid">
+                    Save Doctor
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="resetForm(doctorForm)">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>

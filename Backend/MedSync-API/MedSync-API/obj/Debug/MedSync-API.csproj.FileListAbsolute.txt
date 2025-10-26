@@ -83,3 +83,8 @@ C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\obj\Debug\MedSync
 C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\obj\Debug\MedSync-.47A18AE0.Up2Date
 C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\obj\Debug\MedSync-API.dll
 C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\obj\Debug\MedSync-API.pdb
+C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\bin\MedSync-ClassLibraries.dll
+C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\bin\Microsoft.Practices.EnterpriseLibrary.Data.dll
+C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\bin\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\bin\Microsoft.Practices.ObjectBuilder2.dll
+C:\Users\malis\Desktop\MedSync\Backend\MedSync-API\MedSync-API\bin\MedSync-ClassLibraries.pdb
