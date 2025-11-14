@@ -1,0 +1,96 @@
+﻿<!--<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Your Appointment</title>
+</head>
+<body style="font-family:Arial, sans-serif; color:#333;">
+    <h2>Appointment Confirmation Needed</h2>
+    <p>Dear {{PatientName}},</p>
+    <p>Dr. {{DoctorName}} has suggested a new time for your appointment:</p>
+    <ul>
+        <li><strong>Date:</strong> {{AppointmentDate}}</li>
+        <li><strong>Time:</strong> {{StartTime}} - {{EndTime}}</li>
+    </ul>
+    <p>Please confirm or decline this change:</p>
+    <div style="margin-top:15px;">
+        <a href="{{AcceptUrl}}" style="padding:10px 20px; background-color:#28a745; color:white; text-decoration:none; border-radius:5px;">Accept</a>
+        <a href="{{DeclineUrl}}" style="padding:10px 20px; background-color:#dc3545; color:white; text-decoration:none; border-radius:5px;">Decline</a>
+    </div>
+    <p>If you do not respond within 30 minutes, the request will be automatically cancelled.</p>
+    <p>Regards,<br>MedSync Team</p>
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Your Appointment - MedSync</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f8f9fa;font-family:Segoe UI,Arial,sans-serif;">
+    <table align="center" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;margin-top:40px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);overflow:hidden;">
+        <!-- Header -->
+        <tr>
+            <td style="background-color:#007bff;color:white;text-align:center;padding:20px 10px;">
+                <h2 style="margin:0;">Appointment Confirmation Needed</h2>
+                <p style="margin:5px 0 0;font-size:14px;">Action Required from Patient</p>
+            </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+            <td style="padding:30px 40px;">
+                <p style="font-size:16px;color:#333;">Dear <b>{{PatientName}}</b>,</p>
+
+                <p style="font-size:15px;color:#444;line-height:1.6;">
+                    Dr. <b>{{DoctorName}}</b> has proposed a new time for your appointment. Please review the details below and confirm your availability.
+                </p>
+
+                <div style="margin:20px 0;padding:15px;background-color:#e8f1fd;border-radius:6px;">
+                    <p style="margin:0;font-size:15px;">
+                        <b>Date:</b> {{AppointmentDate}}<br>
+                        <b>Time:</b> {{StartTime}} - {{EndTime}}
+                    </p>
+                </div>
+
+                <p style="font-size:15px;color:#555;line-height:1.6;">
+                    Kindly respond within <b>30 minutes</b>. If no response is received, the appointment request will be automatically cancelled.
+                </p>
+
+                <!-- Buttons -->
+                <table cellpadding="0" cellspacing="0" style="margin:25px 0;text-align:center;width:100%;">
+                    <tr>
+                        <td align="center">
+                            <a href="{{AcceptUrl}}"
+                               style="display:inline-block;padding:12px 25px;margin-right:10px;background-color:#28a745;color:white;text-decoration:none;border-radius:5px;font-weight:bold;">
+                                ✅ Accept
+                            </a>
+                            <a href="{{DeclineUrl}}"
+                               style="display:inline-block;padding:12px 25px;background-color:#dc3545;color:white;text-decoration:none;border-radius:5px;font-weight:bold;">
+                                ❌ Decline
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr style="border:none;border-top:1px solid #ddd;margin:30px 0;">
+
+                <p style="color:#888;font-size:13px;">
+                    Regards,<br>
+                    <b>MedSync Support Team</b><br>
+                    <span style="color:#aaa;">Empowering Patient-Doctor Collaboration</span>
+                </p>
+            </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+            <td style="background-color:#f1f1f1;text-align:center;padding:12px;font-size:12px;color:#666;">
+                © 2025 MedSync | Seamless Healthcare Communication
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

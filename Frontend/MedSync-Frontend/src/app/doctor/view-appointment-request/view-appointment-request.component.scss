@@ -1,0 +1,225 @@
+@import '../../../styles/_variables.scss';
+
+#acceptBtn {
+    background-color: $success-color;
+}
+
+#rejectBtn {
+    background-color: $error-color;
+}
+
+#suggetBtn {
+    background-color: $warning-color;
+}
+
+.doctor-appointments-container {
+    background-color: $background-color;
+    padding: 24px;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+}
+
+.filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-level2;
+}
+
+.calendar-wrapper {
+    background: $card-background;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: $shadow-level2;
+    margin-top: 1rem;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+
+    .fc {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 0.95rem;
+        color: $text-color;
+    }
+
+    .fc-daygrid-event {
+        border-radius: 6px;
+        padding: 3px 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #fff;
+
+        &.pending {
+            background-color: $warning-color;
+            color: #212529;
+        }
+
+        &.accepted {
+            background-color: $success-color;
+        }
+
+        &.rejected {
+            background-color: $error-color;
+        }
+    }
+}
+
+.appointment-card {
+    background: $card-background;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid $primary-color;
+    border-radius: $border-radius-md;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: $shadow-level2;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: translateY(-3px);
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+
+        .patient-info {
+            font-weight: 600;
+            color: $text-color;
+        }
+
+        .status {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+
+            &.pending {
+                background: $warning-color;
+                color: #212529;
+            }
+
+            &.accepted {
+                background: $success-color;
+                color: white;
+            }
+
+            &.rejected {
+                background: $error-color;
+                color: white;
+            }
+        }
+    }
+
+    .meta {
+        color: $muted-text-color;
+        font-size: 0.9rem;
+    }
+
+    .actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+    }
+}
+
+.modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.suggest-slot {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    label {
+        font-weight: 500;
+        margin-bottom: 4px;
+    }
+}
+
+.slot-pill {
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: 500;
+    background-color: #e7f1ff;
+    color: #007bff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.selected {
+        background-color: #007bff;
+        color: white;
+    }
+
+    &.unavailable {
+        background-color: #e0e0e0;
+        color: #888;
+        cursor: not-allowed;
+    }
+
+    &:hover:not(.unavailable):not(.selected) {
+        background-color: #b3e5fc;
+    }
+}
+
+.calendar-wrapper[_ngcontent-ng-c1650111309] {
+    max-width: none;
+    border-radius: 0px;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+    border-color: $muted-text-color;
+}
+
+.fc .fc-daygrid-day-number {
+    // font-size: larger !important;
+    font-size: medium;
+}
+
+.attached-file-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.file-pill-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f8f9fc;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px; // rectangular, not round
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    font-size: 13px;
+}
+
+.file-pill-item:hover {
+    background: #eef1f5;
+    border-color: #c7c7c7;
+    transform: translateY(-1px);
+}
+
+.file-icon {
+    font-size: 14px;
+    color: #007bff;
+}
+
+.file-name {
+    font-weight: 500;
+    max-width: 160px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

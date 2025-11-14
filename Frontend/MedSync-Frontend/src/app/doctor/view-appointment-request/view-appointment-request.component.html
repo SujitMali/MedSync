@@ -1,0 +1,217 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary mb-0">Upcoming Appointments</h3>
+    <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas"
+        aria-controls="filterOffcanvas">
+        <i class="fa-solid fa-sliders"></i> Filters
+    </button>
+</div>
+
+<!-- ================== OFFCANVAS FILTER PANEL ================== -->
+<div class="offcanvas offcanvas-end shadow-sm" tabindex="-1" id="filterOffcanvas"
+    aria-labelledby="filterOffcanvasLabel">
+    <div class="offcanvas-header bg-light">
+        <h5 class="offcanvas-title text-primary fw-semibold" id="filterOffcanvasLabel">Filter Appointments</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        <form (ngSubmit)="fetchAppointments()" #filterForm="ngForm">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Search by Patient</label>
+                <input type="text" placeholder="Enter Patient Name" [(ngModel)]="filters.patientName" name="patientName"
+                    class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Status</label>
+                <ng-select [(ngModel)]="filters.statusIDs" name="statusIDs" [items]="statuses" bindLabel="name"
+                    bindValue="id" placeholder="Select Status" [clearable]="true" [searchable]="true"
+                    class="w-100"></ng-select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">From</label>
+                    <input type="date" [(ngModel)]="filters.dateFrom" name="dateFrom" [max]="filters.dateTo"
+                        class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">To</label>
+                    <input type="date" [(ngModel)]="filters.dateTo" [min]="filters.dateFrom" name="dateTo"
+                        class="form-control" />
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-around gap-2 mt-3">
+                <button type="button" class="btn btn-outline-secondary w-100" (click)="resetFilters()"
+                    data-bs-dismiss="offcanvas">
+                    Reset
+                </button>
+                <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">
+                    Apply
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ================== MAIN CONTENT AREA ================== -->
+<div *ngIf="currentView === 'calendar'" class="calendar-wrapper">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+</div>
+
+
+<!-- ================== DETAIL MODAL ================== -->
+<div class="modal fade show" tabindex="-1" *ngIf="showDetailModal"
+    style="display: block; background: rgba(0, 0, 0, 0.4)">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Appointment Details</h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeDetailModal()"></button>
+            </div>
+
+            <div class="modal-body" *ngIf="selectedAppointment">
+
+                <div class="container-fluid appointment-summary">
+                    <div class="row g-3">
+
+                        <!-- LEFT COLUMN -->
+                        <div class="col-md-6">
+                            <p><strong>Patient:</strong> {{ selectedAppointment.PatientName
+                                }} (#{{selectedAppointment.PatientID}})</p>
+
+                            <p><strong>Date:</strong>
+                                {{ selectedAppointment.AppointmentDate | date: 'fullDate' }}
+                            </p>
+
+                            <p><strong>Time:</strong>
+                                {{ selectedAppointment.StartTime }} - {{ selectedAppointment.EndTime }}
+                            </p>
+
+                            <p><strong>Status:</strong>
+                                {{ selectedAppointment.StatusName }}
+                            </p>
+
+                            <p><strong>Gender:</strong>
+                                {{ selectedAppointment.PatientGender || '-' }}
+                            </p>
+
+                            <p><strong>Email:</strong>
+                                {{ selectedAppointment.PatientEmail || '-' }}
+                            </p>
+
+
+                        </div>
+
+                        <!-- RIGHT COLUMN -->
+                        <div class="col-md-6">
+
+                            <p><strong>Age:</strong>
+                                {{
+                                calculateAge(selectedAppointment.PatientDOB)
+                                ? calculateAge(selectedAppointment.PatientDOB) + ' years'
+                                : '-'
+                                }}
+                            </p>
+
+                            <p><strong>Concern:</strong>
+                                {{ selectedAppointment.MedicalConcern && selectedAppointment.MedicalConcern.trim() ||
+                                '-' }}
+
+                            </p>
+
+                            <p><strong>History:</strong>
+                                {{ selectedAppointment.MedicalHistory && selectedAppointment.MedicalHistory.trim() ||
+                                '-' }}
+                            </p>
+
+                            <p><strong>Insurance:</strong>
+                                {{ selectedAppointment.InsuranceDetails && selectedAppointment.InsuranceDetails.trim()
+                                || '-' }}
+                            </p>
+                            <p><strong>Blood Group:</strong>
+                                {{ selectedAppointment.PatientBloodGroup || '-' }}
+                            </p>
+
+                            <p><strong>Contact No.:</strong>
+                                {{ selectedAppointment.PatientPhone || '-' }}
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <hr />
+
+                <h6>Attached Files:</h6>
+                <div class="attached-file-pills" *ngIf="selectedFiles.length > 0; else noFiles">
+                    <div *ngFor="let file of selectedFiles" class="file-pill-item" (click)="openFile(file)">
+                        <i class="fa-solid fa-file-lines file-icon"></i>
+                        <span class="file-name">{{ file.FileName }}</span>
+                    </div>
+                </div>
+
+                <ng-template #noFiles>
+                    <p class="text-muted">No files uploaded for this appointment.</p>
+                </ng-template>
+
+                <hr />
+
+                <div class="actions d-flex gap-2" *ngIf="canModify(selectedAppointment)">
+                    <button class="btn" id="acceptBtn" (click)="acceptAppointment(selectedAppointment)">Accept</button>
+
+                    <button class="btn" id="rejectBtn" (click)="rejectAppointment(selectedAppointment)">Reject</button>
+
+                    <button class="btn" id="suggetBtn" (click)="toggleSuggestSlot()">
+                        {{ showSuggestSlot ? 'Cancel Suggestion' : 'Suggest Another Slot' }}
+                    </button>
+                </div>
+
+                <div *ngIf="showSuggestSlot" class="suggest-slot mt-4">
+                    <h6>Suggest Another Slot</h6>
+
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <label>Date</label>
+                            <input type="date" class="form-control" [(ngModel)]="suggestedDate"
+                                (change)="onDateChangeForSuggestion()" [min]="today" />
+                        </div>
+                    </div>
+
+                    <div *ngIf="isLoadingSlots" class="text-center my-4">
+                        <div class="spinner-border text-primary"></div>
+                        <p class="mt-2">Fetching available slots...</p>
+                    </div>
+
+                    <div *ngIf="!isLoadingSlots && availableSlots.length > 0" class="mt-3">
+                        <h6 class="fw-semibold mb-3 text-secondary">Available Slots</h6>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button *ngFor="let slot of availableSlots" class="slot-pill"
+                                [class.selected]="selectedSlot === slot" [class.unavailable]="!slot.IsAvailable"
+                                (click)="selectSlot(slot)">
+                                {{ slot.SlotStart | date:'shortTime' }} -
+                                {{ slot.SlotEnd | date:'shortTime' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!isLoadingSlots && availableSlots.length === 0" class="text-muted text-center mt-3">
+                        No slots available for this date.
+                    </div>
+
+                    <div class="mt-3 text-end">
+                        <button class="btn btn-primary" [disabled]="!selectedSlot" (click)="submitSuggestedSlot()">
+                            Submit Suggestion
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>

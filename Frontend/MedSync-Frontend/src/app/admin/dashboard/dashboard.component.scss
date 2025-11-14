@@ -1,40 +1,194 @@
 @import '../../../styles/_variables.scss';
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: $space-lg;
+.appointments-container {
+    background-color: $card-background;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-level1;
+    font-family: $font-family;
 
-    .card {
-        display: flex;
-        align-items: center;
-        gap: $space-md;
-        background: $card-background;
-        padding: $space-md;
-        border-radius: $border-radius-md;
-        box-shadow: $shadow-level1;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    table {
+        color: $text-color;
 
-        &:hover {
-            transform: translateY(-4px);
-            box-shadow: $shadow-level2;
+
+        thead {
+            background-color: $background-color;
+            font-weight: $heading-font-weight;
         }
 
-        .card-icon {
-            font-size: 2rem;
-            color: $primary-color;
-        }
-
-        .card-info {
-            h3 {
-                color: $secondary-color;
-            }
-
-            p {
-                font-weight: $heading-font-weight;
-                font-size: 1.3rem;
-            }
+        tbody tr:hover {
+            background-color: lighten($background-color, 5%);
+            cursor: pointer;
         }
     }
+}
+
+
+
+.appointments-container .status-pill,
+.modal .status-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 160px;
+}
+
+
+.appointments-container .status-pill.pending,
+.modal .status-pill.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.appointments-container .status-pill.accepted,
+.modal .status-pill.accepted {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.appointments-container .status-pill.cancelled,
+.modal .status-pill.cancelled {
+    background-color: #f5c6cb;
+    color: #721c24;
+}
+
+.appointments-container .status-pill.rejected,
+.modal .status-pill.rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.appointments-container .status-pill.ppc,
+.modal .status-pill.ppc {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    // text-wrap: wrap;
+    // text-align: center;
+}
+
+
+.offcanvas {
+    width: 380px;
+    border-left: 2px solid #0d6efd;
+
+    .offcanvas-header {
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .form-label {
+        color: #495057;
+    }
+
+    .btn-outline-secondary {
+        border-color: #adb5bd;
+    }
+}
+
+.ng-select {
+    font-family: $font-family;
+
+    .ng-select-container {
+        border-radius: $border-radius-sm;
+        border-color: $border-color;
+        min-height: 40px;
+    }
+}
+
+.ngb-pagination {
+    .page-item.active .page-link {
+        background-color: $primary-color;
+        border-color: $primary-color;
+    }
+}
+
+.page-size-select {
+    width: 60px;
+    font-size: 0.9rem;
+}
+
+.file-preview-container {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #f8f9fa;
+}
+
+
+
+.table th,
+.table td {
+    // text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* #1 — Appointment ID */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+    width: 6%;
+    text-align: center;
+}
+
+/* #2 — Doctor (includes specialization names) */
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 15%;
+}
+
+/* #3 — Patient */
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    width: 15%;
+}
+
+/* #4 — Date */
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    width: 12%;
+}
+
+/* #5 — Start Time */
+.table th:nth-child(5),
+.table td:nth-child(5) {
+    width: 9%;
+}
+
+/* #6 — End Time */
+.table th:nth-child(6) {
+    width: 5%;
+    text-align: right;
+}
+
+.table td:nth-child(6) {
+    text-align: right;
+}
+
+/* #6 — End Time */
+.table th:nth-child(7) {
+    width: 10%;
+    text-align: right;
+}
+
+.table td:nth-child(7) {
+    text-align: right;
+}
+
+
+
+
+
+
+
+
+/* #8 — Action Buttons (View, etc.) */
+.table th:nth-child(8),
+.table td:nth-child(8) {
+    width: 15%;
+    text-align: center;
 }

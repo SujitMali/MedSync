@@ -1,4 +1,5 @@
-﻿using MedSync_ClassLibraries.Models;
+﻿using MedSync_ClassLibraries.Helpers;
+using MedSync_ClassLibraries.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,14 @@ namespace MedSync_ClassLibraries.DAL
             db = DatabaseFactory.CreateDatabase();
         }
 
-        public List<GenderModel> GetAllGenders()
+        #region GetGendersList()
+        public List<GenderModel> GetGendersList()
         {
             List<GenderModel> list = new List<GenderModel>();
 
             try
             {
-                DbCommand com = db.GetStoredProcCommand("MedSync_GetAllGenders");
+                DbCommand com = db.GetStoredProcCommand("MedSync_GendersGetList");
 
                 using (IDataReader dr = db.ExecuteReader(com))
                 {
@@ -38,10 +40,12 @@ namespace MedSync_ClassLibraries.DAL
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in GetAllGenders: " + ex.Message);
+                DbErrorLogger.LogError(ex, createdBy: 1);
             }
 
             return list;
         }
+        #endregion
+    
     }
 }

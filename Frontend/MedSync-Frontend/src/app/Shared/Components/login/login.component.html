@@ -1,0 +1,151 @@
+<app-patient-layout></app-patient-layout>
+<div class="login-container-wrapper">
+    <div class="container-fluid login-container">
+        <div class="row g-0">
+
+
+
+
+            <!-- Left Panel (Carousel) -->
+            <div class="col-lg-7 left-panel">
+
+                <!-- Logo -->
+                <div class="logo">
+                    <i class="fa-solid fa-stethoscope"></i> MedSync
+                </div>
+
+                <!-- Carousel -->
+                <div id="infoCarousel" class="carousel slide" data-bs-ride="carousel">
+
+                    <!-- Indicators/dots -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#infoCarousel" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#infoCarousel" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#infoCarousel" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+
+                    <!-- The slideshow/carousel -->
+                    <div class="carousel-inner">
+                        <!-- <div class="carousel-item active">
+                            <i class="fa-solid fa-clipboard-list carousel-icon"></i>
+                            <h2>Welcome!</h2>
+                            <p>Get a real intranet on top of your Office 365 environment, with Upteamist.</p>
+                        </div>
+                        <div class="carousel-item">
+                            <i class="fa-solid fa-users carousel-icon"></i>
+                            <h2>Collaborate</h2>
+                            <p>Connect with your team, share documents, and work together seamlessly.</p>
+                        </div>
+                        <div class="carousel-item">
+                            <i class="fa-solid fa-chart-line carousel-icon"></i>
+                            <h2>Stay Productive</h2>
+                            <p>Access all your tools and workflows in one central, intelligent place.</p>
+                        </div> -->
+                        <div class="carousel-item active">
+                            <i class="fa-solid fa-user-doctor carousel-icon"></i>
+                            <h2>Your Health, Our Priority</h2>
+                            <p>Book appointments with trusted doctors anytime, anywhere — all in one secure portal.</p>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="carousel-item">
+                            <i class="fa-solid fa-calendar-check carousel-icon"></i>
+                            <h2>Smart Scheduling</h2>
+                            <p>Pick a date, choose your doctor, and confirm your slot within seconds — it’s that simple.
+                            </p>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="carousel-item">
+                            <i class="fa-solid fa-hand-holding-medical carousel-icon"></i>
+                            <h2>Care Without Barriers</h2>
+                            <p>Experience seamless consultation and personalized healthcare at your fingertips with
+                                MedSync.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Right Panel (Login Form) -->
+            <div class="col-lg-5 right-panel">
+                <div class="right-panel-content">
+                    <h2 class="text-primary">Log In</h2>
+                    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-medium">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                <input type="email" name="email" class="form-control" [(ngModel)]="loginModel.email"
+                                    required #emailCtrl="ngModel" [ngClass]="{
+                                'is-invalid': (!isValidEmail(emailCtrl.value) && emailCtrl.touched) || (emailCtrl.invalid && emailCtrl.touched),
+                                'is-valid': isValidEmail(emailCtrl.value) && emailCtrl.touched
+                              }" placeholder="you@example.com" />
+                                <div *ngIf="emailCtrl.touched && !isValidEmail(emailCtrl.value)"
+                                    class="invalid-feedback">
+                                    <span *ngIf="!emailCtrl.value">Email is required.</span>
+                                    <span *ngIf="emailCtrl.value && !isValidEmail(emailCtrl.value)">Please enter a valid
+                                        email address.</span>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-medium">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                <input type="password" name="password" class="form-control"
+                                    [(ngModel)]="loginModel.password" required #passwordCtrl="ngModel" [ngClass]="{
+                                                  'is-invalid': (!isValidPassword(passwordCtrl.value) && passwordCtrl.touched),
+                                                  'is-valid': isValidPassword(passwordCtrl.value) && passwordCtrl.touched
+                                               }" placeholder="Enter Password" />
+
+                                <div *ngIf="passwordCtrl.touched && !isValidPassword(passwordCtrl.value)"
+                                    class="invalid-feedback">
+                                    Password must be at least 8 characters and include uppercase, lowercase, number, and
+                                    special character.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember password</label>
+                            </div>
+                            <a href="#" class="text-decoration-none forgot-link">Forgot password?</a>
+                        </div>
+
+                        <div class="d-flex justify-content-evenly gap-2">
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100"
+                                [disabled]="loginForm.invalid || isLoading">
+                                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                                Sign In
+                            </button>
+                            <button type="button" class="btn btn-secondary w-100"
+                                (click)="resetForm(loginForm)">Reset</button>
+                        </div>
+
+                        <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
+                            {{ errorMessage }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+</div>

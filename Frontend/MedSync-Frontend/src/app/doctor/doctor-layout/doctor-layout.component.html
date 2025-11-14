@@ -1,0 +1,61 @@
+<div class="admin-layout" [class.sidebar-collapsed]="isCollapsed" [class.sidebar-locked]="isLocked">
+    <aside class="admin-sidebar" (mouseenter)="onSidebarHover(true)" (mouseleave)="onSidebarHover(false)">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fa-solid fa-stethoscope logo-icon"></i>
+                <span class="logo-text">MedSync</span>
+            </div>
+            <button class="toggle-btn" (click)="toggleSidebarLock()"
+                [attr.title]="isLocked ? 'Collapse Sidebar' : 'Expand Sidebar'">
+                <i class="fa-solid" [ngClass]="isLocked ? 'fa-angles-left' : 'fa-angles-right'"></i>
+            </button>
+        </div>
+
+        <ul class="menu">
+            <li class="menu-item" *ngFor="let item of menuItems" [class.active]="activeMenu === item.label"
+                (click)="navigate(item)">
+                <i class="fa-solid icon" [ngClass]="item.icon"></i>
+                <span class="label">{{ item.label }}</span>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="admin-main">
+        <div class="topbar">
+            <div class="topbar-right">
+                <div class="topbar-actions d-flex align-items-center gap-4">
+                    <div class="dropdown">
+                        <a class="d-flex align-items-center text-decoration-none text-dark dropdown-toggle" href="#"
+                            id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user-circle fs-4 me-2"></i>
+                            <span class="fw-semibold">Dr. {{ user?.FirstName }}</span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+                            <li class="px-3 py-2 border-bottom">
+                                <div class="fw-semibold">Dr. {{ user?.FirstName }} {{ user?.LastName }}</div>
+                                <div class="text-muted small">{{ user?.RoleName }}</div>
+                            </li>
+                            <li>
+                                <button class="dropdown-item text-danger fw-semibold" (click)="logout()">
+                                    <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card shadow-sm p-4">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

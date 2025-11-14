@@ -1,0 +1,194 @@
+@import '../../../styles/_variables.scss';
+
+/* Base Typography */
+.container {
+    font-family: $font-family;
+    color: $text-color;
+}
+
+/* Layout Base */
+.doctor-page-container {
+    position: relative;
+    min-height: 100vh;
+    padding-top: 140px; // space for navbar + fixed header
+    padding-bottom: 100px; // space for footer
+}
+
+/* Fixed Header */
+.fixed-header {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    z-index: 1040;
+    background-color: #f9fafc;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 0.5rem 0;
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+    .btn-outline-primary {
+        border: 1px solid rgba($primary-color, 0.6);
+        color: $primary-color;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-weight: 500;
+        background-color: white;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: $primary-color;
+            color: white;
+            border-color: $primary-color;
+            box-shadow: 0 2px 6px rgba($primary-color, 0.2);
+        }
+    }
+}
+
+/* Doctor Card */
+.doctor-card {
+    // background: linear-gradient(145deg, #ffffff, #f8f9fb);
+    // background: radial-gradient(145deg, #ffffff, #2d71f7);
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+
+    border-radius: $border-radius-md;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $shadow-level2;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 1.25rem;
+    }
+
+    h5,
+    p {
+        text-align: center;
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+        margin-top: auto;
+    }
+}
+
+/* Doctor Avatar */
+.doctor-avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.doctor-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba($primary-color, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+}
+
+/* Fixed Footer */
+.fixed-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.08);
+    z-index: 1030;
+    min-height: 70px;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .page-size-select {
+        width: 60px;
+
+        ::ng-deep .ng-select-container {
+            border-radius: $border-radius-sm;
+            border-color: $border-color;
+            min-height: 40px;
+            background-color: $background-color;
+            box-shadow: none;
+        }
+
+        ::ng-deep .ng-value-label {
+            color: $text-color;
+            font-weight: 500;
+        }
+    }
+
+    ::ng-deep .page-link {
+        border-radius: 6px;
+        padding: 8px 14px;
+        font-weight: 500;
+        color: $primary-color;
+        border-color: lighten($border-color, 10%);
+        transition: all 0.15s ease-in-out;
+
+        &:hover {
+            background-color: $primary-color;
+            color: white;
+        }
+    }
+
+    ::ng-deep .page-item.active .page-link {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        color: white;
+    }
+}
+
+.offcanvas {
+    width: 380px;
+    border-left: 2px solid #0d6efd;
+
+    .offcanvas-header {
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .form-label {
+        color: #495057;
+    }
+
+    .btn-outline-secondary {
+        border-color: #adb5bd;
+    }
+}

@@ -1,0 +1,78 @@
+@import '../../../styles/_variables.scss';
+
+.status-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    text-align: center;
+}
+
+.status-pill.active {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-pill.inactive {
+    background-color: #fdecea;
+    color: #c62828;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.table td:nth-child(7) {
+    max-width: 150px;
+}
+
+.offcanvas {
+    background-color: $card-background;
+    color: $text-color;
+
+    .offcanvas-header {
+        background-color: $background-color;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: $text-color;
+    }
+
+    .form-select,
+    .form-control {
+        border-radius: $border-radius-sm;
+        border: 1px solid $border-color;
+
+        &:focus {
+            border-color: $primary-color;
+            box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+        }
+    }
+
+    .btn-primary {
+        background-color: $primary-color;
+        border: none;
+    }
+
+    .btn-secondary {
+        background-color: $secondary-color;
+        border: none;
+    }
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 15%;
+}
+
+.table th:nth-child(7),
+.table td:nth-child(7) {
+    width: 8%;
+}

@@ -1,4 +1,5 @@
-﻿using MedSync_ClassLibraries.Models;
+﻿using MedSync_ClassLibraries.Helpers;
+using MedSync_ClassLibraries.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,14 @@ namespace MedSync_ClassLibraries.DAL
             db = DatabaseFactory.CreateDatabase();
         }
 
-        public List<QualificationModel> GetAllQualifications()
+        #region GetQualificationsList()
+        public List<QualificationModel> GetQualificationsList()
         {
             List<QualificationModel> list = new List<QualificationModel>();
 
             try
             {
-                DbCommand com = db.GetStoredProcCommand("MedSync_GetAllQualifications");
+                DbCommand com = db.GetStoredProcCommand("MedSync_QualificationsGetList");
 
                 using (IDataReader dr = db.ExecuteReader(com))
                 {
@@ -38,11 +40,13 @@ namespace MedSync_ClassLibraries.DAL
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in GetAllQualifications: " + ex.Message);
+                DbErrorLogger.LogError(ex, createdBy: 1);
             }
 
             return list;
         }
+        #endregion
+    
     }
 }
     

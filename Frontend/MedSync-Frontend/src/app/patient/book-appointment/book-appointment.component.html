@@ -1,0 +1,526 @@
+<div class="fixed-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h3 class="fw-bold text-primary mb-0">Book Appointment</h3>
+        <button class="btn btn-outline-primary fw-semibold d-flex align-items-center gap-2" type="button"
+            (click)="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+            Back
+        </button>
+    </div>
+</div>
+
+<div class="appointments-container container mt-4 mb-5" *ngIf="doctorDetails">
+    <div class="row g-4">
+        <div class="col-lg-5 col-md-6">
+            <div class="card doctor-info-card shadow-sm border-0 h-100">
+                <div class="card-body text-center p-4">
+                    <img src="assets/images/default-doctor.png" class="rounded-circle doctor-profile-img mb-3">
+                    <h4 class="fw-bold text-primary mb-1">
+                        Dr. {{ doctorDetails.FirstName }} {{ doctorDetails.LastName }}
+                    </h4>
+                    <p class="text-muted mb-1">{{ doctorDetails.SpecializationName }}</p>
+                    <p class="text-secondary small mb-1">{{ doctorDetails.QualificationName }}</p>
+                    <p class="fw-semibold text-success mb-3 fs-5">₹{{ doctorDetails.ConsultationFee }}</p>
+                    <p class="text-muted mb-3">{{ getExperience(doctorDetails.CRRIStartDate) }} Yr. Exp.</p>
+                    <hr>
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i> {{ doctorDetails.City || 'Mumbai' }},
+                        {{ doctorDetails.State || 'Maharashtra' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 col-md-6">
+            <div class="card shadow-sm border-0 rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-primary mb-3">Book Appointment</h5>
+
+                    <div class="mb-4 col-md-6">
+                        <label class="form-label fw-semibold text-secondary">Select Date</label>
+                        <input type="date" class="form-control" [(ngModel)]="selectedDate" (change)="fetchSlots()"
+                            [min]="today" [max]="maxDate" required>
+                        <div *ngIf="!selectedDate" class="text-danger small mt-1">
+                            Please select a valid date.
+                        </div>
+                    </div>
+
+                    <div *ngIf="isLoadingSlots" class="text-center my-4">
+                        <div class="spinner-border text-primary"></div>
+                        <p class="mt-2 text-muted">Fetching slots...</p>
+                    </div>
+
+                    <div *ngIf="!isLoadingSlots && slots.length > 0">
+                        <h6 class="fw-semibold mb-3 text-secondary">Available Slots</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button *ngFor="let slot of slots" class="slot-pill"
+                                [class.selected]="selectedSlot === slot" [class.unavailable]="!slot.IsAvailable"
+                                (click)="selectSlot(slot)">
+                                {{ slot.SlotStart | date:'shortTime' }} - {{ slot.SlotEnd | date:'shortTime' }}
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button class="btn btn-primary fw-semibold px-4" [disabled]="!selectedSlot"
+                                (click)="confirmBooking()">Confirm Appointment</button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!isLoadingSlots && slots.length === 0" class="text-muted text-center mt-5">
+                        No slots available for this date.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Patient Details Modal -->
+<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" style="max-width:85%;">
+        <div class="modal-content rounded-4 border-0 shadow-sm">
+
+            <div class="modal-header border-0 bg-primary text-white rounded-top">
+
+                <div class="modal-title d-flex align-items-center gap-2" id="patientModalLabel">
+                    <h5 class="fw-bold mb-0">Patient Details</h5>
+                    <span *ngIf="selectedSlot && doctorDetails" class="slot-pill-heading">
+                        {{ selectedSlot?.SlotStart | date:'shortTime' }} -
+                        {{ selectedSlot?.SlotEnd | date:'shortTime' }}
+                        • {{ selectedDate | date:'fullDate' }}
+                        • Dr. {{ doctorDetails?.FirstName }} {{ doctorDetails?.LastName }}
+                    </span>
+                </div>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body p-4">
+                <form #patientForm="ngForm" (ngSubmit)="submitPatientForm(patientForm)" novalidate>
+
+                    <div class="row g-3">
+
+                        <h6 class="fw-semibold text-primary mb-2">Personal Information</h6>
+
+                        <!-- First Name -->
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">First Name</label>
+                            <input type="text" class="form-control" name="FirstName" [(ngModel)]="patient.FirstName"
+                                required minlength="2" maxlength="50" #FirstName="ngModel">
+                            <div *ngIf="FirstName.invalid && FirstName.touched" class="text-danger small mt-1">
+                                <div *ngIf="FirstName.errors?.['required']">First Name is required.</div>
+                                <div *ngIf="FirstName.errors?.['minlength']">Must be at least 2 characters.</div>
+                                <div *ngIf="FirstName.errors?.['maxlength']">Cannot exceed 50 characters.</div>
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Last Name</label>
+                            <input type="text" class="form-control" name="LastName" [(ngModel)]="patient.LastName"
+                                required minlength="2" maxlength="50" #LastName="ngModel">
+                            <div *ngIf="LastName.invalid && LastName.touched" class="text-danger small mt-1">
+                                <div *ngIf="LastName.errors?.['required']">Last Name is required.</div>
+                                <div *ngIf="LastName.errors?.['minlength']">Must be at least 2 characters.</div>
+                                <div *ngIf="LastName.errors?.['maxlength']">Cannot exceed 50 characters.</div>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control" name="Email" [(ngModel)]="patient.Email" required
+                                email #Email="ngModel">
+                            <div *ngIf="Email.invalid && Email.touched" class="text-danger small mt-1">
+                                <div *ngIf="Email.errors?.['required']">Email is required.</div>
+                                <div *ngIf="Email.errors?.['email']">Invalid email address.</div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Phone Number</label>
+                            <input type="tel" class="form-control" name="PhoneNumber" maxlength="10"
+                                [(ngModel)]="patient.PhoneNumber" required pattern="^[0-9]{10}$" #PhoneNumber="ngModel">
+                            <div *ngIf="PhoneNumber.invalid && PhoneNumber.touched" class="text-danger small mt-1">
+                                <div *ngIf="PhoneNumber.errors?.['required']">Phone number is required.</div>
+                                <div *ngIf="PhoneNumber.errors?.['pattern']">Must be a valid 10-digit number.</div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Date of Birth</label>
+                            <input type="date" class="form-control" name="DateOfBirth" [(ngModel)]="patient.DateOfBirth"
+                                [max]="today" required #DateOfBirth="ngModel">
+                            <div *ngIf="DateOfBirth.invalid && DateOfBirth.touched" class="text-danger small mt-1">
+                                Date of Birth is required.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Gender</label>
+                            <select class="form-select" name="GenderID" [(ngModel)]="patient.GenderID" required
+                                #GenderID="ngModel">
+                                <option value="">Select Gender</option>
+                                <option *ngFor="let g of genders" [value]="g.GenderID">{{ g.GenderName }}</option>
+                            </select>
+                            <div *ngIf="GenderID.invalid && GenderID.touched" class="text-danger small mt-1">
+                                Please select a Gender.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Blood Group</label>
+                            <select class="form-select" name="BloodGroupID" [(ngModel)]="patient.BloodGroupID">
+                                <option value="">Select Blood Group</option>
+                                <option *ngFor="let bg of bloodGroups" [value]="bg.BloodGroupID">{{ bg.BloodGroupName }}
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">State</label>
+                            <select class="form-select" [(ngModel)]="selectedStateId" name="StateID"
+                                (change)="onStateChange()">
+                                <option value="">Select State</option>
+                                <option *ngFor="let s of states" [value]="s.StateID">{{ s.StateName }}</option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">District</label>
+                            <select class="form-select" [(ngModel)]="selectedDistrictId" name="DistrictID"
+                                (change)="onDistrictChange()">
+                                <option value="">Select District</option>
+                                <option *ngFor="let d of filteredDistricts" [value]="d.DistrictID">{{ d.DistrictName }}
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Taluka</label>
+                            <select class="form-select" name="TalukaID" [(ngModel)]="patient.TalukaID" required
+                                #TalukaID="ngModel">
+                                <option value="">Select Taluka</option>
+                                <option *ngFor="let t of filteredTalukas" [value]="t.TalukaID">{{ t.TalukaName }}
+                                </option>
+                            </select>
+                            <div *ngIf="TalukaID.invalid && TalukaID.touched" class="text-danger small mt-1">
+                                Please select a Taluka.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Address</label>
+                            <textarea class="form-control" rows="1" name="Address" [(ngModel)]="patient.Address"
+                                maxlength="200" #Address="ngModel"></textarea>
+                            <div *ngIf="Address.errors?.['maxlength'] && Address.touched"
+                                class="text-danger small mt-1">
+                                Address cannot exceed 200 characters.
+                            </div>
+                        </div>
+
+                        <h6 class="fw-semibold text-primary mt-2">Additional Information</h6>
+
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Medical History</label>
+                            <input type="text" class="form-control" name="MedicalHistory"
+                                [(ngModel)]="patient.MedicalHistory" maxlength="300" #MedicalHistory="ngModel">
+                            <div *ngIf="MedicalHistory.errors?.['maxlength'] && MedicalHistory.touched"
+                                class="text-danger small mt-1">
+                                Medical History cannot exceed 300 characters.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Medical Concern</label>
+                            <input type="text" class="form-control" name="MedicalConcern"
+                                [(ngModel)]="patient.MedicalConcern" required maxlength="300" #MedicalConcern="ngModel">
+                            <div *ngIf="MedicalConcern.invalid && MedicalConcern.touched"
+                                class="text-danger small mt-1">
+                                <div *ngIf="MedicalConcern.errors?.['required']">Medical Concern is required.</div>
+                                <div *ngIf="MedicalConcern.errors?.['maxlength']">Cannot exceed 300 characters.</div>
+                            </div>
+                        </div>
+
+                        <!-- Insurance + Upload Row -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Insurance Details</label>
+                            <input type="text" class="form-control" name="InsuranceDetails"
+                                [(ngModel)]="patient.InsuranceDetails" maxlength="200" #InsuranceDetails="ngModel">
+                            <div *ngIf="InsuranceDetails.errors?.['maxlength'] && InsuranceDetails.touched"
+                                class="text-danger small mt-1">
+                                Insurance Details cannot exceed 200 characters.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-primary">Upload Files</label>
+
+                            <input type="file" class="form-control form-control-sm" multiple
+                                (change)="onFilesSelected($event)">
+
+                            <div *ngIf="uploadedFiles.length > 0" class="file-pill-container mt-2">
+                                <div *ngFor="let f of uploadedFiles; let i = index" class="file-pill">
+                                    <input [(ngModel)]="f.customName" name="file{{ i }}"
+                                        class="form-control form-control-sm file-rename-input"
+                                        [placeholder]="f.file.name">
+                                    <button type="button" class="btn btn-sm btn-link text-danger p-0 ms-1"
+                                        (click)="removeFile(i)">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- <div class="col-md-12">
+                            <label class="form-label fw-semibold">Insurance Details</label>
+                            <input type="text" class="form-control" name="InsuranceDetails"
+                                [(ngModel)]="patient.InsuranceDetails" maxlength="200" #InsuranceDetails="ngModel">
+                            <div *ngIf="InsuranceDetails.errors?.['maxlength'] && InsuranceDetails.touched"
+                                class="text-danger small mt-1">
+                                Insurance Details cannot exceed 200 characters.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12 mt-1">
+                            <label class="form-label fw-semibold text-primary">Upload Files</label>
+                            <input type="file" class="form-control form-control-sm" multiple
+                                (change)="onFilesSelected($event)">
+
+                            <div *ngIf="uploadedFiles.length > 0" class="file-pill-container mt-2">
+
+                                <div *ngFor="let f of uploadedFiles; let i = index" class="file-pill">
+
+                                    <input [(ngModel)]="f.customName" name="file{{ i }}"
+                                        class="form-control form-control-sm file-rename-input"
+                                        [placeholder]="f.file.name">
+
+                                    <button type="button" class="btn btn-sm btn-link text-danger p-0 ms-1"
+                                        (click)="removeFile(i)">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div> -->
+
+
+                    </div>
+
+                    <div class="modal-footer border-0 mt-2">
+                        <button type="button" class="btn btn-outline-secondary" (click)="resetForm(patientForm)">
+                            Reset
+                        </button>
+
+                        <button type="submit" class="btn btn-primary fw-semibold">Submit Request</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Patient Details Modal -->
+<!-- <div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-sm">
+            <div class="modal-header border-0 bg-primary text-white rounded-top">
+                <h5 class="modal-title fw-bold" id="patientModalLabel">Patient Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body p-4">
+                <form #patientForm="ngForm" (ngSubmit)="submitPatientForm(patientForm)" novalidate>
+                    <div class="row g-3">
+
+                        <h6 class="fw-semibold text-primary mt-4">Personal Information</h6>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="FirstName" placeholder="First Name"
+                                [(ngModel)]="patient.FirstName" required minlength="2" maxlength="50"
+                                #FirstName="ngModel">
+                            <div *ngIf="FirstName.invalid && FirstName.touched" class="text-danger small mt-1">
+                                <div *ngIf="FirstName.errors?.['required']">First Name is required.</div>
+                                <div *ngIf="FirstName.errors?.['minlength']">Must be at least 2 characters.</div>
+                                <div *ngIf="FirstName.errors?.['maxlength']">Cannot exceed 50 characters.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="LastName" placeholder="Last Name"
+                                [(ngModel)]="patient.LastName" required minlength="2" maxlength="50"
+                                #LastName="ngModel">
+                            <div *ngIf="LastName.invalid && LastName.touched" class="text-danger small mt-1">
+                                <div *ngIf="LastName.errors?.['required']">Last Name is required.</div>
+                                <div *ngIf="LastName.errors?.['minlength']">Must be at least 2 characters.</div>
+                                <div *ngIf="LastName.errors?.['maxlength']">Cannot exceed 50 characters.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="email" class="form-control" name="Email" placeholder="Email"
+                                [(ngModel)]="patient.Email" required email #Email="ngModel">
+                            <div *ngIf="Email.invalid && Email.touched" class="text-danger small mt-1">
+                                <div *ngIf="Email.errors?.['required']">Email is required.</div>
+                                <div *ngIf="Email.errors?.['email']">Invalid email address.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="tel" class="form-control" name="PhoneNumber" placeholder="Phone Number"
+                                [(ngModel)]="patient.PhoneNumber" required pattern="^[0-9]{10}$" #PhoneNumber="ngModel">
+                            <div *ngIf="PhoneNumber.invalid && PhoneNumber.touched" class="text-danger small mt-1">
+                                <div *ngIf="PhoneNumber.errors?.['required']">Phone number is required.</div>
+                                <div *ngIf="PhoneNumber.errors?.['pattern']">Must be a valid 10-digit number.</div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <input type="date" class="form-control" name="DateOfBirth" [(ngModel)]="patient.DateOfBirth"
+                                [max]="today" required #DateOfBirth="ngModel">
+                            <div *ngIf="DateOfBirth.invalid && DateOfBirth.touched" class="text-danger small mt-1">
+                                Date of Birth is required.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <select class="form-select" name="GenderID" [(ngModel)]="patient.GenderID" required
+                                #GenderID="ngModel">
+                                <option value="">Select Gender</option>
+                                <option *ngFor="let g of genders" [value]="g.GenderID">{{ g.GenderName }}</option>
+                            </select>
+                            <div *ngIf="GenderID.invalid && GenderID.touched" class="text-danger small mt-1">
+                                Please select a Gender.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <select class="form-select" name="BloodGroupID" [(ngModel)]="patient.BloodGroupID">
+                                <option value="">Select Blood Group</option>
+                                <option *ngFor="let bg of bloodGroups" [value]="bg.BloodGroupID">{{ bg.BloodGroupName }}
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <select class="form-select" [(ngModel)]="selectedStateId" name="StateID"
+                                (change)="onStateChange()">
+                                <option value="">Select State</option>
+                                <option *ngFor="let s of states" [value]="s.StateID">{{ s.StateName }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <select class="form-select" [(ngModel)]="selectedDistrictId" name="DistrictID"
+                                (change)="onDistrictChange()">
+                                <option value="">Select District</option>
+                                <option *ngFor="let d of filteredDistricts" [value]="d.DistrictID">{{ d.DistrictName }}
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <select class="form-select" name="TalukaID" [(ngModel)]="patient.TalukaID" required
+                                #TalukaID="ngModel">
+                                <option value="">Select Taluka</option>
+                                <option *ngFor="let t of filteredTalukas" [value]="t.TalukaID">{{ t.TalukaName }}
+                                </option>
+                            </select>
+                            <div *ngIf="TalukaID.invalid && TalukaID.touched" class="text-danger small mt-1">
+                                Please select a Taluka.
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <textarea class="form-control" rows="2" name="Address" placeholder="Address"
+                                [(ngModel)]="patient.Address" maxlength="200" #Address="ngModel"></textarea>
+                            <div *ngIf="Address.errors?.['maxlength'] && Address.touched"
+                                class="text-danger small mt-1">
+                                Address cannot exceed 200 characters.
+                            </div>
+                        </div>
+
+                        <h6 class="fw-semibold text-primary mt-4">Additional Information</h6>
+
+
+                        <div class="col-12">
+                            <input type="text" class="form-control" name="MedicalHistory" placeholder="Medical History"
+                                [(ngModel)]="patient.MedicalHistory" maxlength="300" #MedicalHistory="ngModel">
+                            <div *ngIf="MedicalHistory.errors?.['maxlength'] && MedicalHistory.touched"
+                                class="text-danger small mt-1">
+                                Medical History cannot exceed 300 characters.
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <input type="text" class="form-control" name="MedicalConcern"
+                                placeholder="Current Medical Concern / Symptoms" [(ngModel)]="patient.MedicalConcern"
+                                required maxlength="300" #MedicalConcern="ngModel">
+                            <div *ngIf="MedicalConcern.invalid && MedicalConcern.touched"
+                                class="text-danger small mt-1">
+                                <div *ngIf="MedicalConcern.errors?.['required']">Medical Concern is required.</div>
+                                <div *ngIf="MedicalConcern.errors?.['maxlength']">Cannot exceed 300 characters.</div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <input type="text" class="form-control" name="InsuranceDetails"
+                                placeholder="Insurance Details" [(ngModel)]="patient.InsuranceDetails" maxlength="200"
+                                #InsuranceDetails="ngModel">
+                            <div *ngIf="InsuranceDetails.errors?.['maxlength'] && InsuranceDetails.touched"
+                                class="text-danger small mt-1">
+                                Insurance Details cannot exceed 200 characters.
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 mt-3">
+                            <label class="form-label small fw-semibold text-primary mb-1">Upload Reports /
+                                Prescriptions </label>
+                            <input type="file" class="form-control form-control-sm" multiple
+                                (change)="onFilesSelected($event)">
+                            <div *ngIf="uploadedFiles.length > 0" class="mt-2 small text-muted">
+                                <div *ngFor="let f of uploadedFiles; let i=index"
+                                    class="d-flex align-items-center gap-2 mb-2">
+                                    <input [(ngModel)]="f.customName" name="file{{i}}"
+                                        class="form-control form-control-sm" [placeholder]="f.file.name">
+                                    <span>({{ f.file.name }})</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer border-0">
+                        <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary fw-semibold">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->

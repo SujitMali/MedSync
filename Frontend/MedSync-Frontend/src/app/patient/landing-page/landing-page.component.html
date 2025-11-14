@@ -1,462 +1,205 @@
-<!-- Zone.js is required for Angular in this environment -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.14.7/zone.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Main Content Area -->
+<main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-grid">
 
-<div class="page-wrapper">
-
-    <!-- Main Navigation Bar -->
-    <header class="main-header">
-        <nav class="main-nav container">
-            <a class="logo">MedSync</a>
-
-            <!-- Desktop Nav Links -->
-            <div class="nav-links">
-                <a>Home</a>
-                <a>About Us</a>
-                <a>Services</a>
-                <a>Blogs</a>
-                <a>Contact</a>
-            </div>
-
-            <!-- CTA Button -->
-            <a class="btn btn-primary nav-cta">
-                Get Started
-            </a>
-
-            <!-- Mobile Menu Button (Icon) -->
-            <button class="mobile-menu-btn">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
-                    </path>
-                </svg>
-            </button>
-        </nav>
-    </header>
-
-    <!-- Main Content Area -->
-    <main>
-
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="container hero-grid">
-
-                <!-- Hero Text Content -->
-                <div class="hero-content">
-                    <h1>Connect with doctors anytime anywhere!</h1>
-                    <p>
-                        Get access to our network of 180K+ trusted doctors and specialists. We provide top-quality
-                        healthcare services 24/7.
-                    </p>
-                    <div class="hero-actions">
-                        <a href="#contact" class="btn btn-light">Get Started</a>
-                        <div class="user-avatars">
-                            <img class="avatar" src="https://placehold.co/48x48/EBF8FF/3182CE?text=U1" alt="User 1">
-                            <img class="avatar" src="https://placehold.co/48x48/EBF8FF/3182CE?text=U2" alt="User 2">
-                            <img class="avatar" src="https://placehold.co/48x48/EBF8FF/3182CE?text=U3" alt="User 3">
-                            <span class="avatar-count">180K+</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hero Image -->
-                <div class="hero-image-wrapper">
-                    <img src="https://placehold.co/500x550/FFFFFF/1A3A6D?text=Smiling+Doctor" alt="Smiling Doctor"
-                        class="hero-image"
-                        onerror="this.src='https://placehold.co/500x550/FFFFFF/1A3A6D?text=Image+Error'">
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="services-section section-padding">
-            <div class="container">
-                <div class="section-header">
-                    <h2>
-                        Customers Clearly Show <br> You What They Need
-                    </h2>
-                    <a href="#" class="section-view-all">
-                        View all services &rarr;
-                    </a>
-                </div>
-
-                <!-- Service Cards Grid -->
-                <div class="services-grid">
-                    <!-- Card 1: Procedure Care -->
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg>
-                        </div>
-                        <h3>Procedure Care</h3>
-                        <p>Specialized care and support before, during, and after your medical procedures.</p>
-                    </div>
-
-                    <!-- Card 2: Cosmetic Dentistry -->
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v3m0 3h.01"></path>
-                            </svg>
-                        </div>
-                        <h3>Cosmetic Dentistry</h3>
-                        <p>Enhance your smile with our wide range of cosmetic dental services.</p>
-                    </div>
-
-                    <!-- Card 3: Preventive Treatments -->
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <h3>Preventive Treatments</h3>
-                        <p>Stay healthy with our proactive and preventive care plans for all ages.</p>
+            <!-- Hero Text Content -->
+            <div class="hero-content">
+                <h1>Connect with doctors anytime anywhere!</h1>
+                <p>
+                    Get access to our network of 180K+ trusted doctors and specialists. We provide top-quality
+                    healthcare services 24/7.
+                </p>
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn-light" [routerLink]="['view-doctors-list']">Book
+                        Appointment</a>
+                    <div class="user-avatars">
+                        <!-- Replaced placeholder avatars with real images -->
+                        <img class="avatar"
+                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=48&h=48&fit=crop&q=80"
+                            alt="User 1" onerror="this.src='https://placehold.co/48x48/EBF8FF/3182CE?text=U1'">
+                        <img class="avatar"
+                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop&q=80"
+                            alt="User 2" onerror="this.src='https://placehold.co/48x48/EBF8FF/3182CE?text=U2'">
+                        <img class="avatar"
+                            src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=48&h=48&fit=crop&q=80"
+                            alt="User 3" onerror="this.src='https://placehold.co/48x48/EBF8FF/3182CE?text=U3'">
+                        <span class="avatar-count">180K+</span>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- "Who We Are" Section (About Us 1) -->
-        <section id="about" class="about-section section-padding bg-light">
-            <div class="container two-column-grid">
+            <!-- Hero Image -->
+            <div class="hero-image-wrapper">
+                <!-- Replaced placeholder with a professional image of a smiling doctor -->
+                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&h=550&fit=crop&q=80"
+                    alt="Smiling Doctor" class="hero-image"
+                    onerror="this.src='https://placehold.co/500x550/FFFFFF/1A3A6D?text=Image+Error'">
+            </div>
 
-                <!-- Image Content -->
-                <div class="about-image-wrapper">
-                    <img src="https://placehold.co/500x550/1A3A6D/FFFFFF?text=Doctor+Consulting"
-                        alt="Doctor consulting with patient" class="about-image"
-                        onerror="this.src='https://placehold.co/500x550/1A3A6D/FFFFFF?text=Image+Error'">
-                    <!-- Floating Card -->
-                    <div class="floating-card">
-                        <img src="https://placehold.co/48x48/EBF8FF/1A3A6D?text=Dr" alt="Dr. John M."
-                            class="doctor-avatar" onerror="this.src='https://placehold.co/48x48/EBF8FF/1A3A6D?text=Dr'">
-                        <div>
-                            <h4>Dr. John M.</h4>
-                            <p>Cardiologist</p>
-                        </div>
+        </div>
+    </section>
+
+    <!-- "Who We Are" Section (About Us 1) -->
+    <section id="about" class="about-section section-padding bg-light">
+        <div class="container two-column-grid">
+
+            <!-- Image Content -->
+            <div class="about-image-wrapper">
+                <!-- Replaced placeholder with doctor-patient consultation image -->
+                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&h=550&fit=crop&q=80"
+                    alt="Doctor consulting with patient" class="about-image"
+                    onerror="this.src='https://placehold.co/500x550/1A3A6D/FFFFFF?text=Image+Error'">
+                <!-- Floating Card -->
+                <div class="floating-card">
+                    <!-- Replaced placeholder avatar -->
+                    <img src="https://images.unsplash.com/photo-1537368910025-70035079f32d?w=48&h=48&fit=crop&q=80"
+                        alt="Dr. John M." class="doctor-avatar"
+                        onerror="this.src='https://placehold.co/48x48/EBF8FF/1A3A6D?text=Dr'">
+                    <div>
+                        <h4>Dr. John M.</h4>
+                        <p>Cardiologist</p>
                     </div>
                 </div>
-
-                <!-- Text Content -->
-                <div class="about-content">
-                    <span class="eyebrow">About Us</span>
-                    <h2>Who We Are and What We Stand For?</h2>
-                    <p class="large-text">
-                        We are a dedicated team of healthcare professionals committed to providing you with the best
-                        medical care from the comfort of your home.
-                    </p>
-
-                    <ul class="checklist">
-                        <li>
-                            <svg class="check-icon" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <span>Advanced treatments from licensed and experienced doctors.</span>
-                        </li>
-                        <li>
-                            <svg class="check-icon" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <span>Personalized care plans tailored to your specific needs.</span>
-                        </li>
-                    </ul>
-
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- "Connecting with Doctors" Section (About Us 2) -->
-        <section class="features-section section-padding">
-            <div class="container two-column-grid">
-
-                <!-- Text Content -->
-                <div class="features-content">
-                    <span class="eyebrow">Features</span>
-                    <h2>Connecting with Doctors Anytime with Ease</h2>
-
-                    <div class="feature-cards-wrapper">
-                        <!-- Feature Item 1: Our Vision -->
-                        <div class="feature-card">
-                            <h4>Our Vision</h4>
-                            <p>To make high-quality healthcare accessible and affordable for everyone, everywhere.</p>
-                        </div>
-                        <!-- Feature Item 2: Our Mission -->
-                        <div class="feature-card">
-                            <h4>Our Mission</h4>
-                            <p>To leverage technology to connect patients with the best medical professionals
-                                seamlessly.</p>
-                        </div>
-                    </div>
-
-                    <a href="#" class="btn btn-primary">View More</a>
-                </div>
-
-                <!-- Image Content -->
-                <div class="features-image-wrapper">
-                    <img src="https://placehold.co/550x500/1A3A6D/FFFFFF?text=Dental+Procedure"
-                        alt="Patient during a dental procedure" class="features-image"
-                        onerror="this.src='https://placehold.co/550x500/1A3A6D/FFFFFF?text=Image+Error'">
-                </div>
-
-            </div>
-        </section>
-
-        <!-- "Trusted Doctors" Section (Blog) -->
-        <section id="blog" class="blog-section section-padding bg-light">
-            <div class="container">
-                <div class="section-header text-center">
-                    <h2>Connect with Trusted Doctors Anytime Anywhere</h2>
-                    <p>Read our latest articles and insights from medical professionals and industry experts.</p>
-                </div>
-
-                <!-- Blog Cards Grid -->
-                <div class="blog-grid">
-
-                    <!-- Blog Card 1 -->
-                    <div class="blog-card">
-                        <img src="https://placehold.co/400x250/1A3A6D/FFFFFF?text=Medical+Tech"
-                            alt="Doctor using medical technology" class="blog-card-image"
-                            onerror="this.src='https://placehold.co/400x250/1A3A6D/FFFFFF?text=Image+Error'">
-                        <div class="blog-card-content">
-                            <h3>
-                                <a href="#">Talk To Trusted Doctors AnyTime, AnyWhere From Your Home</a>
-                            </h3>
-                            <div class="blog-card-meta">
-                                <span>Oct 25, 2025</span> &bull; <span>Dr. Emily White</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Blog Card 2 -->
-                    <div class="blog-card">
-                        <img src="https://placehold.co/400x250/1A3A6D/FFFFFF?text=Dental+Exam"
-                            alt="Close-up of dental exam" class="blog-card-image"
-                            onerror="this.src='https://placehold.co/400x250/1A3A6D/FFFFFF?text=Image+Error'">
-                        <div class="blog-card-content">
-                            <h3>
-                                <a href="#">Get World Class Treatment At Home And Also Online</a>
-                            </h3>
-                            <div class="blog-card-meta">
-                                <span>Oct 24, 2025</span> &bull; <span>Dr. Michael Brown</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Blog Card 3 -->
-                    <div class="blog-card">
-                        <img src="https://placehold.co/400x250/1A3A6D/FFFFFF?text=Doctor+Reviewing+Scan"
-                            alt="Doctor reviewing scan" class="blog-card-image"
-                            onerror="this.src='https://placehold.co/400x250/1A3A6D/FFFFFF?text=Image+Error'">
-                        <div class="blog-card-content">
-                            <h3>
-                                <a href="#">Get Professional Healthcare Service AnyTime, AnyWhere</a>
-                            </h3>
-                            <div class="blog-card-meta">
-                                <span>Oct 23, 2025</span> &bull; <span>Dr. Sarah Lee</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- "We Call You Back" Section (Contact Form) -->
-        <section id="contact" class="contact-section section-padding">
-            <div class="container two-column-grid">
-
-                <!-- Text Content -->
-                <div class="contact-content">
-                    <span class="eyebrow">Let's Talk</span>
-                    <h2>We Call You Back in Just a Few Simple Steps</h2>
-
-                    <ul class="steps-list">
-                        <li>
-                            <div class="step-number">1</div>
-                            <span>Request Callback</span>
-                        </li>
-                        <li>
-                            <div class="step-number">2</div>
-                            <span>Schedule Appointment</span>
-                        </li>
-                        <li>
-                            <div class="step-number">3</div>
-                            <span>Get Your Solution</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Contact Form -->
-                <div class="contact-form-wrapper">
-                    <h3>Book an Appointment</h3>
-                    <form action="#" method="POST" class="contact-form">
-                        <div class="form-grid-2">
-                            <div class="form-group">
-                                <label for="first-name">First Name</label>
-                                <input type="text" name="first-name" id="first-name">
-                            </div>
-                            <div class="form-group">
-                                <label for="last-name">Last Name</label>
-                                <input type="text" name="last-name" id="last-name">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" name="email" id="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" name="phone" id="phone">
-                        </div>
-                        <div class="form-grid-2">
-                            <div class="form-group">
-                                <label for="department">Department</label>
-                                <select id="department" name="department">
-                                    <option>Select Department</option>
-                                    <option>Cardiology</option>
-                                    <option>Dentistry</option>
-                                    <option>General Care</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="doctor">Doctor</label>
-                                <select id="doctor" name="doctor">
-                                    <option>Select Doctor</option>
-                                    <option>Dr. John M.</option>
-                                    <option>Dr. Emily White</option>
-                                    <option>Dr. Michael Brown</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="4"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-primary btn-full">
-                                Book Appointment
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container footer-grid">
-
-            <!-- Column 1: Logo & Social -->
-            <div class="footer-col">
-                <a href="#" class="logo footer-logo">MedSync</a>
-                <p>Your trusted partner in digital healthcare. Connecting you with professionals, 24/7.</p>
-                <div class="social-links">
-                    <a href="#">
-                        <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                    <a href="#">
-                        <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path
-                                d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                        </svg>
-                    </a>
-                    <a href="#">
-                        <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1.15 15.625H8.375v-6.375h2.475v6.375zm-1.238-7.25c-.807 0-1.463-.656-1.463-1.462s.656-1.463 1.463-1.463c.806 0 1.462.656 1.462 1.463s-.656 1.462-1.462 1.462zM17.375 17.625h-2.475v-3.088c0-.735-.013-1.68-.975-1.68c-.975 0-1.125.763-1.125 1.625v3.143h-2.475v-6.375h2.375v1.087h.038c.33-.625 1.137-1.287 2.337-1.287 2.5 0 2.963 1.644 2.963 3.788v4.787z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </div>
             </div>
 
-            <!-- Column 2: Services -->
-            <div class="footer-col">
-                <h4>Services</h4>
-                <ul>
-                    <li><a href="#">Procedure Care</a></li>
-                    <li><a href="">Cosmetic Dentistry</a></li>
-                    <li><a href="">Preventive Treatments</a></li>
-                    <li><a href="">Online Consultation</a></li>
-                    <li><a href="">Home Visits</a></li>
-                </ul>
-            </div>
+            <!-- Text Content -->
+            <div class="about-content">
+                <span class="eyebrow">About Us</span>
+                <h2>Who We Are and What We Stand For?</h2>
+                <p class="large-text">
+                    We are a dedicated team of healthcare professionals committed to providing you with the best
+                    medical care from the comfort of your home.
+                </p>
 
-            <!-- Column 3: Resources -->
-            <div class="footer-col">
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="">Blog</a></li>
-                    <li><a href="">Help Center</a></li>
-                    <li><a href="">Privacy Policy</a></li>
-                    <li><a href="">Terms of Service</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 4: Contact -->
-            <div class="footer-col">
-                <h4>Contact</h4>
-                <ul class="contact-list">
+                <ul class="checklist">
                     <li>
-                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="check-icon" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
-                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span>123 Health St, Suite 100 <br> Meditown, USA 12345</span>
+                        <span>Advanced treatments from licensed and experienced doctors.</span>
                     </li>
                     <li>
-                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2.153a1 1 0 01-.986-.836l-.74-4.435a1 1 0 01.54-1.06l1.548-.773a11.037 11.037 0 00-6.105-6.105l-.774 1.548a1 1 0 01-1.059.54l-4.435-.74A1 1 0 013.153 5H1a1 1 0 01-1-1z">
-                            </path>
+                        <svg class="check-icon" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
                         </svg>
-                        <span>(123) 456-7890</span>
-                    </li>
-                    <li>
-                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M2.003 5.884L10 10.884l7.997-5H2.003zM18 7.116l-8 5-8-5V14a2 2 0 002 2h12a2 2 0 002-2V7.116z">
-                            </path>
-                        </svg>
-                        <span>contact&#64;medsync.com</span>
+                        <span>Personalized care plans tailored to your specific needs.</span>
                     </li>
                 </ul>
+
+                <a href="#" class="btn btn-primary">Learn More</a>
             </div>
 
         </div>
+    </section>
+</main>
 
-        <!-- Bottom Bar -->
-        <div class="footer-bottom">
-            &copy; {{ currentYear }} MedSync. All Rights Reserved.
+<!-- Footer -->
+<footer class="main-footer">
+    <div class="container footer-grid">
+
+        <!-- Column 1: Logo & Social -->
+        <div class="footer-col">
+            <a href="#" class="logo footer-logo">MedSync</a>
+            <p>Your trusted partner in digital healthcare. Connecting you with professionals, 24/7.</p>
+            <div class="social-links">
+                <a href="#">
+                    <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </a>
+                <a href="#">
+                    <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                    </svg>
+                </a>
+                <a href="#">
+                    <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1.15 15.625H8.375v-6.375h2.475v6.375zm-1.238-7.25c-.807 0-1.463-.656-1.463-1.462s.656-1.463 1.463-1.463c.806 0 1.462.656 1.462 1.463s-.656 1.462-1.462 1.462zM17.375 17.625h-2.475v-3.088c0-.735-.013-1.68-.975-1.68c-.975 0-1.125.763-1.125 1.625v3.143h-2.475v-6.375h2.375v1.087h.038c.33-.625 1.137-1.287 2.337-1.287 2.5 0 2.963 1.644 2.963 3.788v4.787z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
         </div>
-    </footer>
 
-</div>
+        <!-- Column 2: Services -->
+        <div class="footer-col">
+            <h4>Services</h4>
+            <ul>
+                <li><a href="#">Procedure Care</a></li>
+                <li><a href="">Cosmetic Dentistry</a></li>
+                <li><a href="">Preventive Treatments</a></li>
+                <li><a href="">Online Consultation</a></li>
+                <li><a href="">Home Visits</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Resources -->
+        <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="">Blog</a></li>
+                <li><a href="">Help Center</a></li>
+                <li><a href="">Privacy Policy</a></li>
+                <li><a href="">Terms of Service</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 4: Contact -->
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <ul class="contact-list">
+                <li>
+                    <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span>123 Health St, Suite 100 <br> Meditown, USA 12345</span>
+                </li>
+                <li>
+                    <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2.153a1 1 0 01-.986-.836l-.74-4.435a1 1 0 01.54-1.06l1.548-.773a11.037 11.037 0 00-6.105-6.105l-.774 1.548a1 1 0 01-1.059.54l-4.435-.74A1 1 0 013.153 5H1a1 1 0 01-1-1z">
+                        </path>
+                    </svg>
+                    <span>(123) 456-7890</span>
+                </li>
+                <li>
+                    <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M2.003 5.884L10 10.884l7.997-5H2.003zM18 7.116l-8 5-8-5V14a2 2 0 002 2h12a2 2 0 002-2V7.116z">
+                        </path>
+                    </svg>
+                    <span>contact&#64;medsync.com</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+        &copy; {{ currentYear }} MedSync. All Rights Reserved.
+    </div>
+</footer>
+
+
+
+
+
+
+<!-- Zone.js is required for Angular in this environment -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.14.7/zone.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> -->

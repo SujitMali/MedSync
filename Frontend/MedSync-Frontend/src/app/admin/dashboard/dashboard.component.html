@@ -1,11 +1,273 @@
-<div class="cards">
-    <div class="card" *ngFor="let card of dashboardCards">
-        <div class="card-icon">
-            <i class="fa-solid" [ngClass]="card.icon"></i>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary mb-0">Appointments</h3>
+    <button class="btn btn-outline-primary" data-bs-toggle="offcanvas" data-bs-target="#filterCanvas">
+        <i class="fa-solid fa-sliders"></i>
+        Filter
+    </button>
+</div>
+
+<div class="appointments-container card shadow-sm p-4">
+    <div *ngIf="loading" class="text-center text-muted">Loading...</div>
+
+    <table class="table table-hover align-middle" *ngIf="!loading && appointments.length">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Doctor</th>
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Specilization</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let app of appointments">
+                <td>{{ app.AppointmentID }}</td>
+                <td>{{ app.DoctorName }}</td>
+                <td>{{ app.PatientName }}</td>
+                <td>{{ app.AppointmentDate | date: 'mediumDate' }}</td>
+                <td>{{app.SpecializationNames}}</td>
+                <td>{{app.StartTime}}</td>
+                <td> {{app.EndTime}}</td>
+                <td>
+                    <span class="status-pill" [ngClass]="{
+                        'accepted': app.StatusName === 'Accepted',
+                        'pending': app.StatusName === 'Pending',
+                        'rejected': app.StatusName === 'Rejected',
+                        'cancelled': app.StatusName === 'Cancelled',
+                        'ppc': app.StatusName === 'Pending Patient Confirmation'
+                      }">
+                        {{ app.StatusName }}
+                    </span>
+
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary " (click)="openDetails(app)">
+                        <i class="fa-solid fa-eye"></i>
+                        View
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!loading && !appointments.length" class="text-muted text-center py-4">
+        No appointments found.
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mt-4" *ngIf="!loading && totalRecords > 0">
+    <div class="text-muted small">
+        Showing
+        <strong>{{ (filter.PageNumber - 1) * filter.PageSize + 1 }}</strong>–
+        <strong>{{ Math.min(filter.PageNumber * filter.PageSize, totalRecords) }}</strong>
+        of {{ totalRecords }} records
+    </div>
+
+    <div class="d-flex align-items-center gap-3 ">
+
+        <ng-select class="page-size-select" [(ngModel)]="filter.PageSize" (change)="loadAppointments()"
+            [items]="pageSizes" bindLabel="label" bindValue="value" placeholder="Page size" [clearable]="false"
+            [searchable]="false">
+        </ng-select>
+        <div class="pt-3">
+            <ngb-pagination [(page)]="filter.PageNumber" [pageSize]="filter.PageSize" [collectionSize]="totalRecords"
+                (pageChange)="loadAppointments()" [maxSize]="5" [rotate]="true" [boundaryLinks]="true">
+            </ngb-pagination>
         </div>
-        <div class="card-info">
-            <h3>{{ card.title }}</h3>
-            <p>{{ card.value }}</p>
+
+    </div>
+</div>
+
+
+<div class="offcanvas offcanvas-end shadow-sm" tabindex="-1" id="filterCanvas">
+    <div class="offcanvas-header bg-light">
+        <h5 class="offcanvas-title text-primary">Filter Appointments</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        <form (ngSubmit)="applyFilters()" #filterForm="ngForm">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Patient Name</label>
+                <input type="text" class="form-control" placeholder="Search by patient name"
+                    [(ngModel)]="filter.PatientName" name="PatientName" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Specializations</label>
+                <ng-select [items]="specializations" bindLabel="SpecializationName" bindValue="SpecializationID"
+                    placeholder="Select Specializations" [(ngModel)]="filter.SpecializationIDs" name="SpecializationIDs"
+                    [multiple]="true" [searchable]="true" [clearable]="true">
+                </ng-select>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Doctor</label>
+                <ng-select [items]="doctors" bindLabel="FirstName" bindValue="DoctorID" placeholder="Select Doctor"
+                    [(ngModel)]="filter.DoctorID" name="DoctorID" [searchable]="true" [clearable]="true">
+                    <ng-template ng-label-tmp let-item="item">
+                        {{ item.FirstName }} {{ item.LastName }}
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item">
+                        {{ item.FirstName }} {{ item.LastName }}
+                    </ng-template>
+                </ng-select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Status</label>
+                <ng-select [items]="statuses" bindLabel="StatusName" bindValue="AppointmentStatusID"
+                    placeholder="Select Status" [(ngModel)]="filter.StatusIDs" name="StatusIDs" [multiple]="true"
+                    [searchable]="true" [clearable]="true">
+                </ng-select>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">From</label>
+                    <input type="date" class="form-control" [(ngModel)]="filter.DateFrom" name="DateFrom">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">To</label>
+                    <input type="date" class="form-control" [(ngModel)]="filter.DateTo" name="DateTo">
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">From</label>
+                    <input type="date" class="form-control" [(ngModel)]="filter.DateFrom" name="DateFrom"
+                        [max]="filter.DateTo" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">To</label>
+                    <input type="date" class="form-control" [(ngModel)]="filter.DateTo" name="DateTo"
+                        [min]="filter.DateFrom" />
+                </div>
+            </div>
+
+
+            <div class="d-flex justify-content-around gap-2 mt-3">
+                <button type="button" class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset</button>
+                <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">Apply</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<div class="modal fade" id="appointmentDetailsModal" tabindex="-1" aria-labelledby="appointmentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-3 border-0 shadow-sm">
+
+
+            <div class="modal-header bg-light border-bottom-0">
+                <div>
+                    <h5 class="modal-title text-primary fw-bold mb-0" id="appointmentModalLabel">
+                        Appointment #{{ selectedAppointment?.AppointmentID }}
+                    </h5>
+                    <small class="text-muted">
+                        Requested on {{ selectedAppointment?.CreatedOn | date:'medium' }}
+                    </small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+
+            <div class="modal-body py-3 px-4" *ngIf="selectedAppointment">
+
+
+                <div class="row mb-3">
+                    <div class="col-md-6 border-end">
+                        <h6 class="fw-semibold text-secondary mb-2">Patient Details</h6>
+                        <p class="mb-1"><strong>Name:</strong> {{ selectedAppointment.PatientName }}</p>
+                        <p class="mb-1"><strong>Email:</strong> {{ selectedAppointment.PatientEmail || 'N/A' }}</p>
+                        <p class="mb-0"><strong>Phone:</strong> {{ selectedAppointment.PatientPhone || 'N/A' }}</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h6 class="fw-semibold text-secondary mb-2">Doctor Details</h6>
+                        <p class="mb-1"><strong>Name:</strong> {{ selectedAppointment.DoctorName }}</p>
+                        <p class="mb-0"><strong>Doctor ID:</strong> {{ selectedAppointment.DoctorID }}</p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <p class="mb-1"><strong>Status:</strong></p>
+                        <span class="status-pill" [ngClass]="{
+                          'accepted': selectedAppointment.StatusName === 'Accepted',
+                          'pending': selectedAppointment.StatusName === 'Pending',
+                          'cancelled': selectedAppointment.StatusName === 'Cancelled',
+                          'rejected': selectedAppointment.StatusName === 'Rejected',
+                          'ppc': selectedAppointment.StatusName === 'Pending Patient Confirmation'
+                        }">
+                            {{ selectedAppointment.StatusName }}
+                        </span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <p class="mb-1"><strong>Appointment Date:</strong></p>
+                        <p class="text-muted mb-0">
+                            {{ selectedAppointment.AppointmentDate | date:'fullDate' }}
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mb-1"><strong>Time Slot:</strong></p>
+                        <p class="text-muted mb-0">
+                            {{ selectedAppointment.StartTime }} - {{ selectedAppointment.EndTime }}
+                        </p>
+                    </div>
+                </div>
+
+                <hr />
+
+
+                <div *ngIf="selectedAppointment.IsDoctorSuggestedChange" class="alert alert-info border-0 py-2">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Doctor has suggested a modification for this appointment.
+                </div>
+
+
+                <div *ngIf="selectedAppointment.StatusName === 'Cancelled'" class="alert alert-warning border-0 py-2">
+                    <strong>Cancelled Reason:</strong>
+                    {{ selectedAppointment.CancellationReason || 'Not provided' }}
+                </div>
+
+
+
+                <div>
+                    <h6 class="fw-semibold text-secondary mb-2">Attached Files</h6>
+                    <div *ngIf="selectedAppointment.Files?.length; else noFiles">
+                        <div *ngFor="let file of selectedAppointment.Files"
+                            class="d-flex justify-content-between align-items-center border rounded-2 p-2 mb-2">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-paperclip text-primary me-2"></i>
+                                <span>{{ file.FileName }}</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-sm btn-outline-primary me-2"
+                                    (click)="previewFile(file)">Preview</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <ng-template #noFiles>
+                        <p class="text-muted fst-italic">No documents uploaded for this appointment.</p>
+                    </ng-template>
+                </div>
+            </div>
         </div>
     </div>
 </div>

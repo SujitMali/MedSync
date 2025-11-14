@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rescheduled Appointment Cancelled - MedSync</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f8f9fa;font-family:Segoe UI,Arial,sans-serif;">
+    <table align="center" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;margin-top:40px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);overflow:hidden;">
+        <tr>
+            <td style="background-color:#6c757d;color:white;text-align:center;padding:20px 10px;">
+                <h2 style="margin:0;">Rescheduled Appointment Rejection By Patient</h2>
+                <p style="margin:5px 0 0;font-size:14px;">MedSync Notification for Doctors</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:30px 40px;">
+                <p style="font-size:16px;color:#333;">Dear <b>Dr. {{DoctorName}}</b>,</p>
+                <p style="font-size:15px;color:#444;line-height:1.6;">
+                    Patient <b>{{PatientName}}</b>have <b>cancelled</b> the rescheduled appointment request scheduled for {{AppointmentDate}} at {{StartTime}} to {{EndTime}}.
+                </p>
+                <p style="font-size:15px;color:#555;line-height:1.6;">
+                    The patient has been notified accordingly, and the time slot is now released back into your availability.
+                </p>
+                <hr style="border:none;border-top:1px solid #ddd;margin:30px 0;">
+                <p style="color:#888;font-size:13px;">Warm regards,<br><b>MedSync Admin System</b></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color:#f1f1f1;text-align:center;padding:12px;font-size:12px;color:#666;">
+                © 2025 MedSync | Streamlining Medical Workflows
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

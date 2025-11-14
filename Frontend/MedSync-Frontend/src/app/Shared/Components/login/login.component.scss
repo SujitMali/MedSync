@@ -1,0 +1,193 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+
+
+.login-container-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: linear-gradient(120deg, #f6f9ff 0%, #eef2f3 100%);
+}
+
+.login-container {
+    position: absolute;
+    top: 150px;
+    max-width: 1300px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    background: #ffffff;
+}
+
+
+
+/* Left Panel (Carousel) */
+.left-panel {
+    background-color: #0d6efd;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem;
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    top: 2rem;
+    left: 2.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.logo .fa-layer-group {
+    margin-right: 0.5rem;
+}
+
+.left-panel .carousel-inner {
+    text-align: center;
+}
+
+.left-panel .carousel-item {
+    padding-bottom: 3rem;
+}
+
+.left-panel .carousel-icon {
+    font-size: 6rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.left-panel .carousel-item h2 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.left-panel .carousel-item p {
+    font-size: 1.1rem;
+    max-width: 350px;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+
+/* Custom Carousel Indicators (Dots) */
+.left-panel .carousel-indicators {
+    bottom: 0;
+    margin-bottom: 1rem;
+}
+
+.left-panel .carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.5;
+    border: 0;
+    margin: 0 5px;
+}
+
+.left-panel .carousel-indicators .active {
+    opacity: 1;
+}
+
+/* Right Panel (Form) */
+.right-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+}
+
+.right-panel-content {
+    max-width: 400px;
+    width: 100%;
+}
+
+.right-panel h2 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.right-panel .text-muted {
+    margin-bottom: 2rem;
+}
+
+.right-panel .form-control,
+.right-panel .input-group-text {
+    border-radius: 0.5rem;
+    padding: 0.9rem 1rem;
+}
+
+.right-panel .input-group-text {
+    background-color: #f8f9fa;
+    border-right: 0;
+}
+
+.right-panel .form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    border-color: #0d6efd;
+}
+
+.right-panel .input-group .form-control {
+    border-left: 0;
+    padding-left: 0.5rem;
+}
+
+.right-panel .form-check-input {
+    border-radius: 0.25rem;
+}
+
+.right-panel .form-check-label,
+.right-panel .forgot-link {
+    font-size: 0.9rem;
+}
+
+.right-panel .btn-primary {
+    padding: 0.9rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+}
+
+.login-container,
+.row,
+.left-panel,
+.right-panel {
+    height: 700px;
+}
+
+/* === Fix Bootstrap row overflow === */
+.row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* === Prevent horizontal scroll caused by vw width === */
+html,
+body {
+    width: 100%;
+    overflow-x: hidden !important;
+}
+
+
+.login-container-wrapper {
+    width: 100%;
+    height: 100vh;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* === Add box-sizing consistency === */
+* {
+    box-sizing: border-box;
+}

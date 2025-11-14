@@ -1,200 +1,319 @@
-<div class="container-fluid">
-    <div class="card shadow-sm p-4">
-        <h3 class="mb-4 text-primary">Add Doctor</h3>
+<h3 class="mb-4 text-primary">{{ isEditMode ? 'Edit Doctor' : 'Add Doctor' }}</h3>
 
-        <form #doctorForm="ngForm" (ngSubmit)="submitDoctor(doctorForm)" novalidate>
+<form #doctorForm="ngForm" (ngSubmit)="submitDoctor(doctorForm)" novalidate>
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Profile Picture</label>
-                <input type="file" accept="image/*" (change)="onFileSelected($event)" class="form-control" />
+    <div class="border rounded-3 p-3 mb-4 bg-light">
+        <h5 class="mb-3">Personal Info</h5>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">First Name</label>
 
-                <!-- Preview Image -->
-                <div *ngIf="previewUrl" class="mt-2">
-                    <img [src]="previewUrl" alt="Profile Preview" class="img-thumbnail"
-                        style="max-width: 150px; height: auto;">
+                <input type="text" name="firstName" class="form-control" [(ngModel)]="doctor.FirstName" required
+                    pattern="^[A-Za-z][A-Za-z\s]*$" minlength="2" maxlength="50" #firstNameCtrl="ngModel" [ngClass]="{
+                       'is-invalid': firstNameCtrl.invalid && firstNameCtrl.touched,
+                       'is-valid': firstNameCtrl.valid && firstNameCtrl.touched
+                     }" />
+                <div *ngIf="firstNameCtrl.invalid && firstNameCtrl.touched">
+                    <div *ngIf="firstNameCtrl.errors?.['required']" class="invalid-feedback d-block">
+                        First Name is required.
+                    </div>
+
+                    <div *ngIf="firstNameCtrl.errors?.['pattern']" class="invalid-feedback d-block">
+                        Only alphabets and spaces are allowed, and it must start with a letter.
+                    </div>
+
+                    <div *ngIf="firstNameCtrl.errors?.['minlength']" class="invalid-feedback d-block">
+                        First Name must be at least 2 characters long.
+                    </div>
+
+                    <div *ngIf="firstNameCtrl.errors?.['maxlength']" class="invalid-feedback d-block">
+                        First Name cannot exceed 50 characters.
+                    </div>
+                </div>
+
+                <div *ngIf="firstNameCtrl.valid && firstNameCtrl.touched" class="valid-feedback d-block">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Last Name</label>
+
+                <input type="text" name="lastName" class="form-control" [(ngModel)]="doctor.LastName" required
+                    pattern="^[A-Za-z][A-Za-z\s]*$" minlength="2" maxlength="50" #lastNameCtrl="ngModel" [ngClass]="{
+                  'is-invalid': lastNameCtrl.invalid && lastNameCtrl.touched,
+                  'is-valid': lastNameCtrl.valid && lastNameCtrl.touched
+                }" />
+                <div *ngIf="lastNameCtrl.invalid && lastNameCtrl.touched">
+                    <div *ngIf="lastNameCtrl.errors?.['required']" class="invalid-feedback d-block">
+                        Last Name is required.
+                    </div>
+
+                    <div *ngIf="lastNameCtrl.errors?.['pattern']" class="invalid-feedback d-block">
+                        Only alphabets and spaces are allowed, and it must start with a letter.
+                    </div>
+
+                    <div *ngIf="lastNameCtrl.errors?.['minlength']" class="invalid-feedback d-block">
+                        Last Name must be at least 2 characters long.
+                    </div>
+
+                    <div *ngIf="lastNameCtrl.errors?.['maxlength']" class="invalid-feedback d-block">
+                        Last Name cannot exceed 50 characters.
+                    </div>
+                </div>
+
+                <div *ngIf="lastNameCtrl.valid && lastNameCtrl.touched" class="valid-feedback d-block">
+                    Looks good!
                 </div>
             </div>
 
 
-            <!-- Personal Info Section -->
-            <div class="border rounded-3 p-3 mb-4 bg-light">
-                <h5 class="mb-3 text-secondary">Personal Info</h5>
-                <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Phone Number</label>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">First Name</label>
-                        <input type="text" name="firstName" class="form-control" [(ngModel)]="doctor.firstName" required
-                            #firstNameCtrl="ngModel" [ngClass]="{
-                'is-invalid': firstNameCtrl.invalid && firstNameCtrl.touched,
-                'is-valid': firstNameCtrl.valid && firstNameCtrl.touched
-              }" />
-                        <div class="invalid-feedback">First Name is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
+                <input type="tel" name="phoneNumber" class="form-control" [(ngModel)]="doctor.PhoneNumber" required
+                    pattern="^[0-9]{10}$" minlength="10" maxlength="10" #phoneCtrl="ngModel" [ngClass]="{
+                  'is-invalid': phoneCtrl.invalid && phoneCtrl.touched,
+                  'is-valid': phoneCtrl.valid && phoneCtrl.touched
+                }" />
+
+                <div *ngIf="phoneCtrl.invalid && phoneCtrl.touched">
+                    <div *ngIf="phoneCtrl.errors?.['required']" class="invalid-feedback d-block">
+                        Phone Number is required.
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" name="lastName" class="form-control" [(ngModel)]="doctor.lastName" required
-                            #lastNameCtrl="ngModel" [ngClass]="{
-                'is-invalid': lastNameCtrl.invalid && lastNameCtrl.touched,
-                'is-valid': lastNameCtrl.valid && lastNameCtrl.touched
-              }" />
-                        <div class="invalid-feedback">Last Name is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
+                    <div *ngIf="phoneCtrl.errors?.['pattern']" class="invalid-feedback d-block">
+                        Only numbers are allowed, and it must be exactly 10 digits.
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" [(ngModel)]="doctor.email" required email
-                            #emailCtrl="ngModel" [ngClass]="{
-                'is-invalid': emailCtrl.invalid && emailCtrl.touched,
-                'is-valid': emailCtrl.valid && emailCtrl.touched
-              }" />
-                        <div class="invalid-feedback">Valid Email is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
+                    <div *ngIf="phoneCtrl.errors?.['minlength'] || phoneCtrl.errors?.['maxlength']"
+                        class="invalid-feedback d-block">
+                        Phone Number must be exactly 10 digits.
+                    </div>
+                </div>
+
+                <div *ngIf="phoneCtrl.valid && phoneCtrl.touched" class="valid-feedback d-block">
+                    Looks good!
+                </div>
+            </div>
+
+
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Date of Birth</label>
+
+                <input type="date" name="dateOfBirth" class="form-control" [(ngModel)]="doctor.DateOfBirth" required
+                    [max]="maxDate" [min]="minDate" (blur)="validateDOB()" #dobCtrl="ngModel" [ngClass]="{
+                  'is-invalid': (dobCtrl.invalid && dobCtrl.touched) || isAgeInvalid,
+                  'is-valid': dobCtrl.valid && !isAgeInvalid && dobCtrl.touched
+                }" />
+
+                <!-- Validation Messages -->
+                <div *ngIf="dobCtrl.touched">
+                    <div *ngIf="dobCtrl.errors?.['required']" class="invalid-feedback d-block">
+                        Date of Birth is required.
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Phone Number</label>
-                        <input type="tel" name="phoneNumber" class="form-control" [(ngModel)]="doctor.phoneNumber"
-                            required pattern="[0-9]{10}" #phoneCtrl="ngModel" [ngClass]="{
-                'is-invalid': phoneCtrl.invalid && phoneCtrl.touched,
-                'is-valid': phoneCtrl.valid && phoneCtrl.touched
-              }" />
-                        <div class="invalid-feedback">Valid 10-digit phone number required.</div>
-                        <div class="valid-feedback">Looks good!</div>
+                    <div *ngIf="dobCtrl.errors?.['max']" class="invalid-feedback d-block">
+                        Date of Birth cannot be in the future.
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Date of Birth</label>
-                        <input type="date" name="dateOfBirth" class="form-control" [(ngModel)]="doctor.dateOfBirth"
-                            required #dobCtrl="ngModel"
-                            [ngClass]="{'is-invalid': dobCtrl.invalid && dobCtrl.touched,'is-valid': dobCtrl.valid && dobCtrl.touched}" />
-                        <div class="invalid-feedback">Date of Birth is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
+                    <div *ngIf="isAgeInvalid" class="invalid-feedback d-block">
+                        Doctor must be at least 23 years old.
+                    </div>
+                    <div *ngIf="isAgeInvalid" class="invalid-feedback d-block">
+                        Doctor age must be between 23 and 90 years.
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Blood Group</label>
-                        <select class="form-select" name="bloodGroupID" [(ngModel)]="doctor.bloodGroupID" required
-                            #bloodCtrl="ngModel" [ngClass]="{
+                </div>
+
+                <div *ngIf="dobCtrl.valid && !isAgeInvalid && dobCtrl.touched" class="valid-feedback d-block">
+                    Looks good!
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Blood Group</label>
+                <select class="form-select" name="bloodGroupID" [(ngModel)]="doctor.BloodGroupID" required
+                    #bloodCtrl="ngModel" [ngClass]="{
                                     'is-invalid': bloodCtrl.invalid && bloodCtrl.touched,
                                     'is-valid': bloodCtrl.valid && bloodCtrl.touched
                                   }">
-                            <option [ngValue]="null" disabled selected>Select Blood Group</option>
-                            <option *ngFor="let bg of bloodGroups" [ngValue]="bg.id">{{ bg.name }}</option>
-                        </select>
-                        <div class="invalid-feedback">Blood Group is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Professional Info Section -->
-            <div class="border rounded-3 p-3 mb-4 bg-light">
-                <h5 class="mb-3 text-secondary">Professional Info</h5>
-                <div class="row">
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Gender</label>
-                        <select class="form-select" name="genderID" [(ngModel)]="doctor.genderID" required
-                            #genderCtrl="ngModel" [ngClass]="{
-                'is-invalid': genderCtrl.invalid && genderCtrl.touched,
-                'is-valid': genderCtrl.valid && genderCtrl.touched
-              }">
-                            <option [ngValue]="null" disabled selected>Select Gender</option>
-                            <option *ngFor="let g of genders" [ngValue]="g.id">{{ g.name }}</option>
-                        </select>
-                        <div class="invalid-feedback">Gender is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
-                    </div>
-
-
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Qualification</label>
-                        <select class="form-select" name="qualificationID" [(ngModel)]="doctor.qualificationID" required
-                            #qualCtrl="ngModel" [ngClass]="{
-                'is-invalid': qualCtrl.invalid && qualCtrl.touched,
-                'is-valid': qualCtrl.valid && qualCtrl.touched
-              }">
-                            <option [ngValue]="null" disabled selected>Select Qualification</option>
-                            <option *ngFor="let q of qualifications" [ngValue]="q.id">{{ q.name }}</option>
-                        </select>
-                        <div class="invalid-feedback">Qualification is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">CRRI Start Date</label>
-                        <input type="date" name="CRRIStartDate" class="form-control" [(ngModel)]="doctor.crriStartDate"
-                            #crriCtrl="ngModel"
-                            [ngClass]="{'is-invalid': crriCtrl.invalid && crriCtrl.touched,'is-valid': crriCtrl.valid && crriCtrl.touched}" />
-                        <div class="invalid-feedback">CRRI Start Date is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Consultation Fee</label>
-                        <input type="number" name="consultationFee" class="form-control"
-                            [(ngModel)]="doctor.consultationFee" required #feeCtrl="ngModel" [ngClass]="{
-                'is-invalid': feeCtrl.invalid && feeCtrl.touched,
-                'is-valid': feeCtrl.valid && feeCtrl.touched
-              }" />
-                        <div class="invalid-feedback">Consultation Fee is required.</div>
-                        <div class="valid-feedback">Looks good!</div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Address Info Section -->
-            <div class="border rounded-3 p-3 mb-4 bg-light">
-                <h5 class="mb-3 text-secondary">Address Info</h5>
-
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">State</label>
-                        <select class="form-select" (change)="onStateChange($event)" required>
-                            <option value="" disabled selected>Select State</option>
-                            <option *ngFor="let s of states" [value]="s.id">{{ s.name }}</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">District</label>
-                        <select class="form-select" (change)="onDistrictChange($event)" required>
-                            <option value="" disabled selected>Select District</option>
-                            <option *ngFor="let d of filteredDistricts" [value]="d.id">{{ d.name }}</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Taluka</label>
-                        <select class="form-select" required [(ngModel)]="doctor.talukaID" name="talukaID">
-                            <option value="" disabled selected>Select Taluka</option>
-                            <option *ngFor="let t of filteredTalukas" [value]="t.id">{{ t.name }}</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Address</label>
-                        <textarea class="form-control" rows="2" name="address" [(ngModel)]="doctor.address"></textarea>
-                    </div>
-                </div>
-
+                    <option [ngValue]="null" disabled selected>Select Blood Group</option>
+                    <option *ngFor="let bg of bloodGroups" [ngValue]="bg.id">{{ bg.name }}</option>
+                </select>
+                <div class="invalid-feedback">Blood Group is required.</div>
+                <div class="valid-feedback">Looks good!</div>
             </div>
 
 
-            <!-- Submit Buttons -->
-            <div class="d-flex justify-content-end gap-2">
-                <button type="submit" class="btn btn-primary" [disabled]="doctorForm.invalid">
-                    Save Doctor
-                </button>
-                <button type="button" class="btn btn-secondary" (click)="resetForm(doctorForm)">Reset</button>
-            </div>
-        </form>
+
+        </div>
     </div>
-</div>
+
+
+
+    <div class="border rounded-3 p-3 mb-4 bg-light">
+        <h5 class="mb-3">Professional Info</h5>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Gender</label>
+                <select class="form-select" name="genderID" [(ngModel)]="doctor.GenderID" required #genderCtrl="ngModel"
+                    [ngClass]="{'is-invalid': genderCtrl.invalid && genderCtrl.touched, 'is-valid': genderCtrl.valid && genderCtrl.touched}">
+                    <option [ngValue]="null" disabled selected>Select Gender</option>
+                    <option *ngFor="let g of genders" [ngValue]="g.id">{{ g.name }}</option>
+                </select>
+                <div class="invalid-feedback">Gender is required.</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Consultation Fee</label>
+                <input type="number" name="consultationFee" class="form-control" [(ngModel)]="doctor.ConsultationFee"
+                    required min="1" #feeCtrl="ngModel" [ngClass]="{
+                  'is-invalid': feeCtrl.invalid && feeCtrl.touched,
+                  'is-valid': feeCtrl.valid && feeCtrl.touched
+                }" />
+                <div class="invalid-feedback">
+                    Consultation Fee must be greater than 0.
+                </div>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Qualification</label>
+                <select class="form-select" name="qualificationID" [(ngModel)]="doctor.QualificationID" required
+                    #qualCtrl="ngModel"
+                    [ngClass]="{'is-invalid': qualCtrl.invalid && qualCtrl.touched, 'is-valid': qualCtrl.valid && qualCtrl.touched}">
+                    <option [ngValue]="null" disabled selected>Select Qualification</option>
+                    <option *ngFor="let q of qualifications" [ngValue]="q.id">{{ q.name }}</option>
+                </select>
+                <div class="invalid-feedback">Qualification is required.</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Specializations</label>
+                <ng-select class="form-select-like" [items]="specializations" bindLabel="SpecializationName"
+                    bindValue="SpecializationID" [(ngModel)]="doctor.SpecializationIDs" name="specializationIDs"
+                    [multiple]="true" placeholder="Select Specializations" required #specCtrl="ngModel" [ngClass]="{
+                'is-invalid': specCtrl.invalid && specCtrl.touched,
+                'is-valid': specCtrl.valid && specCtrl.touched
+              }">
+                </ng-select>
+                <div *ngIf="specCtrl.invalid && specCtrl.touched" class="invalid-feedback d-block">
+                    At least one specialization is required.
+                </div>
+                <div *ngIf="specCtrl.valid && specCtrl.touched" class="valid-feedback d-block">
+                    Looks good!
+                </div>
+            </div>
+
+            <!-- <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">CRRI Start Date</label>
+                <input type="date" [max]="maxDate" name="crriStartDate" class="form-control"
+                    [(ngModel)]="doctor.CRRIStartDate" required #crriCtrl="ngModel"
+                    [ngClass]="{'is-invalid': crriCtrl.invalid && crriCtrl.touched, 'is-valid': crriCtrl.valid && crriCtrl.touched}" />
+                <div class="invalid-feedback">CRRI Start Date is required.</div>
+            </div> -->
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">CRRI Start Date</label>
+
+                <input type="date" name="crriStartDate" class="form-control" [(ngModel)]="doctor.CRRIStartDate" required
+                    [max]="maxDate" (blur)="validateCRRIStartDate()" [disabled]="!isDOBValid" #crriCtrl="ngModel"
+                    [ngClass]="{
+                  'is-invalid': (crriCtrl.invalid && crriCtrl.touched) || isCRRIDateInvalid,
+                  'is-valid': crriCtrl.valid && !isCRRIDateInvalid && crriCtrl.touched
+                }" />
+
+                <!-- Validation Messages -->
+                <div *ngIf="crriCtrl.touched">
+                    <div *ngIf="crriCtrl.errors?.['required']" class="invalid-feedback d-block">
+                        CRRI Start Date is required.
+                    </div>
+
+                    <div *ngIf="isCRRIDateInvalid" class="invalid-feedback d-block">
+                        CRRI Start Date must be before today and after valid age (minimum 23 years from DOB).
+                    </div>
+                </div>
+
+                <div *ngIf="crriCtrl.valid && !isCRRIDateInvalid && crriCtrl.touched" class="valid-feedback d-block">
+                    Looks good!
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <div class="border rounded-3 p-3 mb-4 bg-light">
+        <h5 class="mb-3">Address Info</h5>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">State</label>
+                <select class="form-select" name="stateID" [(ngModel)]="doctor.StateID" required #stateCtrl="ngModel"
+                    (change)="onStateChange()"
+                    [ngClass]="{'is-invalid': stateCtrl.invalid && stateCtrl.touched, 'is-valid': stateCtrl.valid && stateCtrl.touched}">
+                    <option [ngValue]="null" disabled selected>Select State</option>
+                    <option *ngFor="let s of states" [ngValue]="s.id">{{ s.name }}</option>
+                </select>
+                <div class="invalid-feedback">State is required.</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">District</label>
+                <select class="form-select" name="districtID" [(ngModel)]="doctor.DistrictID" required
+                    #districtCtrl="ngModel" (change)="onDistrictChange()"
+                    [ngClass]="{'is-invalid': districtCtrl.invalid && districtCtrl.touched, 'is-valid': districtCtrl.valid && districtCtrl.touched}">
+                    <option [ngValue]="null" disabled selected>Select District</option>
+                    <option *ngFor="let d of filteredDistricts" [ngValue]="d.id">{{ d.name }}</option>
+                </select>
+                <div class="invalid-feedback">District is required.</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Taluka</label>
+                <select class="form-select" name="talukaID" [(ngModel)]="doctor.TalukaID" required #talukaCtrl="ngModel"
+                    [ngClass]="{'is-invalid': talukaCtrl.invalid && talukaCtrl.touched, 'is-valid': talukaCtrl.valid && talukaCtrl.touched}">
+                    <option [ngValue]="null" disabled selected>Select Taluka</option>
+                    <option *ngFor="let t of filteredTalukas" [ngValue]="t.id">{{ t.name }}</option>
+                </select>
+                <div class="invalid-feedback">Taluka is required.</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold text-secondary">Address</label>
+                <textarea class="form-control" rows="2" name="address" [(ngModel)]="doctor.Address" required
+                    #addressCtrl="ngModel"
+                    [ngClass]="{'is-invalid': addressCtrl.invalid && addressCtrl.touched, 'is-valid': addressCtrl.valid && addressCtrl.touched}">
+          </textarea>
+                <div class="invalid-feedback">Address is required.</div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="d-flex justify-content-end gap-2">
+        <button type="submit" class="btn btn-primary">
+            {{ isEditMode ? 'Update Details' : 'Save Doctor' }}
+        </button>
+
+        <button *ngIf="isEditMode" type="button" class="btn btn-secondary"
+            [routerLink]="['../../view-doctors']">Back</button>
+
+        <button *ngIf="!isEditMode" type="button" class="btn btn-secondary"
+            (click)="resetForm(doctorForm)">Reset</button>
+
+
+    </div>
+</form>

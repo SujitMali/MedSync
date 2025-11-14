@@ -1,0 +1,272 @@
+@import '../../../styles/_variables.scss';
+
+.doctor-info-card {
+    border-radius: 16px;
+    text-align: center;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    transition: all 0.3s ease;
+    max-width: 800px;
+    margin: 0 auto;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.doctor-profile-img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border: 3px solid #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+.slot-pill {
+    border: none;
+    border-radius: 16px;
+    padding: 5px 10px;
+    font-size: 0.71rem;
+    font-weight: 500;
+    background-color: #e7f1ff;
+    color: #007bff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.selected {
+        background-color: #007bff;
+        color: white;
+    }
+
+    &.unavailable {
+        background-color: #e0e0e0;
+        color: #888;
+        cursor: not-allowed;
+    }
+
+    &:hover:not(.unavailable):not(.selected) {
+        background-color: #cce5ff;
+    }
+}
+
+.card {
+    border-radius: 14px;
+    background-color: #fff;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #555;
+}
+
+input,
+select,
+textarea {
+    border-radius: 8px !important;
+}
+
+input[type="file"] {
+    border: 1px dashed #007bff;
+    background-color: #f8f9fa;
+}
+
+@media (max-width: 992px) {
+    .doctor-info-card {
+        margin-bottom: 20px;
+        max-width: 100%;
+    }
+
+    .doctor-profile-img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .slot-pill {
+        padding: 4px 8px;
+        font-size: 0.85rem;
+    }
+}
+
+.fixed-header {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    z-index: 1040;
+    background-color: #f9fafc;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 0.5rem 0;
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+    .btn-outline-primary {
+        border: 1px solid rgba($primary-color, 0.6);
+        color: $primary-color;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-weight: 500;
+        background-color: white;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: $primary-color;
+            color: white;
+            border-color: $primary-color;
+            box-shadow: 0 2px 6px rgba($primary-color, 0.2);
+        }
+    }
+}
+
+.appointments-container {
+    position: absolute;
+    top: 175px;
+    left: 150px;
+}
+
+.patient-modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.form-floating>label {
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-floating .form-control,
+.form-floating .form-select {
+    height: calc(3.5rem + 2px);
+    line-height: 1.25;
+    border-radius: 0.5rem;
+}
+
+.modal-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+    padding-top: 10px;
+    z-index: 5;
+}
+
+.patient-modal-content {
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+.modal-body {
+    padding: 1rem 1.5rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.modal-header.sticky-top {
+    z-index: 10;
+    top: 0;
+}
+
+.form-floating>label {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.form-control-sm,
+.form-select-sm {
+    min-height: 2.6rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+}
+
+textarea.form-control-sm {
+    min-height: 2.8rem;
+    resize: none;
+}
+
+.modal-footer {
+    background: #fff;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+
+.file-pill-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 90px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.file-pill {
+    display: flex;
+    align-items: center;
+    padding: 2px 6px;
+    border: 1px solid #d0d0d0;
+    background: #f8f9fa;
+    border-radius: 20px;
+    width: 160px;
+    height: 28px;
+    gap: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.file-rename-input {
+    flex-grow: 1;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0;
+    height: 20px !important;
+    font-size: 11px !important;
+    outline: none !important;
+}
+
+.file-rename-input:focus {
+    box-shadow: none !important;
+}
+
+.file-pill button {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.file-pill button i {
+    font-size: 12px;
+    color: #dc3545;
+}
+
+.file-pill:hover {
+    border-color: #b4b4b4;
+    background: #eef1f4;
+}
+
+.slot-pill-heading {
+    background: #ffffff;
+    padding: 6px 14px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    font-weight: 600;
+    color: #003366;
+    white-space: nowrap;
+    max-width: 520px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+}

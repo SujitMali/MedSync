@@ -8,9 +8,6 @@
             <button class="toggle-btn" (click)="toggleSidebarLock()"
                 [attr.title]="isLocked ? 'Collapse Sidebar' : 'Expand Sidebar'">
                 <i class="fa-solid" [ngClass]="isLocked ? 'fa-angles-left' : 'fa-angles-right'"></i>
-                <!-- <i class="fa-solid fa-sidebar fa-flip"></i> -->
-                <!-- <i class="fa-solid fa-bars"></i> -->
-
             </button>
         </div>
 
@@ -25,20 +22,38 @@
 
     <div class="admin-main">
         <div class="topbar">
-            <div class="topbar-left">
-                <h2>{{ activeMenu }}</h2>
-            </div>
             <div class="topbar-right">
-                <input type="text" placeholder="Search..." class="search-bar" />
-                <div class="topbar-actions">
-                    <i class="fa-solid fa-bell notification"></i>
-                    <i class="fa-solid fa-user-circle avatar"></i>
+                <div class="topbar-actions d-flex align-items-center gap-4">
+                    <div class="dropdown">
+                        <a class="d-flex align-items-center text-decoration-none text-dark dropdown-toggle" href="#"
+                            id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user-circle fs-4 me-2"></i>
+                            <span class="fw-semibold">{{ user?.FirstName }}</span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+                            <li class="px-3 py-2 border-bottom">
+                                <div class="fw-semibold">{{ user?.FirstName }} {{ user?.LastName }}</div>
+                                <div class="text-muted small">{{ user?.RoleName }}</div>
+                            </li>
+                            <li>
+                                <button class="dropdown-item text-danger fw-semibold" (click)="logout()">
+                                    <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
+
         <div class="content">
-            <router-outlet></router-outlet>
+            <div class="container-fluid">
+                <div class="card shadow-sm p-4">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
         </div>
     </div>
 </div>

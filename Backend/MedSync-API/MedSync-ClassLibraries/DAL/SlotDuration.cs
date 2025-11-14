@@ -1,11 +1,9 @@
-﻿using MedSync_ClassLibraries.Models;
+﻿using MedSync_ClassLibraries.Helpers;
+using MedSync_ClassLibraries.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MedSync_ClassLibraries.DAL
 {
@@ -18,24 +16,38 @@ namespace MedSync_ClassLibraries.DAL
             db = DatabaseFactory.CreateDatabase();
         }
 
-        public List<SlotDurationModel> GetAllSlotDurations()
+        #region GetSlotDurationList()
+        public List<SlotDurationModel> GetSlotDurationList(int CurrentUserId)
         {
             var list = new List<SlotDurationModel>();
-            DbCommand cmd = db.GetStoredProcCommand("MedSync_GetSlotDurations");
 
-            using (var reader = db.ExecuteReader(cmd))
+            try
             {
-                while (reader.Read())
+                DbCommand cmd = db.GetStoredProcCommand("MedSync_SlotDurationsGetList");
+
+                using (var reader = db.ExecuteReader(cmd))
                 {
-                    list.Add(new SlotDurationModel
+                    while (reader.Read())
                     {
-                        SlotDurationID = Convert.ToInt32(reader["SlotDurationID"]),
-                        DurationMinutes = Convert.ToInt32(reader["DurationMinutes"]),
-                        IsActive = Convert.ToBoolean(reader["IsActive"])
-                    });
+                        list.Add(new SlotDurationModel
+                        {
+                            SlotDurationID = Convert.ToInt32(reader["SlotDurationID"]),
+                            DurationMinutes = Convert.ToInt32(reader["DurationMinutes"]),
+                            IsActive = Convert.ToBoolean(reader["IsActive"])
+                        });
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                DbErrorLogger.LogError(ex, createdBy: CurrentUserId);
+            }
+
             return list;
         }
+
+        #endregion
+
     }
 }
+

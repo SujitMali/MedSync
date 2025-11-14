@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rescheduled Appointment Accepted - MedSync</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f8f9fa;font-family:Segoe UI,Arial,sans-serif;">
+    <table align="center" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;margin-top:40px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);overflow:hidden;">
+        <tr>
+            <td style="background-color:#007bff;color:white;text-align:center;padding:20px 10px;">
+                <h2 style="margin:0;">Appointment Scheduled</h2>
+                <p style="margin:5px 0 0;font-size:14px;">MedSync Notification for Doctors</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:30px 40px;">
+                <p style="font-size:16px;color:#333;">Dear <b>Dr. {{DoctorName}}</b>,</p>
+                <p style="font-size:15px;color:#444;line-height:1.6;">
+                    Patinet <b>{{PatientName}}</b> have successfully <b>accepted</b> rescheduled appointment slot. New Slot 
+                    Timing and Date as Below.
+                </p>
+                <div style="margin:20px 0;padding:15px;background-color:#e8f1fd;border-radius:6px;">
+                    <p style="margin:0;font-size:15px;">
+                        <b>Date:</b> {{AppointmentDate}}<br>
+                        <b>Time:</b> {{StartTime}} to {{EndTime}}
+                    </p>
+                </div>
+                <p style="font-size:15px;color:#555;line-height:1.6;">
+                    Kindly ensure availability at the scheduled time. This appointment will appear in your MedSync dashboard.
+                </p>
+                <hr style="border:none;border-top:1px solid #ddd;margin:30px 0;">
+                <p style="color:#888;font-size:13px;">Warm regards,<br><b>MedSync Admin System</b></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color:#f1f1f1;text-align:center;padding:12px;font-size:12px;color:#666;">
+                © 2025 MedSync | Empowering Medical Professionals
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

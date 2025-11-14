@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net-Next">
+      <HintPath>..\..\..\..\Rheal\Project_IMS\Sujit-Training\InventoryManagementSystemClassLibrary\bin\Debug\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens">
+      <HintPath>..\..\..\..\Rheal\Project_IMS\Sujit-Training\InventoryManagementSystemClassLibrary\bin\Debug\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\..\..\..\Rheal\EnterpriseLibraries\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
@@ -44,8 +50,12 @@
       <HintPath>..\..\..\..\Rheal\EnterpriseLibraries\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt">
+      <HintPath>..\..\..\..\Rheal\Project_IMS\Sujit-Training\InventoryManagementSystemClassLibrary\bin\Debug\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -56,26 +66,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\Appointment.cs" />
+    <Compile Include="DAL\AppointmentStatus.cs" />
     <Compile Include="DAL\BloodGroup.cs" />
     <Compile Include="DAL\District.cs" />
     <Compile Include="DAL\Doctor.cs" />
     <Compile Include="DAL\DoctorSchedule.cs" />
+    <Compile Include="DAL\ErrorLogs.cs" />
     <Compile Include="DAL\Gender.cs" />
     <Compile Include="DAL\Qualification.cs" />
     <Compile Include="DAL\SlotDuration.cs" />
+    <Compile Include="DAL\Specialization.cs" />
     <Compile Include="DAL\State.cs" />
     <Compile Include="DAL\Taluka.cs" />
+    <Compile Include="DAL\User.cs" />
+    <Compile Include="Helpers\DbErrorLogger.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\JwtTokenManager.cs" />
+    <Compile Include="Models\AppointmentFileModel.cs" />
+    <Compile Include="Models\AppointmentFilterModel.cs" />
+    <Compile Include="Models\AppointmentModel.cs" />
+    <Compile Include="Models\AppointmentStatusModel.cs" />
+    <Compile Include="Models\AppointmentUpdateResult.cs" />
     <Compile Include="Models\BloodGroupModel.cs" />
+    <Compile Include="Models\BookAppointmentRequestModel.cs" />
     <Compile Include="Models\DistrictModel.cs" />
+    <Compile Include="Models\DoctorAppointmentsViewModel.cs" />
     <Compile Include="Models\DoctorScheduleModel.cs" />
+    <Compile Include="Models\DoctorSlotModel.cs" />
     <Compile Include="Models\DoctorsModel.cs" />
     <Compile Include="Models\GenderModel.cs" />
+    <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\QualificationModel.cs" />
     <Compile Include="Models\SlotDurationModel.cs" />
+    <Compile Include="Models\SpecializationModel.cs" />
     <Compile Include="Models\StateModel.cs" />
     <Compile Include="Models\TalukaModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

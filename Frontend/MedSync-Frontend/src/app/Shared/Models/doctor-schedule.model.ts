@@ -1,7 +1,7 @@
 export class DoctorSchedule {
     DoctorScheduleID?: number = 0;
     DoctorID: number = 0;
-    DayOfWeek: number = 0; // 1=Sunday ... 7=Saturday
+    DayOfWeek: number = 0;
     StartTime: string = '';
     EndTime: string = '';
     SlotDurationID: number = 0;

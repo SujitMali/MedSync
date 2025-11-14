@@ -1,0 +1,175 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary mb-0">View Doctors</h3>
+    <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#doctorFilterPanel">
+        <i class="fa-solid fa-sliders"></i> Filter
+    </button>
+</div>
+
+<div class="card shadow-sm p-4">
+    <div *ngIf="loading" class="text-center text-muted py-3">
+        Loading doctors...
+    </div>
+
+
+    <ng-template #sortableHeader let-field="field" let-title="title">
+        <th (click)="Sorting(field)"
+            style="position: relative; cursor: pointer;  white-space: nowrap; line-height: normal;">
+            <span style="display: inline-block;">{{ title }}</span>
+            <span
+                style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 0; line-height: 0.8; pointer-events: none;">
+                <i class="fa-solid fa-caret-up" style="margin-bottom: -6px;" [ngClass]="{
+        'text-muted': filters.SortColumn !== field || filters.SortDirection !== 'ASC',
+        'text-body': filters.SortColumn === field && filters.SortDirection === 'ASC'
+      }"></i>
+                <i class="fa-solid fa-caret-down" style="margin-top: -2px;" [ngClass]="{
+        'text-muted': filters.SortColumn !== field || filters.SortDirection !== 'DESC',
+        'text-body': filters.SortColumn === field && filters.SortDirection === 'DESC'
+      }"></i>
+            </span>
+        </th>
+    </ng-template>
+
+
+    <table class="table table-hover align-middle" *ngIf="!loading && doctors.length">
+        <thead class="table-light">
+            <tr>
+
+                <th style="width: 6%;">ID</th>
+
+                <ng-container
+                    *ngTemplateOutlet="sortableHeader; context: { field: 'FirstName', title: 'Name' }"></ng-container>
+
+                <th style="width: 15%;">User Email</th>
+                <th style="width: 25%;">Specialization</th>
+                <th style="width: 10%;">Phone</th>
+                <th style="width: 12%;">Qualification</th>
+
+                <ng-container
+                    *ngTemplateOutlet="sortableHeader; context: { field: 'ConsultationFee', title: 'Fee' }"></ng-container>
+
+                <th style="width: 15%; text-align: center;">Status</th>
+                <th style="width: 8%;">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let doc of doctors">
+                <td>{{ doc.DoctorID }}</td>
+                <td>Dr. {{ doc.FirstName }} {{ doc.LastName }}</td>
+                <td>{{ doc.Email }}</td>
+                <td> {{doc.SpecializationName}}</td>
+                <td>{{ doc.PhoneNumber }}</td>
+                <td>{{ doc.QualificationName }}</td>
+                <td>₹{{ doc.ConsultationFee }}</td>
+                <td style="text-align: center;">
+                    <span class="status-pill" [ngClass]="{ 'active': doc.IsActive, 'inactive': !doc.IsActive }">
+                        {{ doc.IsActive ? 'Active' : 'Inactive' }}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary" (click)="editDoctor(doc)">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!loading && !doctors.length" class="text-center text-muted py-4">
+        No doctors found.
+    </div>
+</div>
+<div class="d-flex justify-content-between align-items-center mt-4" *ngIf="!loading && totalRecords > 0">
+    <div class="text-muted small">
+        Showing
+        <strong>{{ (filters.PageNumber - 1) * filters.PageSize + 1 }}</strong>–
+        <strong>{{ Math.min(filters.PageNumber * filters.PageSize, totalRecords) }}</strong>
+        of {{ totalRecords }} records
+    </div>
+
+    <div class="d-flex align-items-center gap-3">
+        <ng-select class="page-size-select" [(ngModel)]="filters.PageSize" (change)="loadDoctors()" [items]="pageSizes"
+            bindLabel="label" bindValue="value" placeholder="Page size" [clearable]="false" [searchable]="false">
+        </ng-select>
+
+        <div class="pt-3">
+            <ngb-pagination [(page)]="filters.PageNumber" [pageSize]="filters.PageSize" [collectionSize]="totalRecords"
+                (pageChange)="loadDoctors()" [maxSize]="5" [rotate]="true" [boundaryLinks]="true">
+            </ngb-pagination>
+        </div>
+    </div>
+</div>
+
+
+<div class="offcanvas offcanvas-end shadow" tabindex="-1" id="doctorFilterPanel" aria-labelledby="doctorFilterLabel">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title text-primary" id="doctorFilterLabel">Filter Doctors</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        <form (ngSubmit)="applyFilters()">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Name</label>
+                <input type="text" class="form-control" [(ngModel)]="filters.name" name="name"
+                    placeholder="Search by name">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Gender</label>
+                <ng-select [items]="genders" bindLabel="GenderName" bindValue="GenderID" [(ngModel)]="filters.genderID"
+                    name="genderID" placeholder="Select Gender">
+                </ng-select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Blood Group</label>
+                <ng-select [items]="bloodGroups" bindLabel="BloodGroupName" bindValue="BloodGroupID"
+                    [(ngModel)]="filters.bloodGroupID" name="bloodGroupID" placeholder="Select Blood Group">
+                </ng-select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Qualification</label>
+                <ng-select [items]="qualifications" bindLabel="QualificationName" bindValue="QualificationID"
+                    [(ngModel)]="filters.qualificationIDs" name="qualificationIDs" [multiple]="true"
+                    placeholder="Select Qualifications">
+                </ng-select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Specialization</label>
+                <ng-select [items]="specializations" bindLabel="SpecializationName" bindValue="SpecializationID"
+                    [(ngModel)]="filters.specializationIDs" name="specializationIDs" [multiple]="true"
+                    placeholder="Select Specializations">
+                </ng-select>
+            </div>
+
+            <div class="mb-3 d-flex align-items-center">
+                <div class="me-2 flex-fill">
+                    <label class="form-label fw-semibold">Min Fee</label>
+                    <input type="number" class="form-control" [(ngModel)]="filters.minFee" name="minFee" placeholder="0"
+                        (ngModelChange)="onFeeChange()" />
+                </div>
+
+                <div class="flex-fill">
+                    <label class="form-label fw-semibold">Max Fee</label>
+                    <input type="number" class="form-control" [(ngModel)]="filters.maxFee" name="maxFee"
+                        placeholder="5000" (ngModelChange)="onFeeChange()" />
+                </div>
+            </div>
+
+            <div *ngIf="feeWarning" class="text-danger small mt-1">
+                {{ feeWarning }}
+            </div>
+
+
+            <div class="d-flex justify-content-around gap-2 mt-3">
+                <button type="button" class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset</button>
+                <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">Apply</button>
+            </div>
+        </form>
+    </div>
+</div>

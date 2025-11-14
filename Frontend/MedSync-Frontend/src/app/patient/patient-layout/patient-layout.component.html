@@ -1,0 +1,24 @@
+<div class="page-wrapper">
+    <header class="main-header">
+        <nav class="main-nav container">
+            <a [routerLink]="['']" class="logo"> <i class="fa-solid fa-stethoscope"></i> MedSync</a>
+
+            <div class="nav-links">
+                <a [routerLink]="['']">Home</a>
+                <a>About Us</a>
+                <a>Services</a>
+                <a>Blogs</a>
+                <a [routerLink]=" ['/login']">Login</a>
+            </div>
+
+            <button class="mobile-menu-btn">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+    <router-outlet></router-outlet>
+</div>
