@@ -7,7 +7,7 @@ import { Notyf } from 'notyf';
 export class ToasterService {
   private notyf = new Notyf({
     duration: 3000,
-    position: { x: 'right', y: 'top' },
+    position: { x: 'center', y: 'top' },
     dismissible: true
   });
 

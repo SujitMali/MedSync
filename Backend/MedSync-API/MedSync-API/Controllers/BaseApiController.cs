@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using MedSync_ClassLibraries.Helpers;
+using System.Configuration;
+using System.Linq;
 using System.Security.Claims;
 using System.Web.Http;
 
@@ -50,6 +52,19 @@ namespace MedSync_API.Controllers
                 return claim?.Value;
             }
         }
-    
+
+        protected EmailHelper emailHelper
+        {
+            get
+            {
+                return new EmailHelper(
+                    ConfigurationManager.AppSettings["SmtpServer"],
+                    int.Parse(ConfigurationManager.AppSettings["SmtpPort"]),
+                    ConfigurationManager.AppSettings["SmtpUser"],
+                    ConfigurationManager.AppSettings["SmtpPass"]
+                );
+            }
+        }
+
     }
 }

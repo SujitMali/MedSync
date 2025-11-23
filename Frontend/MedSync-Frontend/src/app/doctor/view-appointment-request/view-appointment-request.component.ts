@@ -30,8 +30,6 @@ import { AppointmentModel } from '../../Shared/Models/appointment-model.model';
 })
 export class ViewAppointmentRequestComponent implements OnInit {
 
-
-  // ------------------- Data & Filters -------------------
   doctorAppointments: DoctorAppointmentsViewModel = { appointments: [], appointmentFiles: [], totalRecords: 0 };
   filters: AppointmentFilterModel = {
     doctorID: 1,
@@ -49,24 +47,15 @@ export class ViewAppointmentRequestComponent implements OnInit {
   statuses: any[] = [];
   currentView: 'calendar' | 'card' = 'calendar';
   loading = false;
-
-  // ------------------- UI States -------------------
   showModal = false;
   showDetailModal = false;
   showSuggestSlot = false;
   isLoadingSlots = false;
-
-  // ------------------- Selected Data -------------------
   selectedAppointment: AppointmentModel | null = null;
-  // selectedFiles: AppointmentFileModel[] = [];
   selectedFiles: any[] = [];
   availableSlots: any[] = [];
   selectedSlot: any = null;
-
-  // ------------------- Slot Suggestion -------------------
   suggestedDate: string = '';
-
-  // ------------------- Calendar -------------------
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
@@ -76,14 +65,10 @@ export class ViewAppointmentRequestComponent implements OnInit {
     selectable: true,
     eventClick: (info) => this.onEventClick(info)
   };
+  
   today: string = new Date().toISOString().split('T')[0];
 
-  constructor(
-    private appointmentService: DoctorAppointmentsService,
-    private authService: AuthService,
-    private alertService: AlertService,
-    private toaster: ToasterService
-  ) { }
+  constructor(private appointmentService: DoctorAppointmentsService, private authService: AuthService, private alertService: AlertService, private toaster: ToasterService) { }
 
   ngOnInit() {
     const user = this.authService.getUserFromStorage();
@@ -92,13 +77,7 @@ export class ViewAppointmentRequestComponent implements OnInit {
     } else {
       console.warn('Doctor ID not found in user data');
     }
-    const today = new Date();
-    const thirtyDaysLater = new Date();
-    thirtyDaysLater.setDate(today.getDate() + 30);
-    const formatDate = (date: Date): string => date.toISOString().split('T')[0];
-
-    this.filters.dateFrom = formatDate(today);
-    this.filters.dateTo = formatDate(thirtyDaysLater);
+    this.filters = this.getDefaultFilters();
     this.loadStatuses();
     this.fetchAppointments();
   }
@@ -139,6 +118,28 @@ export class ViewAppointmentRequestComponent implements OnInit {
     });
   }
 
+  resetFilters() {
+    this.filters = this.getDefaultFilters();
+    this.fetchAppointments();
+  }
+
+  getDefaultFilters(): AppointmentFilterModel {
+    const range = this.generateDateRange();
+    return {
+      doctorID: this.filters.doctorID || 1,
+      statusIDs: '2',
+      dateFrom: range.dateFrom,
+      dateTo: range.dateTo,
+      patientName: '',
+      pageNumber: 1,
+      pageSize: 5000,
+      sortColumn: 'AppointmentDate',
+      sortDirection: 'ASC',
+      status: ''
+    };
+  }
+
+
   getStatusColor(status: string): string {
     const s = status.toLowerCase();
     if (s.includes('pending')) return 'brown';
@@ -147,7 +148,6 @@ export class ViewAppointmentRequestComponent implements OnInit {
     if (s.includes('reject')) return 'violet';
     return '#6c757d';
   }
-
 
   onEventClick(info: EventClickArg) {
     const apptID = info.event.extendedProps['appointmentID'];
@@ -237,8 +237,6 @@ export class ViewAppointmentRequestComponent implements OnInit {
   }
 
 
-  // ------------------- Suggest Another Slot -------------------
-
   toggleSuggestSlot() {
     this.showSuggestSlot = !this.showSuggestSlot;
   }
@@ -272,42 +270,39 @@ export class ViewAppointmentRequestComponent implements OnInit {
 
   submitSuggestedSlot() {
     if (!this.selectedAppointment) return;
-    if (!this.selectedSlot) return alert('Please select a slot to suggest.');
+    if (!this.selectedSlot) return this.toaster.warning('Please select a slot.');
 
-    const startDate = new Date(this.selectedSlot.SlotStart);
-    const endDate = new Date(this.selectedSlot.SlotEnd);
+    const appt = this.selectedAppointment;
 
-    const startTimeString = [
-      startDate.getHours().toString().padStart(2, '0'),
-      startDate.getMinutes().toString().padStart(2, '0'),
-      startDate.getSeconds().toString().padStart(2, '0')
-    ].join(':');
+    this.alertService.confirm('Do you want to suggest this slot to the patient?', 'Confirm Suggestion')
+      .then((confirmed) => {
+        if (!confirmed) return;
 
-    const endTimeString = [
-      endDate.getHours().toString().padStart(2, '0'),
-      endDate.getMinutes().toString().padStart(2, '0'),
-      endDate.getSeconds().toString().padStart(2, '0')
-    ].join(':');
+        const startDate = new Date(this.selectedSlot.SlotStart);
+        const endDate = new Date(this.selectedSlot.SlotEnd);
 
+        const startTimeString = startDate.toTimeString().slice(0, 8);
+        const endTimeString = endDate.toTimeString().slice(0, 8);
 
-    const payload = {
-      appointmentID: this.selectedAppointment.AppointmentID,
-      doctorID: this.selectedAppointment.DoctorID,
-      appointmentStatusID: this.statuses.find(s => s.name === 'Pending Patient Confirmation')?.id,
-      appointmentDate: this.suggestedDate,
-      startTime: startTimeString,
-      endTime: endTimeString,
-      isDoctorSuggestedChange: true
-    };
+        const payload = {
+          appointmentID: appt.AppointmentID,
+          doctorID: appt.DoctorID,
+          appointmentStatusID: this.statuses.find(s => s.name === 'Pending Patient Confirmation')?.id,
+          appointmentDate: this.suggestedDate,
+          startTime: startTimeString,
+          endTime: endTimeString,
+          isDoctorSuggestedChange: true
+        };
 
-    this.appointmentService.updateDoctorAppointment(payload).subscribe({
-      next: () => {
-        this.toaster.success('Suggested slot successfully sent to patient.');
-        this.fetchAppointments();
-        this.closeDetailModal();
-      },
-      error: (err) => this.toaster.error('Error suggesting slot.'),
-    });
+        this.appointmentService.updateDoctorAppointment(payload).subscribe({
+          next: () => {
+            this.toaster.success('Suggested slot successfully sent to patient.');
+            this.fetchAppointments();
+            this.closeDetailModal();
+          },
+          error: () => this.toaster.error('Error suggesting slot.'),
+        });
+      });
   }
 
 
@@ -347,30 +342,8 @@ export class ViewAppointmentRequestComponent implements OnInit {
     return appt.StatusName.toLowerCase() === 'pending';
   }
 
-  resetFilters() {
 
-    const today = new Date();
-    const thirtyDaysLater = new Date();
-    thirtyDaysLater.setDate(today.getDate() + 30);
-
-    const formatDate = (date: Date): string => date.toISOString().split('T')[0];
-
-    this.filters = {
-      doctorID: 1,
-      statusIDs: '2',
-      dateFrom: formatDate(today),
-      dateTo: formatDate(thirtyDaysLater),
-      patientName: '',
-      pageNumber: 1,
-      pageSize: 5000,
-      sortColumn: 'AppointmentDate',
-      sortDirection: 'ASC',
-      status: ''
-    };
-    this.fetchAppointments();
-  }
-
-
+  //====== Helper Methods =======
   calculateAge(dob: string | null): number | null {
     if (!dob) return null;
     const birth = new Date(dob);
@@ -385,4 +358,18 @@ export class ViewAppointmentRequestComponent implements OnInit {
     return age;
   }
 
+  generateDateRange() {
+    const today = new Date();
+    const dateTo = new Date(today);
+    dateTo.setDate(today.getDate() + 30);
+
+    const toStr = (d: Date) => d.toISOString().split('T')[0];
+
+    return {
+      dateFrom: toStr(today),
+      dateTo: toStr(dateTo)
+    };
+  }
+
 }
+

@@ -7,7 +7,6 @@
     background: $background-color;
     transition: all 0.3s ease;
 
-    /* -------------------- SIDEBAR -------------------- */
     .admin-sidebar {
         width: 260px;
         background: linear-gradient(180deg, darken($primary-color, 10%), $primary-color);
@@ -112,7 +111,6 @@
         }
     }
 
-    /* -------------------- COLLAPSED STATE -------------------- */
     &.sidebar-collapsed {
         .admin-sidebar {
             width: 75px;
@@ -147,7 +145,6 @@
         }
     }
 
-    /* -------------------- MAIN AREA -------------------- */
     .admin-main {
         flex: 1;
         display: flex;
@@ -200,11 +197,22 @@
     }
 }
 
-/* General cleanup */
+
 body {
     overflow: hidden;
 }
 
 .dropdown-toggle::after {
     display: none !important;
+}
+
+.dropdown-menu {
+    min-width: 220px;
+    padding: 12px 0;
+}
+
+
+.dropdown-menu .px-3 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }

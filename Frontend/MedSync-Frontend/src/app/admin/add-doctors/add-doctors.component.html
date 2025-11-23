@@ -67,7 +67,6 @@
                 </div>
             </div>
 
-
             <div class="col-md-4 mb-3">
                 <label class="form-label fw-semibold text-secondary">Phone Number</label>
 
@@ -97,8 +96,6 @@
                 </div>
             </div>
 
-
-
             <div class="col-md-4 mb-3">
                 <label class="form-label fw-semibold text-secondary">Date of Birth</label>
 
@@ -107,8 +104,6 @@
                   'is-invalid': (dobCtrl.invalid && dobCtrl.touched) || isAgeInvalid,
                   'is-valid': dobCtrl.valid && !isAgeInvalid && dobCtrl.touched
                 }" />
-
-                <!-- Validation Messages -->
                 <div *ngIf="dobCtrl.touched">
                     <div *ngIf="dobCtrl.errors?.['required']" class="invalid-feedback d-block">
                         Date of Birth is required.
@@ -132,12 +127,6 @@
                 </div>
             </div>
 
-
-
-
-
-
-
             <div class="col-md-4 mb-3">
                 <label class="form-label fw-semibold text-secondary">Blood Group</label>
                 <select class="form-select" name="bloodGroupID" [(ngModel)]="doctor.BloodGroupID" required
@@ -152,11 +141,8 @@
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
-
-
         </div>
     </div>
-
 
 
     <div class="border rounded-3 p-3 mb-4 bg-light">
@@ -213,14 +199,6 @@
                 </div>
             </div>
 
-            <!-- <div class="col-md-4 mb-3">
-                <label class="form-label fw-semibold text-secondary">CRRI Start Date</label>
-                <input type="date" [max]="maxDate" name="crriStartDate" class="form-control"
-                    [(ngModel)]="doctor.CRRIStartDate" required #crriCtrl="ngModel"
-                    [ngClass]="{'is-invalid': crriCtrl.invalid && crriCtrl.touched, 'is-valid': crriCtrl.valid && crriCtrl.touched}" />
-                <div class="invalid-feedback">CRRI Start Date is required.</div>
-            </div> -->
-
             <div class="col-md-4 mb-3">
                 <label class="form-label fw-semibold text-secondary">CRRI Start Date</label>
 
@@ -231,7 +209,6 @@
                   'is-valid': crriCtrl.valid && !isCRRIDateInvalid && crriCtrl.touched
                 }" />
 
-                <!-- Validation Messages -->
                 <div *ngIf="crriCtrl.touched">
                     <div *ngIf="crriCtrl.errors?.['required']" class="invalid-feedback d-block">
                         CRRI Start Date is required.
@@ -246,8 +223,6 @@
                     Looks good!
                 </div>
             </div>
-
-
 
         </div>
     </div>
@@ -316,4 +291,5 @@
 
 
     </div>
+
 </form>

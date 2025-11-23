@@ -10,6 +10,7 @@ namespace MedSync_ClassLibraries.Helpers
 {
     public static class JwtTokenManager
     {
+
         private static readonly string secretKey = ConfigurationManager.AppSettings["JwtSecretKey"];
         private static readonly int expiryMinutes = int.Parse(ConfigurationManager.AppSettings["JwtExpiryMinutes"]);
 
@@ -60,12 +61,12 @@ namespace MedSync_ClassLibraries.Helpers
                 SecurityToken validatedToken;
                 return tokenHandler.ValidateToken(token, validationParams, out validatedToken);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 DbErrorLogger.LogError(ex, createdBy: 1);
                 return null;
             }
         }
-    
-    }   
+
+    }
 }

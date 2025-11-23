@@ -5,7 +5,6 @@ using MedSync_ClassLibraries.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -45,100 +44,8 @@ namespace MedSync_API.Controllers
             }
         }
 
-
-
-
         [JwtAuthenticate]
-        [Authorize(Roles = "Doctor")]
-        [HttpPut]
-        public IHttpActionResult UpdateDoctorAppointment([FromBody] AppointmentModel request)
-        {
-            if (request == null || request.AppointmentID <= 0)
-                return BadRequest("Invalid appointment request.");
-
-            try
-            {
-                var appointmentDal = new Appointment();
-                request.ModifiedBy = CurrentUserId;
-                var result = appointmentDal.Update(request);
-                if (result == null || result.SuccessFlag == 0)
-                    return Content(HttpStatusCode.NotFound, "Appointment not found or update failed.");
-                if (result.SuccessFlag == -1)
-                    return Content(HttpStatusCode.Forbidden, "This appointment can no longer be modified.");
-
-
-                var emailHelper = new EmailHelper(
-                    ConfigurationManager.AppSettings["SmtpServer"],
-                    int.Parse(ConfigurationManager.AppSettings["SmtpPort"]),
-                    ConfigurationManager.AppSettings["SmtpUser"],
-                    ConfigurationManager.AppSettings["SmtpPass"]
-                );
-
-                string subject = $"Appointment {result.AppointmentStatus} - MedSync";
-                string patientTemplate = string.Empty;
-                string doctorTemplate = string.Empty;
-
-                if (result.AppointmentStatus.Equals("Accepted", StringComparison.OrdinalIgnoreCase))
-                {
-                    patientTemplate = "AppointmentAccepted_Patient.html";
-                    doctorTemplate = "AppointmentAccepted_Doctor.html";
-                }
-                else if (result.AppointmentStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase))
-                {
-                    patientTemplate = "AppointmentRejected_Patient.html";
-                    doctorTemplate = "AppointmentRejected_Doctor.html";
-                }
-
-                if (!string.IsNullOrEmpty(patientTemplate) && !string.IsNullOrEmpty(doctorTemplate))
-                {
-                    string patientBody = emailHelper.LoadEmailTemplate(patientTemplate, result, forDoctor: false);
-                    string doctorBody = emailHelper.LoadEmailTemplate(doctorTemplate, result, forDoctor: true);
-                    emailHelper.SendEmail(result.PatientEmail, subject, patientBody);
-                    emailHelper.SendEmail(result.DoctorEmail, subject, doctorBody);
-                }
-
-
-                if (result.AppointmentStatus.Equals("Pending Patient Confirmation", StringComparison.OrdinalIgnoreCase))
-                {
-                    var baseUrl = "https://localhost:44398/api/Appointment";
-                    var acceptToken = JwtTokenManager.GenerateToken(new UserModel
-                    {
-                        DoctorID = result.DoctorID,
-                        Email = result.PatientEmail,
-                        RoleName = "Patient"
-                    });
-
-                    var declineToken = JwtTokenManager.GenerateToken(new UserModel
-                    {
-                        DoctorID = result.DoctorID,
-                        Email = result.PatientEmail,
-                        RoleName = "Patient"
-                    });
-                    var acceptUrl = $"{baseUrl}/ConfirmAppointment?token={acceptToken}&statusId=1&appointmentId={result.AppointmentID}";
-                    var declineUrl = $"{baseUrl}/ConfirmAppointment?token={declineToken}&statusId=3&appointmentId={result.AppointmentID}";
-                    string patientTemplates = "AppointmentPendingConfirmation_Patient.html";
-                    string patientBody = emailHelper
-                        .LoadEmailTemplate(patientTemplates, result, forDoctor: false)
-                        .Replace("{{AcceptUrl}}", acceptUrl)
-                        .Replace("{{DeclineUrl}}", declineUrl);
-
-                    string subjects = "Action Required: Please Confirm Your Appointment - MedSync";
-                    emailHelper.SendEmail(result.PatientEmail, subjects, patientBody);
-                }
-
-                return Ok(new { Success = true, Message = "Appointment updated and emails sent successfully." });
-            }
-            catch (Exception ex)
-            {
-                DbErrorLogger.LogError(ex, CurrentUserId);
-                return InternalServerError(ex);
-            }
-        }
-
-
-
-        [JwtAuthenticate]
-        [Authorize(Roles = "Doctor, Admin" )]
+        [Authorize(Roles = "Doctor, Admin")]
         [HttpGet]
         public IHttpActionResult PreviewAppointmentFile(int appointmentId, string fileName)
         {
@@ -234,6 +141,87 @@ namespace MedSync_API.Controllers
         }
 
 
+        [JwtAuthenticate]
+        [Authorize(Roles = "Doctor")]
+        [HttpPut]
+        public IHttpActionResult UpdateDoctorAppointment([FromBody] AppointmentModel request)
+        {
+            if (request == null || request.AppointmentID <= 0)
+                return BadRequest("Invalid appointment request.");
+
+            try
+            {
+                var appointmentDal = new Appointment();
+                request.ModifiedBy = CurrentUserId;
+                var result = appointmentDal.Update(request);
+
+                if (result == null || result.SuccessFlag == 0)
+                    return Content(HttpStatusCode.NotFound, "Appointment not found or update failed.");
+                if (result.SuccessFlag == -1)
+                    return Content(HttpStatusCode.Forbidden, "This appointment can no longer be modified.");
+
+
+                string subject = $"Appointment {result.AppointmentStatus} - MedSync";
+                string patientTemplate = string.Empty;
+                string doctorTemplate = string.Empty;
+
+                if (result.AppointmentStatus.Equals("Accepted", StringComparison.OrdinalIgnoreCase))
+                {
+                    patientTemplate = "AppointmentAccepted_Patient.html";
+                    doctorTemplate = "AppointmentAccepted_Doctor.html";
+                }
+                else if (result.AppointmentStatus.Equals("Rejected", StringComparison.OrdinalIgnoreCase))
+                {
+                    patientTemplate = "AppointmentRejected_Patient.html";
+                    doctorTemplate = "AppointmentRejected_Doctor.html";
+                }
+
+                if (!string.IsNullOrEmpty(patientTemplate) && !string.IsNullOrEmpty(doctorTemplate))
+                {
+                    string patientBody = emailHelper.LoadEmailTemplate(patientTemplate, result, forDoctor: false);
+                    string doctorBody = emailHelper.LoadEmailTemplate(doctorTemplate, result, forDoctor: true);
+                    emailHelper.SendEmail(result.PatientEmail, subject, patientBody);
+                    emailHelper.SendEmail(result.DoctorEmail, subject, doctorBody);
+                }
+
+
+                if (result.AppointmentStatus.Equals("Pending Patient Confirmation", StringComparison.OrdinalIgnoreCase))
+                {
+                    var baseUrl = "https://localhost:44398/api/Appointment";
+                    var acceptToken = JwtTokenManager.GenerateToken(new UserModel
+                    {
+                        DoctorID = result.DoctorID,
+                        Email = result.PatientEmail,
+                        RoleName = "Patient"
+                    });
+
+                    var declineToken = JwtTokenManager.GenerateToken(new UserModel
+                    {
+                        DoctorID = result.DoctorID,
+                        Email = result.PatientEmail,
+                        RoleName = "Patient"
+                    });
+                    var acceptUrl = $"{baseUrl}/ConfirmAppointment?token={acceptToken}&statusId=1&appointmentId={result.AppointmentID}";
+                    var declineUrl = $"{baseUrl}/ConfirmAppointment?token={declineToken}&statusId=3&appointmentId={result.AppointmentID}";
+                    string patientTemplates = "AppointmentPendingConfirmation_Patient.html";
+                    string patientBody = emailHelper
+                        .LoadEmailTemplate(patientTemplates, result, forDoctor: false)
+                        .Replace("{{AcceptUrl}}", acceptUrl)
+                        .Replace("{{DeclineUrl}}", declineUrl);
+
+                    string subjects = "Action Required: Please Confirm Your Appointment - MedSync";
+                    emailHelper.SendEmail(result.PatientEmail, subjects, patientBody);
+                }
+
+                return Ok(new { Success = true, Message = "Appointment updated and emails sent successfully." });
+            }
+            catch (Exception ex)
+            {
+                DbErrorLogger.LogError(ex, CurrentUserId);
+                return InternalServerError(ex);
+            }
+        }
+
 
         [HttpPost]
         public IHttpActionResult BookAppointment()
@@ -264,7 +252,7 @@ namespace MedSync_API.Controllers
                     MedicalHistory = httpRequest.Form["Patient_MedicalHistory"],
                     MedicalConcern = httpRequest.Form["Patient_MedicalConcern"],
                     InsuranceDetails = httpRequest.Form["Patient_InsuranceDetails"],
-                    
+
                     PostedFiles = new List<HttpPostedFile>()
                 };
 
@@ -297,24 +285,15 @@ namespace MedSync_API.Controllers
                     throw new Exception("Appointment could not be booked or returned from DAL.");
 
 
-                var emailHelper = new EmailHelper(
-                    ConfigurationManager.AppSettings["SmtpServer"],
-                    int.Parse(ConfigurationManager.AppSettings["SmtpPort"]),
-                    ConfigurationManager.AppSettings["SmtpUser"],
-                    ConfigurationManager.AppSettings["SmtpPass"]
-                );
-
-
                 string patientTemplateFile = "AppointmentRequestSubmitted_Patient.html";
                 string doctorTemplateFile = "AppointmentRequestReceived_Doctor.html";
 
-   
-                string patientBody = emailHelper.LoadEmailTemplate(patientTemplateFile, appointment, forDoctor: false, 1);
-                string doctorBody = emailHelper.LoadEmailTemplate(doctorTemplateFile, appointment, forDoctor: true, 1);
+                string patientBody = emailHelper.LoadEmailTemplate(patientTemplateFile, appointment, forDoctor: false);
+                string doctorBody = emailHelper.LoadEmailTemplate(doctorTemplateFile, appointment, forDoctor: true);
 
-  
-                emailHelper.SendEmail(appointment.PatientEmail, "Appointment Request Submitted - MedSync", patientBody, 1);
-                emailHelper.SendEmail(appointment.DoctorEmail, "New Appointment Request - MedSync", doctorBody, 1);
+
+                emailHelper.SendEmail(appointment.PatientEmail, "Appointment Request Submitted - MedSync", patientBody);
+                emailHelper.SendEmail(appointment.DoctorEmail, "New Appointment Request - MedSync", doctorBody);
 
 
                 return Content(HttpStatusCode.OK, new
@@ -335,7 +314,6 @@ namespace MedSync_API.Controllers
                 });
             }
         }
-
 
 
         [HttpGet]
@@ -364,14 +342,6 @@ namespace MedSync_API.Controllers
                 if (result.SuccessFlag == -1)
                     return Content(HttpStatusCode.Forbidden, "This appointment can no longer be modified.");
 
-
-                var emailHelper = new EmailHelper(
-                    ConfigurationManager.AppSettings["SmtpServer"],
-                    int.Parse(ConfigurationManager.AppSettings["SmtpPort"]),
-                    ConfigurationManager.AppSettings["SmtpUser"],
-                    ConfigurationManager.AppSettings["SmtpPass"]
-                );
-
                 string subject = $"Appointment {result.AppointmentStatus} - MedSync";
 
                 string patientTemplate = string.Empty;
@@ -390,7 +360,7 @@ namespace MedSync_API.Controllers
 
                 if (!string.IsNullOrEmpty(patientTemplate) && !string.IsNullOrEmpty(doctorTemplate))
                 {
-                    string patientBody = emailHelper.LoadEmailTemplate(patientTemplate, result, forDoctor: false, 1 );
+                    string patientBody = emailHelper.LoadEmailTemplate(patientTemplate, result, forDoctor: false, 1);
                     string doctorBody = emailHelper.LoadEmailTemplate(doctorTemplate, result, forDoctor: true, 1);
                     emailHelper.SendEmail(result.PatientEmail, subject, patientBody);
                     emailHelper.SendEmail(result.DoctorEmail, subject, doctorBody);
@@ -407,3 +377,7 @@ namespace MedSync_API.Controllers
 
     }
 }
+
+
+
+

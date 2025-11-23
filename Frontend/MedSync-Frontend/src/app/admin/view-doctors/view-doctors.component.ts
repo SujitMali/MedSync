@@ -11,7 +11,6 @@ import { Subject, debounceTime } from 'rxjs';
 })
 export class ViewDoctorsComponent implements OnInit {
 
-
   Math = Math;
   loading = true;
   doctors: any[] = [];
@@ -53,16 +52,6 @@ export class ViewDoctorsComponent implements OnInit {
     this.loadDoctors();
   }
 
-  Sorting(field: string): void {
-    if (this.filters.SortColumn === field) {
-      this.filters.SortDirection = this.filters.SortDirection === 'ASC' ? 'DESC' : 'ASC';
-    } else {
-      this.filters.SortColumn = field;
-      this.filters.SortDirection = 'ASC';
-    }
-    this.loadDoctors();
-  }
-
   getDropdownData(): void {
     this.adminService.getDropdownData().subscribe({
       next: (res: any) => {
@@ -89,8 +78,6 @@ export class ViewDoctorsComponent implements OnInit {
       MaxFee: this.filters.maxFee,
       PageNumber: this.filters.PageNumber,
       PageSize: this.filters.PageSize,
-
-
       SortColumn: this.filters.SortColumn,
       SortDirection: this.filters.SortDirection
     };
@@ -105,7 +92,6 @@ export class ViewDoctorsComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        // alert('Error fetching doctors list.');
         this.toaster.error('Error fetching doctors list.')
       }
     });
@@ -130,6 +116,17 @@ export class ViewDoctorsComponent implements OnInit {
       SortColumn: this.filters.SortColumn,
       SortDirection: this.filters.SortDirection
     };
+    this.loadDoctors();
+  }
+
+  //===== Helper methods =============
+  Sorting(field: string): void {
+    if (this.filters.SortColumn === field) {
+      this.filters.SortDirection = this.filters.SortDirection === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      this.filters.SortColumn = field;
+      this.filters.SortDirection = 'ASC';
+    }
     this.loadDoctors();
   }
 

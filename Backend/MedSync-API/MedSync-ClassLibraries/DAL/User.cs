@@ -96,7 +96,6 @@ namespace MedSync_ClassLibraries.DAL
                             DoctorID = dr["DoctorID"] == DBNull.Value ? (int?)null : Convert.ToInt32(dr["DoctorID"]),
                             Email = Convert.ToString(dr["Email"]),
                             IsActive = Convert.ToBoolean(dr["IsActive"]),
-                            LastLoginOn = dr["LastLoginOn"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(dr["LastLoginOn"]),
                             RoleName = Convert.ToString(dr["RoleName"]),
                             FirstName = dr["FirstName"] == DBNull.Value ? null : Convert.ToString(dr["FirstName"]),
                             LastName = dr["LastName"] == DBNull.Value ? null : Convert.ToString(dr["LastName"])

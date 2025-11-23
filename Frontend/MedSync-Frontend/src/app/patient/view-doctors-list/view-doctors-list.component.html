@@ -2,9 +2,8 @@
 
     <div class="fixed-header">
         <div class="container d-flex justify-content-between align-items-center">
-            <h2 class="fw-bold text-primary mb-0">Find Your Doctor</h2>
+            <h3 class="fw-bold text-primary mb-0">Find Your Doctor</h3>
 
-            <!-- Group both buttons together -->
             <div class="d-flex align-items-center gap-2">
                 <button class="btn btn-outline-primary fw-semibold d-flex align-items-center gap-2" type="button"
                     (click)="goBack()">
@@ -37,7 +36,7 @@
                     </div>
                     <div class="card-body d-flex flex-column p-3">
                         <h5 class="card-title fw-bold text-dark mb-1">
-                            {{ doctor.FirstName }} {{ doctor.LastName }}
+                            Dr. {{ doctor.FirstName }} {{ doctor.LastName }}
                         </h5>
                         <p class="text-primary mb-1 fw-semibold">{{ doctor.SpecializationName }}</p>
                         <p class="text-muted small mb-2">{{ doctor.QualificationName }}</p>
@@ -52,7 +51,7 @@
             </div>
         </div>
 
-        <!-- No Results -->
+
         <div *ngIf="!isLoading && doctors.length === 0" class="text-center text-muted my-5">
             <i class="bi bi-search fs-1"></i>
             <p class="mt-2">No doctors found for the selected filters.</p>
@@ -84,7 +83,7 @@
 </div>
 
 
-<!-- Offcanvas Filter Panel -->
+
 <div class="offcanvas offcanvas-end shadow-lg" tabindex="-1" id="filterPanel">
     <div class="offcanvas-header border-bottom">
         <h5 class="offcanvas-title text-primary">Filter Doctors</h5>

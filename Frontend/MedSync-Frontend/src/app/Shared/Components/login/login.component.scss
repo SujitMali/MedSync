@@ -1,193 +1,414 @@
+@import './../../../../styles/variables.scss';
+
 html,
 body {
-    height: 100%;
+    height: 100vh;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    overflow-x: hidden;
-    font-family: 'Inter', sans-serif;
-    background-color: #f8f9fa;
+    overflow: hidden !important;
+    font-family: $font-family;
+    background-color: $background-color;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
+* {
+    box-sizing: border-box;
+}
 
+// Login container wrapper - FIXED TO VIEWPORT
 .login-container-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     width: 100vw;
+    padding: 1.5rem;
     overflow: hidden;
-    background: linear-gradient(120deg, #f6f9ff 0%, #eef2f3 100%);
+    background: linear-gradient(120deg, #e8f1ff 0%, #f0f4f8 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .login-container {
-    position: absolute;
-    top: 150px;
-    max-width: 1300px;
+    max-width: 1200px;
     width: 100%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    // max-height: calc(100vh - 3rem);
+    height: 630px;
+    box-shadow: $shadow-level2;
+    border-radius: $border-radius-lg;
     overflow: hidden;
-    background: #ffffff;
+    background: $card-background;
+    padding: 0 !important;
+
+    .row {
+        margin: 0 !important;
+        height: 100%;
+        display: flex;
+
+        &.g-0 {
+            --bs-gutter-x: 0;
+        }
+    }
 }
 
-
-
-/* Left Panel (Carousel) */
+// Left Panel (Carousel)
 .left-panel {
-    background-color: #0d6efd;
-    color: white;
+    background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 8%) 100%);
+    color: $card-background;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 4rem;
+    justify-content: space-between;
+    padding: 2.5rem 3rem;
     position: relative;
+    height: 100%;
+    overflow: hidden;
+
+    .logo {
+        font-size: 1.75rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: $space-sm;
+        margin-bottom: 2rem;
+
+        i {
+            font-size: 2rem;
+        }
+    }
+
+    #infoCarousel {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column-reverse;
+        overflow: hidden;
+    }
+
+    .carousel-inner {
+        text-align: center;
+        max-width: 450px;
+        margin: 0 auto;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .carousel-item {
+        padding: 2rem 0;
+        min-height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        opacity: 0;
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        transform: translateX(100%);
+
+        &.active {
+            position: relative;
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 1;
+
+            .carousel-icon,
+            h2,
+            p {
+                animation: fadeInUp 0.4s ease-out forwards;
+                -webkit-animation: fadeInUp 0.4s ease-out forwards;
+            }
+
+            .carousel-icon {
+                animation-delay: 0.4s;
+            }
+
+            h2 {
+                animation-delay: 0.3s;
+            }
+
+            p {
+                animation-delay: 0.4s;
+            }
+        }
+
+        &-next,
+        &-prev {
+            display: flex;
+        }
+
+        &-next:not(.carousel-item-start) {
+            transform: translateX(100%);
+        }
+
+        &-prev:not(.carousel-item-end) {
+            transform: translateX(-100%);
+        }
+
+        &-next.carousel-item-start,
+        &-prev.carousel-item-end {
+            transform: translateX(0);
+        }
+
+        h2 {
+            font-weight: $heading-font-weight;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+            line-height: 1.3;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+    }
+
+    .carousel-icon {
+        font-size: 4.5rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+    }
+
+    .carousel-indicators {
+        position: static;
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+
+        [data-bs-target] {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            opacity: 1;
+            border: 0;
+            margin: 0 6px;
+            transition: all 0.3s ease;
+        }
+
+        .active {
+            background-color: $card-background;
+            width: 32px;
+            border-radius: 6px;
+        }
+    }
 }
 
-.logo {
-    position: absolute;
-    top: 2rem;
-    left: 2.5rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.logo .fa-layer-group {
-    margin-right: 0.5rem;
-}
-
-.left-panel .carousel-inner {
-    text-align: center;
-}
-
-.left-panel .carousel-item {
-    padding-bottom: 3rem;
-}
-
-.left-panel .carousel-icon {
-    font-size: 6rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
-
-.left-panel .carousel-item h2 {
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-.left-panel .carousel-item p {
-    font-size: 1.1rem;
-    max-width: 350px;
-    margin: 0 auto;
-    opacity: 0.9;
-}
-
-/* Custom Carousel Indicators (Dots) */
-.left-panel .carousel-indicators {
-    bottom: 0;
-    margin-bottom: 1rem;
-}
-
-.left-panel .carousel-indicators [data-bs-target] {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #fff;
-    opacity: 0.5;
-    border: 0;
-    margin: 0 5px;
-}
-
-.left-panel .carousel-indicators .active {
-    opacity: 1;
-}
-
-/* Right Panel (Form) */
+// Right Panel (Form)
 .right-panel {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2.5rem;
+    padding: 2rem 2rem;
+    height: 100%;
+    background: $card-background;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &-content {
+        max-width: 420px;
+        width: 100%;
+    }
+
+    h2 {
+        font-weight: $heading-font-weight;
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+        color: $primary-color;
+    }
+
+    .text-muted {
+        margin-bottom: 2rem;
+        color: $muted-text-color;
+        font-size: 0.95rem;
+    }
+
+    .form-label {
+        margin-bottom: $space-sm;
+        color: $text-color;
+        font-size: 0.9375rem;
+        font-weight: 500;
+    }
+
+    .mb-3 {
+        margin-bottom: $space-md !important;
+    }
+
+    // Input groups
+    .input-group {
+        border-radius: $border-radius-md;
+        overflow: hidden;
+        border: 1.5px solid $border-color;
+        transition: all 0.2s ease;
+        background: $card-background;
+
+        &:focus-within {
+            border-color: $primary-color;
+            box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.15);
+        }
+
+        &:has(.form-control.is-valid) {
+            border-color: $success-color;
+            background: lighten($success-color, 45%);
+
+            &:focus-within {
+                box-shadow: 0 0 0 0.25rem rgba($success-color, 0.15);
+            }
+
+            .input-group-text {
+                color: $success-color;
+                background-color: lighten($success-color, 45%);
+            }
+        }
+
+        &:has(.form-control.is-invalid) {
+            border-color: $error-color;
+            background: lighten($error-color, 38%);
+
+            &:focus-within {
+                box-shadow: 0 0 0 0.25rem rgba($error-color, 0.15);
+            }
+
+            .input-group-text {
+                color: $error-color;
+                background-color: lighten($error-color, 38%);
+            }
+        }
+    }
+
+    .input-group-text {
+        background-color: $background-color;
+        border: none;
+        padding: 0.875rem 1.125rem;
+        color: $muted-text-color;
+        font-size: 1.125rem;
+    }
+
+
+    .form-control {
+        border: none;
+        padding: 0.875rem 1.125rem;
+        box-shadow: none !important;
+        font-size: 0.9375rem;
+
+        &::placeholder {
+            color: lighten($muted-text-color, 15%);
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &.is-valid,
+        &.is-invalid {
+            border: none;
+            padding-right: 1.125rem;
+        }
+    }
+
+    .invalid-feedback {
+        display: block;
+        margin-top: $space-sm;
+        font-size: 0.8125rem;
+        color: $error-color;
+        line-height: 1.4;
+    }
+
+    // Form elements
+    .form-check {
+        display: flex;
+        align-items: center;
+
+        &-input {
+            border-radius: $border-radius-sm;
+            width: 1.125rem;
+            height: 1.125rem;
+            margin-top: 0;
+            cursor: pointer;
+        }
+
+        &-label {
+            font-size: 0.875rem;
+            color: $muted-text-color;
+            margin-left: $space-sm;
+            cursor: pointer;
+        }
+    }
+
+    .forgot-link {
+        font-size: 0.875rem;
+        color: $primary-color;
+        font-weight: 500;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: darken($primary-color, 10%);
+        }
+    }
+
+    // Buttons
+    .btn {
+        padding: 0.875rem 1.5rem;
+        font-weight: $heading-font-weight;
+        border-radius: $border-radius-md;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        border: none;
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+
+        &-primary {
+            background: $primary-color;
+
+            &:hover:not(:disabled) {
+                background: darken($primary-color, 8%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+            }
+        }
+
+        &-secondary {
+            background: $secondary-color;
+
+            &:hover {
+                background: darken($secondary-color, 8%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba($secondary-color, 0.3);
+            }
+        }
+    }
+
+    .alert-danger {
+        border-radius: $border-radius-md;
+        border: 1px solid lighten($error-color, 30%);
+        background-color: lighten($error-color, 38%);
+        color: darken($error-color, 10%);
+        font-size: 0.875rem;
+    }
 }
 
-.right-panel-content {
-    max-width: 400px;
-    width: 100%;
-}
+// Animations
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 
-.right-panel h2 {
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.right-panel .text-muted {
-    margin-bottom: 2rem;
-}
-
-.right-panel .form-control,
-.right-panel .input-group-text {
-    border-radius: 0.5rem;
-    padding: 0.9rem 1rem;
-}
-
-.right-panel .input-group-text {
-    background-color: #f8f9fa;
-    border-right: 0;
-}
-
-.right-panel .form-control:focus {
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    border-color: #0d6efd;
-}
-
-.right-panel .input-group .form-control {
-    border-left: 0;
-    padding-left: 0.5rem;
-}
-
-.right-panel .form-check-input {
-    border-radius: 0.25rem;
-}
-
-.right-panel .form-check-label,
-.right-panel .forgot-link {
-    font-size: 0.9rem;
-}
-
-.right-panel .btn-primary {
-    padding: 0.9rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-}
-
-.login-container,
-.row,
-.left-panel,
-.right-panel {
-    height: 700px;
-}
-
-/* === Fix Bootstrap row overflow === */
-.row {
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-}
-
-/* === Prevent horizontal scroll caused by vw width === */
-html,
-body {
-    width: 100%;
-    overflow-x: hidden !important;
-}
-
-
-.login-container-wrapper {
-    width: 100%;
-    height: 100vh;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-/* === Add box-sizing consistency === */
-* {
-    box-sizing: border-box;
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

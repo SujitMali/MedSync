@@ -10,5 +10,6 @@ namespace MedSync_API.Controllers
 
             return View();
         }
+    
     }
 }

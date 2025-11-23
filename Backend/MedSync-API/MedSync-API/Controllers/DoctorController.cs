@@ -60,8 +60,6 @@ namespace MedSync_API.Controllers
         }
 
 
-
-
         [JwtAuthenticate]
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -156,8 +154,6 @@ namespace MedSync_API.Controllers
         }
 
 
-
-
         [JwtAuthenticate]
         [Authorize(Roles = "Admin")]
         [HttpGet]
@@ -198,9 +194,6 @@ namespace MedSync_API.Controllers
         }
 
 
-
-
-
         [JwtAuthenticate]
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -234,15 +227,13 @@ namespace MedSync_API.Controllers
         }
 
 
-
-
         [HttpGet]
         public IHttpActionResult GetDoctorSlots(int doctorId, DateTime appointmentDate)
         {
             try
             {
-                Appointment appointmentDal = new Appointment();
-                var slots = appointmentDal.GetSlots(doctorId, appointmentDate);
+                DoctorSchedule doctorScheduleDal = new DoctorSchedule();
+                var slots = doctorScheduleDal.GetSlots(doctorId, appointmentDate);
                 return Ok(new { success = true, data = slots });
             }
             catch (Exception ex)
@@ -251,9 +242,6 @@ namespace MedSync_API.Controllers
                 return Content(HttpStatusCode.InternalServerError, new { success = false, message = ex.Message });
             }
         }
-
-
-
 
 
         [HttpGet]
@@ -306,9 +294,5 @@ namespace MedSync_API.Controllers
             }
         }
 
-
-
-
     }
-
 }

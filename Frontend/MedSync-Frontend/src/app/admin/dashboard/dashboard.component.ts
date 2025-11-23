@@ -106,33 +106,6 @@ export class DashboardComponent {
   }
 
 
-
-
-  // loadAppointments(): void {
-  //   this.loading = true;
-
-  //   const payload = {
-  //     ...this.filter,
-  //     StatusIDs: Array.isArray(this.filter.StatusIDs)
-  //       ? this.filter.StatusIDs.join(',')
-  //       : this.filter.StatusIDs
-  //   };
-
-  //   this.adminService.getAllAppointments(payload).subscribe({
-  //     next: (res: any) => {
-  //       if (res.success) {
-  //         this.appointments = res.data || [];
-  //         this.totalRecords = res.totalRecords || 0;
-  //         const files = res.files || [];
-  //         this.appointments.forEach(app => {
-  //           app.Files = files.filter((f: any) => f.AppointmentID === app.AppointmentID);
-  //         });
-  //       }
-  //       this.loading = false;
-  //     },
-  //     error: () => (this.loading = false)
-  //   });
-  // }
   loadAppointments(): void {
     this.loading = true;
 
@@ -161,8 +134,6 @@ export class DashboardComponent {
       error: () => (this.loading = false)
     });
   }
-
-
 
   applyFilters(): void {
     this.filter.PageNumber = 1;

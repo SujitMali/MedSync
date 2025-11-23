@@ -6,7 +6,7 @@
     </button>
 </div>
 
-<!-- ================== OFFCANVAS FILTER PANEL ================== -->
+
 <div class="offcanvas offcanvas-end shadow-sm" tabindex="-1" id="filterOffcanvas"
     aria-labelledby="filterOffcanvasLabel">
     <div class="offcanvas-header bg-light">
@@ -57,13 +57,12 @@
     </div>
 </div>
 
-<!-- ================== MAIN CONTENT AREA ================== -->
+
 <div *ngIf="currentView === 'calendar'" class="calendar-wrapper">
     <full-calendar [options]="calendarOptions"></full-calendar>
 </div>
 
 
-<!-- ================== DETAIL MODAL ================== -->
 <div class="modal fade show" tabindex="-1" *ngIf="showDetailModal"
     style="display: block; background: rgba(0, 0, 0, 0.4)">
     <div class="modal-dialog modal-lg">

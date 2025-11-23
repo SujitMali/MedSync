@@ -21,7 +21,7 @@ export class AdminLayoutComponent {
     { label: 'Manage Credentials', icon: 'fa-calendar-check', route: 'manage-credentials' },
     { label: 'Manage Schedules', icon: 'fa-users', route: 'manage-schedules' },
     { label: 'View Doctors', icon: 'fa-chart-column', route: 'view-doctors' },
-    { label: 'Settings', icon: 'fa-gear', route: 'settings' },
+    // { label: 'Settings', icon: 'fa-gear', route: 'settings' },
   ];
 
   constructor(

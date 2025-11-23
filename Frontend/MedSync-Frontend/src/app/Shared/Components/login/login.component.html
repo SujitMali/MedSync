@@ -3,9 +3,6 @@
     <div class="container-fluid login-container">
         <div class="row g-0">
 
-
-
-
             <!-- Left Panel (Carousel) -->
             <div class="col-lg-7 left-panel">
 
@@ -77,27 +74,26 @@
                     <h2 class="text-primary">Log In</h2>
                     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
 
+                        <!-- Email Field -->
                         <div class="mb-3">
                             <label for="username" class="form-label fw-medium">Email</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
                                 <input type="email" name="email" class="form-control" [(ngModel)]="loginModel.email"
                                     required #emailCtrl="ngModel" [ngClass]="{
-                                'is-invalid': (!isValidEmail(emailCtrl.value) && emailCtrl.touched) || (emailCtrl.invalid && emailCtrl.touched),
-                                'is-valid': isValidEmail(emailCtrl.value) && emailCtrl.touched
-                              }" placeholder="you@example.com" />
-                                <div *ngIf="emailCtrl.touched && !isValidEmail(emailCtrl.value)"
-                                    class="invalid-feedback">
-                                    <span *ngIf="!emailCtrl.value">Email is required.</span>
-                                    <span *ngIf="emailCtrl.value && !isValidEmail(emailCtrl.value)">Please enter a valid
-                                        email address.</span>
-                                </div>
+                                    'is-invalid': (!isValidEmail(emailCtrl.value) && emailCtrl.touched) || (emailCtrl.invalid && emailCtrl.touched),
+                                    'is-valid': isValidEmail(emailCtrl.value) && emailCtrl.touched
+                                  }" placeholder="you@example.com" />
                             </div>
-
-
+                            <!-- Move this OUTSIDE the input-group -->
+                            <div *ngIf="emailCtrl.touched && !isValidEmail(emailCtrl.value)" class="invalid-feedback">
+                                <span *ngIf="!emailCtrl.value">Email is required.</span>
+                                <span *ngIf="emailCtrl.value && !isValidEmail(emailCtrl.value)">Please enter a valid
+                                    email address.</span>
+                            </div>
                         </div>
 
-
+                        <!-- Password Field -->
                         <div class="mb-3">
                             <label for="password" class="form-label fw-medium">Password</label>
                             <div class="input-group">
@@ -107,12 +103,12 @@
                                                   'is-invalid': (!isValidPassword(passwordCtrl.value) && passwordCtrl.touched),
                                                   'is-valid': isValidPassword(passwordCtrl.value) && passwordCtrl.touched
                                                }" placeholder="Enter Password" />
-
-                                <div *ngIf="passwordCtrl.touched && !isValidPassword(passwordCtrl.value)"
-                                    class="invalid-feedback">
-                                    Password must be at least 8 characters and include uppercase, lowercase, number, and
-                                    special character.
-                                </div>
+                            </div>
+                            <!-- Move this OUTSIDE the input-group -->
+                            <div *ngIf="passwordCtrl.touched && !isValidPassword(passwordCtrl.value)"
+                                class="invalid-feedback">
+                                Password must be at least 8 characters and include uppercase, lowercase, number, and
+                                special character.
                             </div>
                         </div>
 
@@ -141,9 +137,6 @@
                     </form>
                 </div>
             </div>
-
-
-
 
 
         </div>

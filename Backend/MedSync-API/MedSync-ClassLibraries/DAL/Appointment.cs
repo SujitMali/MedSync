@@ -10,6 +10,7 @@ using System.Transactions;
 using System.Configuration;
 using MedSync_ClassLibraries.Helpers;
 
+
 namespace MedSync_ClassLibraries.DAL
 {
     public class Appointment
@@ -20,46 +21,6 @@ namespace MedSync_ClassLibraries.DAL
         {
             db = DatabaseFactory.CreateDatabase();
         }
-
-        #region GetSlots(int doctorId, DateTime appointmentDate)
-        public List<DoctorSlotModel> GetSlots(int doctorId, DateTime appointmentDate)
-        {
-            var slots = new List<DoctorSlotModel>();
-            try
-            {
-                DbCommand cmd = db.GetStoredProcCommand("MedSync_DoctorSchedulesGenerateSlots");
-                db.AddInParameter(cmd, "@DoctorID", DbType.Int32, doctorId);
-                db.AddInParameter(cmd, "@AppointmentDate", DbType.Date, appointmentDate);
-
-                DataSet ds = db.ExecuteDataSet(cmd);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    DateTime dateOnly = appointmentDate.Date;
-
-                    foreach (DataRow row in ds.Tables[0].Rows)
-                    {
-                        TimeSpan startTime = (TimeSpan)row["SlotStart"];
-                        TimeSpan endTime = (TimeSpan)row["SlotEnd"];
-                        DateTime fullSlotStart = dateOnly.Add(startTime);
-                        DateTime fullSlotEnd = dateOnly.Add(endTime);
-
-                        slots.Add(new DoctorSlotModel
-                        {
-                            SlotStart = fullSlotStart,
-                            SlotEnd = fullSlotEnd,
-                            IsAvailable = Convert.ToBoolean(row["IsAvailable"])
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                DbErrorLogger.LogError(ex, createdBy: 1);
-            }
-            return slots;
-        }
-        #endregion
 
 
         #region  GetAppointmentsList(AppointmentFilterModel filter)
@@ -109,7 +70,7 @@ namespace MedSync_ClassLibraries.DAL
                                     MedicalHistory = row["MedicalHistory"] == DBNull.Value ? null : Convert.ToString(row["MedicalHistory"]),
                                     MedicalConcern = row["MedicalConcern"] == DBNull.Value ? null : Convert.ToString(row["MedicalConcern"]),
                                     InsuranceDetails = row["InsuranceDetails"] == DBNull.Value ? null : Convert.ToString(row["InsuranceDetails"]),
-                                    PatientDOB = row["PatientDOB"] == DBNull.Value? (DateTime?)null: Convert.ToDateTime(row["PatientDOB"]),
+                                    PatientDOB = row["PatientDOB"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["PatientDOB"]),
                                     PatientGender = row["PatientGender"] == DBNull.Value ? null : Convert.ToString(row["PatientGender"]),
                                     PatientBloodGroup = row["PatientBloodGroup"] == DBNull.Value ? null : Convert.ToString(row["PatientBloodGroup"])
                                 });
@@ -155,15 +116,48 @@ namespace MedSync_ClassLibraries.DAL
             {
                 using (DbCommand cmd = db.GetStoredProcCommand("MedSync_AppointmentsUpdate"))
                 {
-                    db.AddInParameter(cmd, "@AppointmentID", DbType.Int32, request.AppointmentID);
-                    db.AddInParameter(cmd, "@DoctorID", DbType.Int32, request.DoctorID);
-                    db.AddInParameter(cmd, "@NewAppointmentStatusID", DbType.Int32, request.AppointmentStatusID);
-                    db.AddInParameter(cmd, "@NewAppointmentDate", DbType.Date, request.AppointmentDate == default(DateTime) ? (object)DBNull.Value : request.AppointmentDate);
-                    db.AddInParameter(cmd, "@NewStartTime", DbType.String, request.StartTime == default(TimeSpan) ? (object)DBNull.Value : request.StartTime.ToString());
-                    db.AddInParameter(cmd, "@NewEndTime", DbType.String, request.EndTime == default(TimeSpan) ? (object)DBNull.Value : request.EndTime.ToString());
 
-                    db.AddInParameter(cmd, "@CancellationReason", DbType.String, string.IsNullOrWhiteSpace(request.CancellationReason) ? (object)DBNull.Value : request.CancellationReason);
-                    db.AddInParameter(cmd, "@ModifiedBy", DbType.Int32, request.ModifiedBy ?? request.DoctorID);
+                    if (request.AppointmentID > 0)
+                        db.AddInParameter(cmd, "@AppointmentID", DbType.Int32, request.AppointmentID);
+                    else
+                        db.AddInParameter(cmd, "@AppointmentID", DbType.Int32, DBNull.Value);
+
+                    if (request.DoctorID > 0)
+                        db.AddInParameter(cmd, "@DoctorID", DbType.Int32, request.DoctorID);
+                    else
+                        db.AddInParameter(cmd, "@DoctorID", DbType.Int32, DBNull.Value);
+
+                    if (request.AppointmentStatusID > 0)
+                        db.AddInParameter(cmd, "@NewAppointmentStatusID", DbType.Int32, request.AppointmentStatusID);
+                    else
+                        db.AddInParameter(cmd, "@NewAppointmentStatusID", DbType.Int32, DBNull.Value);
+
+                    if (request.AppointmentDate == default(DateTime))
+                        db.AddInParameter(cmd, "@NewAppointmentDate", DbType.Date, DBNull.Value);
+                    else
+                        db.AddInParameter(cmd, "@NewAppointmentDate", DbType.Date, request.AppointmentDate);
+
+                    if (request.StartTime == default(TimeSpan))
+                        db.AddInParameter(cmd, "@NewStartTime", DbType.String, DBNull.Value);
+                    else
+                        db.AddInParameter(cmd, "@NewStartTime", DbType.String, request.StartTime.ToString());
+
+                    if (request.EndTime == default(TimeSpan))
+                        db.AddInParameter(cmd, "@NewEndTime", DbType.String, DBNull.Value);
+                    else
+                        db.AddInParameter(cmd, "@NewEndTime", DbType.String, request.EndTime.ToString());
+
+
+                    if (string.IsNullOrWhiteSpace(request.CancellationReason))
+                        db.AddInParameter(cmd, "@CancellationReason", DbType.String, DBNull.Value);
+                    else
+                        db.AddInParameter(cmd, "@CancellationReason", DbType.String, request.CancellationReason);
+
+                    if (request.ModifiedBy.HasValue)
+                        db.AddInParameter(cmd, "@ModifiedBy", DbType.Int32, request.ModifiedBy.Value);
+                    else
+                        db.AddInParameter(cmd, "@ModifiedBy", DbType.Int32, request.DoctorID);
+
 
                     using (IDataReader reader = db.ExecuteReader(cmd))
                     {
@@ -204,8 +198,6 @@ namespace MedSync_ClassLibraries.DAL
         {
             string appointmentPathKey = "AppointmentFilesPath";
             string pathTemplate = ConfigurationManager.AppSettings[appointmentPathKey];
-            if (string.IsNullOrEmpty(pathTemplate))
-                throw new ConfigurationErrorsException($"The AppSettings key '{appointmentPathKey}' is missing or empty in web.config.");
 
             string finalUploadBasePath = Path.GetDirectoryName(pathTemplate.Replace("{AppointmentId}", ""));
             string uploadRoot = Path.GetDirectoryName(finalUploadBasePath);
@@ -218,6 +210,7 @@ namespace MedSync_ClassLibraries.DAL
             fileTable.Columns.Add("FileName", typeof(string));
             fileTable.Columns.Add("FilePath", typeof(string));
             AppointmentModel appointment = null;
+
             using (var scope = new TransactionScope())
             {
                 try
@@ -241,9 +234,12 @@ namespace MedSync_ClassLibraries.DAL
 
                     using (DbCommand cmd = db.GetStoredProcCommand("MedSync_AppointmentsInsert"))
                     {
+
+
                         DateTime appointmentDate = request.AppointmentDate.Date;
                         DateTime fullStartTime = appointmentDate.Add(request.StartTime);
                         DateTime fullEndTime = appointmentDate.Add(request.EndTime);
+
                         db.AddInParameter(cmd, "@DoctorID", DbType.Int32, request.DoctorID);
                         db.AddInParameter(cmd, "@AppointmentDate", DbType.Date, request.AppointmentDate);
                         db.AddInParameter(cmd, "@StartTime", DbType.DateTime, fullStartTime);
@@ -252,16 +248,59 @@ namespace MedSync_ClassLibraries.DAL
                         db.AddInParameter(cmd, "@Patient_FirstName", DbType.String, request.Patient_FirstName);
                         db.AddInParameter(cmd, "@Patient_LastName", DbType.String, request.Patient_LastName);
                         db.AddInParameter(cmd, "@Patient_GenderID", DbType.Int32, request.Patient_GenderID);
-                        db.AddInParameter(cmd, "@Patient_BloodGroupID", DbType.Int32, (object)request.Patient_BloodGroupID ?? DBNull.Value);
-                        db.AddInParameter(cmd, "@Patient_DateOfBirth", DbType.Date, (object)request.Patient_DateOfBirth ?? DBNull.Value);
-                        db.AddInParameter(cmd, "@Patient_PhoneNumber", DbType.String, (object)request.Patient_PhoneNumber ?? DBNull.Value);
-                        db.AddInParameter(cmd, "@Patient_Email", DbType.String, (object)request.Patient_Email ?? DBNull.Value);
-                        db.AddInParameter(cmd, "@Patient_Address", DbType.String, (object)request.Patient_Address ?? DBNull.Value);
-                        db.AddInParameter(cmd, "@Patient_TalukaID", DbType.Int32, (object)request.Patient_TalukaID ?? DBNull.Value);
-                        db.AddInParameter(cmd, "@MedicalHistory", DbType.String, (object)request.MedicalHistory ?? DBNull.Value);
-                        db.AddInParameter(cmd, "@InsuranceDetails", DbType.String, (object)request.InsuranceDetails ?? DBNull.Value);
-                        db.AddInParameter(cmd, "@MedicalConcern", DbType.String, (object)request.MedicalConcern ?? DBNull.Value);
 
+                        if (request.Patient_BloodGroupID.HasValue)
+                            db.AddInParameter(cmd, "@Patient_BloodGroupID", DbType.Int32, request.Patient_BloodGroupID.Value);
+                        else
+                            db.AddInParameter(cmd, "@Patient_BloodGroupID", DbType.Int32, DBNull.Value);
+
+
+                        if (request.Patient_DateOfBirth.HasValue)
+                            db.AddInParameter(cmd, "@Patient_DateOfBirth", DbType.Date, request.Patient_DateOfBirth.Value);
+                        else
+                            db.AddInParameter(cmd, "@Patient_DateOfBirth", DbType.Date, DBNull.Value);
+
+
+                        if (!string.IsNullOrWhiteSpace(request.Patient_PhoneNumber))
+                            db.AddInParameter(cmd, "@Patient_PhoneNumber", DbType.String, request.Patient_PhoneNumber);
+                        else
+                            db.AddInParameter(cmd, "@Patient_PhoneNumber", DbType.String, DBNull.Value);
+
+
+                        if (!string.IsNullOrWhiteSpace(request.Patient_Email))
+                            db.AddInParameter(cmd, "@Patient_Email", DbType.String, request.Patient_Email);
+                        else
+                            db.AddInParameter(cmd, "@Patient_Email", DbType.String, DBNull.Value);
+
+
+                        if (!string.IsNullOrWhiteSpace(request.Patient_Address))
+                            db.AddInParameter(cmd, "@Patient_Address", DbType.String, request.Patient_Address);
+                        else
+                            db.AddInParameter(cmd, "@Patient_Address", DbType.String, DBNull.Value);
+
+
+                        if (request.Patient_TalukaID.HasValue)
+                            db.AddInParameter(cmd, "@Patient_TalukaID", DbType.Int32, request.Patient_TalukaID.Value);
+                        else
+                            db.AddInParameter(cmd, "@Patient_TalukaID", DbType.Int32, DBNull.Value);
+
+
+                        if (!string.IsNullOrWhiteSpace(request.MedicalHistory))
+                            db.AddInParameter(cmd, "@MedicalHistory", DbType.String, request.MedicalHistory);
+                        else
+                            db.AddInParameter(cmd, "@MedicalHistory", DbType.String, DBNull.Value);
+
+
+                        if (!string.IsNullOrWhiteSpace(request.InsuranceDetails))
+                            db.AddInParameter(cmd, "@InsuranceDetails", DbType.String, request.InsuranceDetails);
+                        else
+                            db.AddInParameter(cmd, "@InsuranceDetails", DbType.String, DBNull.Value);
+
+
+                        if (!string.IsNullOrWhiteSpace(request.MedicalConcern))
+                            db.AddInParameter(cmd, "@MedicalConcern", DbType.String, request.MedicalConcern);
+                        else
+                            db.AddInParameter(cmd, "@MedicalConcern", DbType.String, DBNull.Value);
 
 
                         SqlParameter sqlParam = new SqlParameter("@Files", SqlDbType.Structured)

@@ -25,11 +25,7 @@ export class ManageCredentialsComponent implements OnInit {
     { roleId: 2, roleName: 'Doctor' }
   ];
 
-  constructor(
-    private adminService: AdminService,
-    private toaster: ToasterService,
-    private alert: AlertService
-  ) { }
+  constructor(private adminService: AdminService, private toaster: ToasterService, private alert: AlertService) { }
 
   ngOnInit(): void {
     this.loadDoctors();
@@ -57,51 +53,21 @@ export class ManageCredentialsComponent implements OnInit {
     this.selectedDoctor = selectedDoctor;
   }
 
-
-  isValidEmail(email: string): boolean {
-    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$/.test(email?.trim() || '');
-  }
-
-  isValidPassword(password: string): boolean {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password || '');
-  }
-
-  // ---------------- Form Submission ----------------
   submitCredentials(form: NgForm) {
-    const { doctorId, email, password, roleId } = this.credentials;
-    const errors: string[] = [];
-
     form.control.markAllAsTouched();
-
-    if (!doctorId) errors.push('Please select a doctor.');
-    if (!email) errors.push('Email is required.');
-    else if (!this.isValidEmail(email)) errors.push('Please enter a valid email address.');
-
-    if (!password) errors.push('Password is required.');
-    else if (!this.isValidPassword(password))
-      errors.push('Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.');
-
-    if (!roleId) errors.push('Please select a role.');
+    const errors = this.validateCredentials();
 
     if (errors.length > 0) {
       const formattedErrors = `<ul style="text-align:left;">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
       this.alert.warning(formattedErrors, 'Validation Errors');
-
-      // Auto scroll to first invalid field
-      const firstInvalid = document.querySelector('.ng-invalid');
-      if (firstInvalid) {
-        (firstInvalid as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'center' });
-        (firstInvalid as HTMLElement).focus();
-      }
       return;
     }
 
-    // Everything valid — proceed
     const payload = {
-      DoctorID: doctorId,
-      Email: email,
-      PasswordHash: password,
-      RoleID: roleId
+      DoctorID: this.credentials.doctorId,
+      Email: this.credentials.email,
+      PasswordHash: this.credentials.password,
+      RoleID: this.credentials.roleId
     };
 
     this.adminService.addUserCredentials(payload).subscribe({
@@ -119,4 +85,32 @@ export class ManageCredentialsComponent implements OnInit {
       error: (err) => this.alert.error(err.message || 'Server error occurred.')
     });
   }
+
+  isValidEmail(email: string): boolean {
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$/.test(email?.trim() || '');
+  }
+
+  isValidPassword(password: string): boolean {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password || '');
+  }
+
+  private validateCredentials(): string[] {
+    const { doctorId, email, password, roleId } = this.credentials;
+    const errors: string[] = [];
+
+    if (!doctorId) errors.push('Please select a doctor.');
+
+    if (!email) errors.push('Email is required.');
+    else if (!this.isValidEmail(email)) errors.push('Please enter a valid email address.');
+
+    if (!password) errors.push('Password is required.');
+    else if (!this.isValidPassword(password))
+      errors.push('Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.');
+
+    if (!roleId) errors.push('Please select a role.');
+
+    return errors;
+  }
+
 }
+

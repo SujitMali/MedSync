@@ -31,7 +31,7 @@ namespace MedSync_API.Controllers
                 return Content(HttpStatusCode.BadRequest, new
                 {
                     success = false,
-                    message = "Server Validation failed.",
+                    message = "Validation failed.",
                     errors
                 });
             }
@@ -46,7 +46,7 @@ namespace MedSync_API.Controllers
                     return Content(HttpStatusCode.Unauthorized, new
                     {
                         success = false,
-                        message = "Server Invalid email or password."
+                        message = "Invalid email or password."
                     });
                 }
 

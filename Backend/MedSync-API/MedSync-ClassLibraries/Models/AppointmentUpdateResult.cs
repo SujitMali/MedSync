@@ -16,6 +16,8 @@ namespace MedSync_ClassLibraries.Models
         public string DoctorEmail { get; set; }
         public string CancellationReason { get; set; }
         public int DoctorID { get; set; }
+        public string AcceptUrl { get; set; }
+        public string DeclineUrl { get; set; }
     }
 
 }

@@ -23,7 +23,6 @@
 }
 
 
-
 .appointments-container .status-pill,
 .modal .status-pill {
     display: inline-block;
@@ -66,8 +65,6 @@
 .modal .status-pill.ppc {
     background-color: #d1ecf1;
     color: #0c5460;
-    // text-wrap: wrap;
-    // text-align: center;
 }
 
 
@@ -121,45 +118,40 @@
 
 .table th,
 .table td {
-    // text-align: center;
     vertical-align: middle;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* #1 — Appointment ID */
+
 .table th:nth-child(1),
 .table td:nth-child(1) {
     width: 6%;
     text-align: center;
 }
 
-/* #2 — Doctor (includes specialization names) */
 .table th:nth-child(2),
 .table td:nth-child(2) {
     width: 15%;
 }
 
-/* #3 — Patient */
 .table th:nth-child(3),
 .table td:nth-child(3) {
     width: 15%;
 }
 
-/* #4 — Date */
 .table th:nth-child(4),
 .table td:nth-child(4) {
     width: 12%;
 }
 
-/* #5 — Start Time */
 .table th:nth-child(5),
 .table td:nth-child(5) {
     width: 9%;
 }
 
-/* #6 — End Time */
+
 .table th:nth-child(6) {
     width: 5%;
     text-align: right;
@@ -169,7 +161,7 @@
     text-align: right;
 }
 
-/* #6 — End Time */
+
 .table th:nth-child(7) {
     width: 10%;
     text-align: right;

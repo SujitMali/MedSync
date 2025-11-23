@@ -29,7 +29,7 @@ export class ViewDoctorsListComponent implements OnInit {
   qualifications: any[] = [];
   isLoading = false;
 
-  // Pagination + filter state
+
   page = 1;
   pageSize = 4;
   totalRecords = 0;
@@ -52,24 +52,6 @@ export class ViewDoctorsListComponent implements OnInit {
     this.fetchDoctors();
   }
 
-  // Experience calculator
-  getExperience(startDate: string | null): number {
-    if (!startDate) return 0;
-    return this.today.getFullYear() - new Date(startDate).getFullYear();
-  }
-
-  // Helpers
-  get startIndex(): number {
-    return this.totalRecords ? (this.page - 1) * this.pageSize + 1 : 0;
-  }
-
-  get endIndex(): number {
-    if (!this.totalRecords) return 0;
-    const end = this.page * this.pageSize;
-    return end > this.totalRecords ? this.totalRecords : end;
-  }
-
-  // Range bubble update
   updateSliderBubble(event: Event): void {
     const input = event.target as HTMLInputElement;
     const value = +input.value;
@@ -149,16 +131,6 @@ export class ViewDoctorsListComponent implements OnInit {
     this.fetchDoctors();
   }
 
-
-  // onPageChange(newPage: number): void {
-
-  //   // if (newPage === this.page) return;
-
-  //   this.page = newPage;
-  //   this.saveState();
-  //   this.fetchDoctors();
-  // }
-
   onPageSizeChange(newSize: number): void {
     this.pageSize = newSize;
     this.page = 1;
@@ -211,6 +183,22 @@ export class ViewDoctorsListComponent implements OnInit {
 
   goBack(): void {
     window.history.back();
+  }
+
+  getExperience(startDate: string | null): number {
+    if (!startDate) return 0;
+    return this.today.getFullYear() - new Date(startDate).getFullYear();
+  }
+
+
+  get startIndex(): number {
+    return this.totalRecords ? (this.page - 1) * this.pageSize + 1 : 0;
+  }
+
+  get endIndex(): number {
+    if (!this.totalRecords) return 0;
+    const end = this.page * this.pageSize;
+    return end > this.totalRecords ? this.totalRecords : end;
   }
 }
 

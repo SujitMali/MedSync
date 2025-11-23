@@ -2,10 +2,8 @@
 using System;
 using System.Data;
 using System.Data.Common;
-using System.IO;
 using MedSync_ClassLibraries.Models;
 using System.Transactions;
-using System.Configuration;
 using System.Collections.Generic;
 using MedSync_ClassLibraries.Helpers;
 
@@ -139,18 +137,15 @@ namespace MedSync_ClassLibraries.DAL
         #region Upsert(DoctorsModel model)
         public bool Upsert(DoctorsModel model)
         {
-            string basePath = ConfigurationManager.AppSettings["ProfilePicturePath"];
-            string fullFilePath = null;
 
             using (var scope = new TransactionScope())
             {
                 try
                 {
-             
+
                     DbCommand com = db.GetStoredProcCommand("MedSync_DoctorUpsert");
 
                     db.AddInParameter(com, "DoctorID", DbType.Int32, model.DoctorID);
-
 
                     com.Parameters["@DoctorID"].Direction = ParameterDirection.InputOutput;
 
@@ -160,16 +155,54 @@ namespace MedSync_ClassLibraries.DAL
                     db.AddInParameter(com, "GenderID", DbType.Int32, model.GenderID);
                     db.AddInParameter(com, "BloodGroupID", DbType.Int32, model.BloodGroupID);
                     db.AddInParameter(com, "QualificationID", DbType.Int32, model.QualificationID);
-                    db.AddInParameter(com, "CRRIStartDate", DbType.Date, model.CRRIStartDate ?? (object)DBNull.Value);
                     db.AddInParameter(com, "ConsultationFee", DbType.Decimal, model.ConsultationFee);
-                    db.AddInParameter(com, "DateOfBirth", DbType.Date, model.DateOfBirth ?? (object)DBNull.Value);
-                    db.AddInParameter(com, "Address", DbType.String, model.Address ?? (object)DBNull.Value);
-                    db.AddInParameter(com, "TalukaID", DbType.Int32, model.TalukaID ?? (object)DBNull.Value);
-                    db.AddInParameter(com, "ProfilePicName", DbType.String, model.ProfilePicName ?? (object)DBNull.Value);
-                    db.AddInParameter(com, "ProfilePicPath", DbType.String, model.ProfilePicPath ?? (object)DBNull.Value);
-                    db.AddInParameter(com, "CreatedBy", DbType.Int32, model.CreatedBy ?? (object)DBNull.Value);
-                    db.AddInParameter(com, "ModifiedBy", DbType.Int32, model.ModifiedBy ?? (object)DBNull.Value);
-                    db.AddInParameter(com, "SpecializationIDs", DbType.String, model.SpecializationIDs ?? (object)DBNull.Value);
+
+                    if (model.CRRIStartDate.HasValue)
+                        db.AddInParameter(com, "CRRIStartDate", DbType.Date, model.CRRIStartDate.Value);
+                    else
+                        db.AddInParameter(com, "CRRIStartDate", DbType.Date, DBNull.Value);
+
+                    if (model.DateOfBirth.HasValue)
+                        db.AddInParameter(com, "DateOfBirth", DbType.Date, model.DateOfBirth.Value);
+                    else
+                        db.AddInParameter(com, "DateOfBirth", DbType.Date, DBNull.Value);
+
+                    if (!string.IsNullOrWhiteSpace(model.Address))
+                        db.AddInParameter(com, "Address", DbType.String, model.Address);
+                    else
+                        db.AddInParameter(com, "Address", DbType.String, DBNull.Value);
+
+      
+                    if (model.TalukaID.HasValue)
+                        db.AddInParameter(com, "TalukaID", DbType.Int32, model.TalukaID.Value);
+                    else
+                        db.AddInParameter(com, "TalukaID", DbType.Int32, DBNull.Value);
+
+ 
+                    if (!string.IsNullOrWhiteSpace(model.ProfilePicName))
+                        db.AddInParameter(com, "ProfilePicName", DbType.String, model.ProfilePicName);
+                    else
+                        db.AddInParameter(com, "ProfilePicName", DbType.String, DBNull.Value);
+
+                    if (!string.IsNullOrWhiteSpace(model.ProfilePicPath))
+                        db.AddInParameter(com, "ProfilePicPath", DbType.String, model.ProfilePicPath);
+                    else
+                        db.AddInParameter(com, "ProfilePicPath", DbType.String, DBNull.Value);
+
+                    if (model.CreatedBy.HasValue)
+                        db.AddInParameter(com, "CreatedBy", DbType.Int32, model.CreatedBy.Value);
+                    else
+                        db.AddInParameter(com, "CreatedBy", DbType.Int32, DBNull.Value);
+
+                    if (model.ModifiedBy.HasValue)
+                        db.AddInParameter(com, "ModifiedBy", DbType.Int32, model.ModifiedBy.Value);
+                    else
+                        db.AddInParameter(com, "ModifiedBy", DbType.Int32, DBNull.Value);
+
+                    if (!string.IsNullOrWhiteSpace(model.SpecializationIDs))
+                        db.AddInParameter(com, "SpecializationIDs", DbType.String, model.SpecializationIDs);
+                    else
+                        db.AddInParameter(com, "SpecializationIDs", DbType.String, DBNull.Value);
 
                     db.ExecuteNonQuery(com);
 
@@ -178,8 +211,6 @@ namespace MedSync_ClassLibraries.DAL
                 }
                 catch (Exception ex)
                 {
-                    if (File.Exists(fullFilePath))
-                        File.Delete(fullFilePath);
                     DbErrorLogger.LogError(ex, model.CreatedBy);
                     throw;
                 }
@@ -188,9 +219,42 @@ namespace MedSync_ClassLibraries.DAL
         #endregion
 
 
-
     }
 }
+
+
+
+
+
+
+
+
+
+
+//string basePath = ConfigurationManager.AppSettings["ProfilePicturePath"];
+//string fullFilePath = null;
+
+//if (File.Exists(fullFilePath))
+//    File.Delete(fullFilePath);
+//db.AddInParameter(com, "FirstName", DbType.String, model.FirstName);
+//db.AddInParameter(com, "LastName", DbType.String, model.LastName);
+//db.AddInParameter(com, "PhoneNumber", DbType.String, model.PhoneNumber);
+//db.AddInParameter(com, "GenderID", DbType.Int32, model.GenderID);
+//db.AddInParameter(com, "BloodGroupID", DbType.Int32, model.BloodGroupID);
+//db.AddInParameter(com, "QualificationID", DbType.Int32, model.QualificationID);
+//db.AddInParameter(com, "CRRIStartDate", DbType.Date, model.CRRIStartDate ?? (object)DBNull.Value);
+//db.AddInParameter(com, "ConsultationFee", DbType.Decimal, model.ConsultationFee);
+//db.AddInParameter(com, "DateOfBirth", DbType.Date, model.DateOfBirth ?? (object)DBNull.Value);
+//db.AddInParameter(com, "Address", DbType.String, model.Address ?? (object)DBNull.Value);
+//db.AddInParameter(com, "TalukaID", DbType.Int32, model.TalukaID ?? (object)DBNull.Value);
+//db.AddInParameter(com, "ProfilePicName", DbType.String, model.ProfilePicName ?? (object)DBNull.Value);
+//db.AddInParameter(com, "ProfilePicPath", DbType.String, model.ProfilePicPath ?? (object)DBNull.Value);
+//db.AddInParameter(com, "CreatedBy", DbType.Int32, model.CreatedBy ?? (object)DBNull.Value);
+//db.AddInParameter(com, "ModifiedBy", DbType.Int32, model.ModifiedBy ?? (object)DBNull.Value);
+//db.AddInParameter(com, "SpecializationIDs", DbType.String, model.SpecializationIDs ?? (object)DBNull.Value);
+
+
+
 
 
 

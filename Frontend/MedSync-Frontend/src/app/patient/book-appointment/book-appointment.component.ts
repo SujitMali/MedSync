@@ -29,6 +29,7 @@ export class BookAppointmentComponent implements OnInit {
   talukas: any[] = [];
   filteredDistricts: any[] = [];
   filteredTalukas: any[] = [];
+
   selectedStateId: number | null = null;
   selectedDistrictId: number | null = null;
   todayDate = new Date();
@@ -104,20 +105,6 @@ export class BookAppointmentComponent implements OnInit {
     });
   }
 
-  onStateChange() {
-    const stateId = +(this.selectedStateId ?? 0);
-    this.filteredDistricts = this.districts.filter(d => d.StateID === stateId);
-    this.filteredTalukas = [];
-    this.selectedDistrictId = null;
-    this.patient.TalukaID = '';
-  }
-
-  onDistrictChange() {
-    const districtId = +(this.selectedDistrictId ?? 0);
-    this.filteredTalukas = this.talukas.filter(t => t.DistrictID === districtId);
-    this.patient.TalukaID = '';
-  }
-
   fetchSlots() {
     if (!this.selectedDate) return;
     this.isLoadingSlots = true;
@@ -134,6 +121,69 @@ export class BookAppointmentComponent implements OnInit {
     });
   }
 
+  onStateChange() {
+    const stateId = +(this.selectedStateId ?? 0);
+    this.filteredDistricts = this.districts.filter(d => d.StateID === stateId);
+    this.filteredTalukas = [];
+    this.selectedDistrictId = null;
+    this.patient.TalukaID = '';
+  }
+
+  onDistrictChange() {
+    const districtId = +(this.selectedDistrictId ?? 0);
+    this.filteredTalukas = this.talukas.filter(t => t.DistrictID === districtId);
+    this.patient.TalukaID = '';
+  }
+
+  submitPatientForm(form?: any) {
+    if (!this.selectedSlot) {
+      this.alertService.warning('Please select a time slot before booking.', 'Slot Missing');
+      return;
+    }
+
+    const isValid = this.validatePatientData(form);
+    if (!isValid) return;
+
+    const formData = new FormData();
+    formData.append('DoctorID', this.doctorId.toString());
+    formData.append('AppointmentDate', this.selectedDate);
+    formData.append('StartTime', this.selectedSlot.SlotStart);
+    formData.append('EndTime', this.selectedSlot.SlotEnd);
+    formData.append('CreatedBy', '1');
+
+    for (const key in this.patient) {
+      if (this.patient[key] !== null && this.patient[key] !== undefined) {
+        formData.append(`Patient_${key}`, this.patient[key]);
+      }
+    }
+
+    this.uploadedFiles.forEach(f => {
+      formData.append('Files', f.file, f.customName);
+    });
+
+    this.patientService.submitAppointmentWithFiles(formData).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.alertService.success('Wait for Doctor to Accept Your Request', 'Appointment Requested!');
+          this.patientModal.hide();
+          this.selectedSlot = null;
+          this.uploadedFiles = [];
+          this.fetchSlots();
+        } else {
+          this.alertService.error('Failed to request appointment. Please try again later.', 'Request Failed');
+        }
+      },
+      error: (err) => {
+        console.error('Booking error:', err);
+        this.alertService.error('An unexpected error occurred during booking.', 'Server Error');
+      }
+    });
+  }
+
+
+
+
+  //====== Helper Moethods ======
   selectSlot(slot: any) {
     if (!slot.IsAvailable) return;
     this.selectedSlot = slot;
@@ -146,10 +196,6 @@ export class BookAppointmentComponent implements OnInit {
     this.patientModal.show();
   }
 
-  // onFilesSelected(event: any) {
-  //   const files = Array.from(event.target.files) as File[];
-  //   this.uploadedFiles = files.map(f => ({ file: f, customName: f.name }));
-  // }
   onFilesSelected(event: any) {
     const files = Array.from(event.target.files) as File[];
 
@@ -158,8 +204,6 @@ export class BookAppointmentComponent implements OnInit {
     });
   }
 
-
-  // ✅ Centralized Validation Logic
   private validatePatientData(form: any): boolean {
     // Angular form touch validation
     if (form && form.invalid) {
@@ -227,52 +271,6 @@ export class BookAppointmentComponent implements OnInit {
     return true;
   }
 
-  submitPatientForm(form?: any) {
-    if (!this.selectedSlot) {
-      this.alertService.warning('Please select a time slot before booking.', 'Slot Missing');
-      return;
-    }
-
-    // ✅ Validation now handled by a separate function
-    const isValid = this.validatePatientData(form);
-    if (!isValid) return;
-
-    const formData = new FormData();
-    formData.append('DoctorID', this.doctorId.toString());
-    formData.append('AppointmentDate', this.selectedDate);
-    formData.append('StartTime', this.selectedSlot.SlotStart);
-    formData.append('EndTime', this.selectedSlot.SlotEnd);
-    formData.append('CreatedBy', '1');
-
-    for (const key in this.patient) {
-      if (this.patient[key] !== null && this.patient[key] !== undefined) {
-        formData.append(`Patient_${key}`, this.patient[key]);
-      }
-    }
-
-    this.uploadedFiles.forEach(f => {
-      formData.append('Files', f.file, f.customName);
-    });
-
-    this.patientService.submitAppointmentWithFiles(formData).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.alertService.success('Wait for Doctor to Accept Your Request', 'Appointment Requested!');
-          this.patientModal.hide();
-          this.selectedSlot = null;
-          this.uploadedFiles = [];
-          this.fetchSlots();
-        } else {
-          this.alertService.error('Failed to request appointment. Please try again later.', 'Request Failed');
-        }
-      },
-      error: (err) => {
-        console.error('Booking error:', err);
-        this.alertService.error('An unexpected error occurred during booking.', 'Server Error');
-      }
-    });
-  }
-
   goBack(): void {
     window.history.back();
   }
@@ -287,13 +285,11 @@ export class BookAppointmentComponent implements OnInit {
   }
 
   resetForm(patientForm: any) {
-    patientForm.resetForm();       // resets all fields
-    this.uploadedFiles = [];       // resets pill UI
+    patientForm.resetForm();
+    this.uploadedFiles = [];
   }
 
 
-
-  // 👉 Add this:
   maxDate = formatDate(
     new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
     'yyyy-MM-dd',

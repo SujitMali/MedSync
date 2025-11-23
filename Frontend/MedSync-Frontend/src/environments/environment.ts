@@ -1,8 +1,3 @@
-// export const environment = {
-//     production: false,
-//     apiUrl: 'https://localhost:44398/api'
-// };
-
 const baseApi = 'https://localhost:44398/api';
 
 export const environment = {

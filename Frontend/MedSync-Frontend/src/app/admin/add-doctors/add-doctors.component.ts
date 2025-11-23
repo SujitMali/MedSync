@@ -33,128 +33,24 @@ export class AddDoctorsComponent implements OnInit {
 
   isDOBValid: boolean = false;
   isAgeInvalid: boolean = false;
-
-
-  validateDOB(): void {
-    if (!this.doctor.DateOfBirth) {
-      this.isAgeInvalid = false;
-      this.isDOBValid = false;
-      return;
-    }
-
-    const dob = new Date(this.doctor.DateOfBirth);
-    const today = new Date();
-
-    // Future DOB check
-    if (dob >= today) {
-      this.isAgeInvalid = true;
-      this.isDOBValid = false;
-      return;
-    }
-
-    const age = this.calculateAge(dob);
-
-    // this.isAgeInvalid = age < 23;
-    // this.isDOBValid = !this.isAgeInvalid;
-    // --- Age bounds ---
-    const minAge = 23;
-    const maxAge = 90;  // Change this if needed
-
-    if (age < minAge || age > maxAge) {
-      this.isAgeInvalid = true;
-      this.isDOBValid = false;
-      return;
-    }
-
-    this.isAgeInvalid = false;
-    this.isDOBValid = true;
-  }
-
-
-  private calculateAge(dob: Date): number {
-    const today = new Date();
-    let age = today.getFullYear() - dob.getFullYear();
-    const monthDiff = today.getMonth() - dob.getMonth();
-    const dayDiff = today.getDate() - dob.getDate();
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      age--;
-    }
-    return age;
-  }
-
-
-
-
   isCRRIDateInvalid: boolean = false;
-  validateCRRIStartDate(): void {
-    this.isCRRIDateInvalid = false;
-    if (!this.doctor.CRRIStartDate) return;
-    const crriDate = new Date(this.doctor.CRRIStartDate);
-    const today = new Date();
-    if (crriDate >= today) {
-      this.isCRRIDateInvalid = true;
-      return;
-    }
-    if (this.doctor.DateOfBirth) {
-      const dob = new Date(this.doctor.DateOfBirth);
-      const minCRRIStart = new Date(dob);
-      minCRRIStart.setFullYear(minCRRIStart.getFullYear() + 23);
-      if (crriDate < minCRRIStart) {
-        this.isCRRIDateInvalid = true;
-        return;
-      }
-    }
-  }
 
 
-  constructor(private adminService: AdminService, private toaster: ToasterService, private alertService: AlertService, private router: Router, private route: ActivatedRoute
-  ) { }
+  constructor(private adminService: AdminService, private toaster: ToasterService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    // Set max date (yesterday)
-    const today = new Date();
-    today.setDate(today.getDate() - 1);
-    this.maxDate = today.toISOString().split('T')[0];
-
-
-    const minDOB = new Date(today);
-    minDOB.setFullYear(minDOB.getFullYear() - 90);
-    this.minDate = minDOB.toISOString().split('T')[0];
-
-    // Check if Edit Mode
+    this.formatDate();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
-      // First load dropdowns, then load doctor data
       this.loadDropdownData(() => {
         this.loadDoctorById(+id);
       });
-
     } else {
       this.loadDropdownData();
     }
   }
 
-  // ---------------------- FILE UPLOAD ------------------------
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    if (!validTypes.includes(file.type)) {
-      this.alertService.warning('Only JPG or PNG images are allowed.', 'Invalid File');
-      return;
-    }
-
-    this.selectedFile = file;
-    this.doctor.ProfilePicOriginalName = file.name;
-
-    const reader = new FileReader();
-    reader.onload = () => (this.previewUrl = reader.result);
-    reader.readAsDataURL(file);
-  }
-
-  // ---------------------- DROPDOWNS ------------------------
   loadDropdownData(callback?: () => void): void {
     this.adminService.getDropdownData().subscribe({
       next: (response: any) => {
@@ -204,9 +100,14 @@ export class AddDoctorsComponent implements OnInit {
     });
   }
 
-  private formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
-    return date.toISOString().split('T')[0];
+  onStateChange(): void {
+    if (!this.doctor.StateID) {
+      this.filteredDistricts = [];
+      this.filteredTalukas = [];
+      return;
+    }
+    this.filteredDistricts = this.districts.filter(d => d.stateID === this.doctor.StateID);
+    this.filteredTalukas = [];
   }
 
   private getDistrictByTaluka(talukaID: number): number | null {
@@ -220,17 +121,6 @@ export class AddDoctorsComponent implements OnInit {
     return district ? district.stateID : null;
   }
 
-  // ---------------------- DROPDOWN FILTERS ------------------------
-  onStateChange(): void {
-    if (!this.doctor.StateID) {
-      this.filteredDistricts = [];
-      this.filteredTalukas = [];
-      return;
-    }
-    this.filteredDistricts = this.districts.filter(d => d.stateID === this.doctor.StateID);
-    this.filteredTalukas = [];
-  }
-
   onDistrictChange(): void {
     if (!this.doctor.DistrictID) {
       this.filteredTalukas = [];
@@ -240,100 +130,19 @@ export class AddDoctorsComponent implements OnInit {
   }
 
   submitDoctor(form: NgForm): void {
-    // Run all logical validators first
+
     this.validateDOB();
     this.validateCRRIStartDate();
 
-    // Force all form fields to be marked as touched
     form.control.markAllAsTouched();
 
-    // Collect validation errors
-    const errors: string[] = [];
-
-    // ---------- Manual logical validations ----------
-    if (!this.doctor.FirstName?.trim()) {
-      errors.push('First Name is required.');
-    } else if (!/^[A-Za-z][A-Za-z\s]*$/.test(this.doctor.FirstName)) {
-      errors.push('First Name can only contain letters and spaces, starting with a letter.');
-    } else if (this.doctor.FirstName.length < 2) {
-      errors.push('First Name must be at least 2 characters long.');
-    }
-
-    if (!this.doctor.LastName?.trim()) {
-      errors.push('Last Name is required.');
-    } else if (!/^[A-Za-z][A-Za-z\s]*$/.test(this.doctor.LastName)) {
-      errors.push('Last Name can only contain letters and spaces, starting with a letter.');
-    }
-
-    if (!this.doctor.PhoneNumber) {
-      errors.push('Phone Number is required.');
-    } else if (!/^[0-9]{10}$/.test(this.doctor.PhoneNumber)) {
-      errors.push('Phone Number must be exactly 10 digits.');
-    }
-
-    if (!this.doctor.DateOfBirth) {
-      errors.push('Date of Birth is required.');
-    } else if (this.isAgeInvalid) {
-      errors.push('Doctor must be at least 23 years old.');
-    }
-
-    if (!this.doctor.BloodGroupID) {
-      errors.push('Blood Group is required.');
-    }
-
-    if (!this.isDOBValid) {
-      errors.push('A valid Date of Birth is required before selecting CRRI Start Date.');
-    } else if (!this.doctor.CRRIStartDate) {
-      errors.push('CRRI Start Date is required.');
-    } else if (this.isCRRIDateInvalid) {
-      errors.push('CRRI Start Date must be before today and after valid age (minimum 23 years from DOB).');
-    }
-
-    if (!this.doctor.GenderID) {
-      errors.push('Gender is required.');
-    }
-
-    // ---------- CONSULTATION FEE ----------
-    if (this.doctor.ConsultationFee === null || this.doctor.ConsultationFee === undefined) {
-      errors.push('Consultation Fee is required.');
-    } else if (isNaN(this.doctor.ConsultationFee)) {
-      errors.push('Consultation Fee must be a valid number.');
-    } else if (+this.doctor.ConsultationFee <= 0) {
-      errors.push('Consultation Fee must be greater than 0.');
-    }
-
-    if (!this.doctor.QualificationID) {
-      errors.push('Qualification is required.');
-    }
-
-    if (!this.doctor.SpecializationIDs || this.doctor.SpecializationIDs.length === 0) {
-      errors.push('At least one specialization must be selected.');
-    }
-
-    if (!this.doctor.StateID) {
-      errors.push('State is required.');
-    }
-
-    if (!this.doctor.DistrictID) {
-      errors.push('District is required.');
-    }
-
-    if (!this.doctor.TalukaID) {
-      errors.push('Taluka is required.');
-    }
-
-    if (!this.doctor.Address?.trim()) {
-      errors.push('Address is required.');
-    }
-
-    // ---------- Show all errors in one SweetAlert ----------
+    const errors = this.validateDoctorModel();
     if (errors.length > 0) {
-      const htmlList = `<ul style="text-align:left;">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
-      this.alertService.warning(htmlList, 'Please correct the following issues:');
-      return; // Stop submission
+      const html = `<ul style="text-align:left;">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
+      this.alertService.warning(html, 'Please correct the following issues:');
+      return;
     }
 
-    // ---------- Proceed with confirmation and save ----------
     this.alertService.confirm('Do you want to save this doctor record?', 'Confirm Submission')
       .then((confirmed) => {
         if (!confirmed) return;
@@ -343,10 +152,6 @@ export class AddDoctorsComponent implements OnInit {
           if (value !== undefined && value !== null)
             formData.append(key, value.toString());
         });
-
-        // if (this.selectedFile) {
-        //   formData.append('ProfilePicFile', this.selectedFile, this.selectedFile.name);
-        // }
 
         this.isSubmitting = true;
         this.adminService.addEditDoctor(formData).subscribe({
@@ -360,7 +165,6 @@ export class AddDoctorsComponent implements OnInit {
             }
           },
           error: (err) => {
-            console.error('Error saving doctor:', err);
             this.alertService.error('Server error occurred.');
           },
           complete: () => (this.isSubmitting = false)
@@ -368,8 +172,6 @@ export class AddDoctorsComponent implements OnInit {
       });
   }
 
-
-  // ---------------------- RESET FORM ------------------------
   resetForm(form: NgForm): void {
     form.resetForm();
     this.filteredDistricts = [];
@@ -378,4 +180,154 @@ export class AddDoctorsComponent implements OnInit {
     this.selectedFile = null;
     this.isDOBValid = false;
   }
+
+  private formatDate(): void {
+    const today = new Date();
+    today.setDate(today.getDate() - 1);
+    this.maxDate = today.toISOString().split('T')[0];
+
+    const minDOB = new Date(today);
+    minDOB.setFullYear(minDOB.getFullYear() - 90);
+    this.minDate = minDOB.toISOString().split('T')[0];
+  }
+
+  validateDOB(): void {
+    if (!this.doctor.DateOfBirth) {
+      this.isAgeInvalid = false;
+      this.isDOBValid = false;
+      return;
+    }
+
+    const dob = new Date(this.doctor.DateOfBirth);
+    const today = new Date();
+
+    if (dob >= today) {
+      this.isAgeInvalid = true;
+      this.isDOBValid = false;
+      return;
+    }
+    const age = this.calculateAge(dob);
+    const minAge = 23;
+    const maxAge = 90;
+
+    if (age < minAge || age > maxAge) {
+      this.isAgeInvalid = true;
+      this.isDOBValid = false;
+      return;
+    }
+
+    this.isAgeInvalid = false;
+    this.isDOBValid = true;
+  }
+
+  private calculateAge(dob: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    const dayDiff = today.getDate() - dob.getDate();
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+    return age;
+  }
+
+  validateCRRIStartDate(): void {
+    this.isCRRIDateInvalid = false;
+    if (!this.doctor.CRRIStartDate) return;
+    const crriDate = new Date(this.doctor.CRRIStartDate);
+    const today = new Date();
+    if (crriDate >= today) {
+      this.isCRRIDateInvalid = true;
+      return;
+    }
+    if (this.doctor.DateOfBirth) {
+      const dob = new Date(this.doctor.DateOfBirth);
+      const minCRRIStart = new Date(dob);
+      minCRRIStart.setFullYear(minCRRIStart.getFullYear() + 23);
+      if (crriDate < minCRRIStart) {
+        this.isCRRIDateInvalid = true;
+        return;
+      }
+    }
+  }
+
+  private validateDoctorModel(): string[] {
+    const d = this.doctor;
+    const errors: string[] = [];
+
+    // First Name
+    if (!d.FirstName?.trim()) {
+      errors.push('First Name is required.');
+    } else if (!/^[A-Za-z][A-Za-z\s]*$/.test(d.FirstName)) {
+      errors.push('First Name can only contain letters and spaces, starting with a letter.');
+    } else if (d.FirstName.length < 2) {
+      errors.push('First Name must be at least 2 characters long.');
+    }
+
+    // Last Name
+    if (!d.LastName?.trim()) {
+      errors.push('Last Name is required.');
+    } else if (!/^[A-Za-z][A-Za-z\s]*$/.test(d.LastName)) {
+      errors.push('Last Name can only contain letters and spaces, starting with a letter.');
+    }
+
+    // Phone Number
+    if (!d.PhoneNumber) {
+      errors.push('Phone Number is required.');
+    } else if (!/^[0-9]{10}$/.test(d.PhoneNumber)) {
+      errors.push('Phone Number must be exactly 10 digits.');
+    }
+
+    // DOB
+    if (!d.DateOfBirth) {
+      errors.push('Date of Birth is required.');
+    } else if (this.isAgeInvalid) {
+      errors.push('Doctor must be at least 23 years old.');
+    }
+
+    // Blood Group
+    if (!d.BloodGroupID) errors.push('Blood Group is required.');
+
+    // CRRI Date
+    if (!this.isDOBValid) {
+      errors.push('A valid Date of Birth is required before selecting CRRI Start Date.');
+    } else if (!d.CRRIStartDate) {
+      errors.push('CRRI Start Date is required.');
+    } else if (this.isCRRIDateInvalid) {
+      errors.push('CRRI Start Date must be before today and after valid age (minimum 23 years from DOB).');
+    }
+
+    // Gender
+    if (!d.GenderID) errors.push('Gender is required.');
+
+    // Consultation fee
+    if (d.ConsultationFee === null || d.ConsultationFee === undefined) {
+      errors.push('Consultation Fee is required.');
+    } else if (isNaN(d.ConsultationFee)) {
+      errors.push('Consultation Fee must be a valid number.');
+    } else if (+d.ConsultationFee <= 0) {
+      errors.push('Consultation Fee must be greater than 0.');
+    }
+
+    // Qualification
+    if (!d.QualificationID) errors.push('Qualification is required.');
+
+    // Specialization
+    if (!d.SpecializationIDs || d.SpecializationIDs.length === 0) {
+      errors.push('At least one specialization must be selected.');
+    }
+
+    // Address
+    if (!d.Address?.trim()) {
+      errors.push('Address is required.');
+    }
+
+    // Location
+    if (!d.StateID) errors.push('State is required.');
+    if (!d.DistrictID) errors.push('District is required.');
+    if (!d.TalukaID) errors.push('Taluka is required.');
+
+    return errors;
+  }
+
 }

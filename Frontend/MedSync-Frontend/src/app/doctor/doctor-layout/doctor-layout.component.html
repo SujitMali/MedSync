@@ -28,10 +28,11 @@
                         <a class="d-flex align-items-center text-decoration-none text-dark dropdown-toggle" href="#"
                             id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-user-circle fs-4 me-2"></i>
-                            <span class="fw-semibold">Dr. {{ user?.FirstName }}</span>
+                            <!-- <span class="fw-semibold">Dr. {{ user?.FirstName }}</span> -->
                         </a>
 
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm min-vw-25" aria-labelledby="userDropdown">
+
                             <li class="px-3 py-2 border-bottom">
                                 <div class="fw-semibold">Dr. {{ user?.FirstName }} {{ user?.LastName }}</div>
                                 <div class="text-muted small">{{ user?.RoleName }}</div>
@@ -58,4 +59,5 @@
 
 
     </div>
+
 </div>

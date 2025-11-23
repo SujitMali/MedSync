@@ -18,6 +18,47 @@ namespace MedSync_ClassLibraries.DAL
         }
 
 
+        #region GetSlots(int doctorId, DateTime appointmentDate)
+        public List<DoctorSlotModel> GetSlots(int doctorId, DateTime appointmentDate)
+        {
+            var slots = new List<DoctorSlotModel>();
+            try
+            {
+                DbCommand cmd = db.GetStoredProcCommand("MedSync_DoctorSchedulesGenerateSlots");
+                db.AddInParameter(cmd, "@DoctorID", DbType.Int32, doctorId);
+                db.AddInParameter(cmd, "@AppointmentDate", DbType.Date, appointmentDate);
+
+                DataSet ds = db.ExecuteDataSet(cmd);
+
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DateTime dateOnly = appointmentDate.Date;
+
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        TimeSpan startTime = (TimeSpan)row["SlotStart"];
+                        TimeSpan endTime = (TimeSpan)row["SlotEnd"];
+                        DateTime fullSlotStart = dateOnly.Add(startTime);
+                        DateTime fullSlotEnd = dateOnly.Add(endTime);
+
+                        slots.Add(new DoctorSlotModel
+                        {
+                            SlotStart = fullSlotStart,
+                            SlotEnd = fullSlotEnd,
+                            IsAvailable = Convert.ToBoolean(row["IsAvailable"])
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DbErrorLogger.LogError(ex, createdBy: 1);
+            }
+            return slots;
+        }
+        #endregion
+
+
         #region GetSchedulesListByDoctorId(int doctorID, int CurrentUserId)
         public List<DoctorScheduleModel> GetSchedulesListByDoctorId(int doctorID, int CurrentUserId)
         {
@@ -75,7 +116,12 @@ namespace MedSync_ClassLibraries.DAL
                 foreach (var s in schedules)
                 {
                     var row = tvp.NewRow();
-                    row["DoctorScheduleID"] = s.DoctorScheduleID.HasValue ? (object)s.DoctorScheduleID.Value : DBNull.Value;
+                    //row["DoctorScheduleID"] = s.DoctorScheduleID.HasValue ? (object)s.DoctorScheduleID.Value : DBNull.Value;
+                    if (s.DoctorScheduleID.HasValue)
+                        row["DoctorScheduleID"] = s.DoctorScheduleID.Value;
+                    else
+                        row["DoctorScheduleID"] = DBNull.Value;
+
                     row["DoctorID"] = s.DoctorID;
                     row["DayOfWeek"] = s.DayOfWeek;
                     row["StartTime"] = s.StartTime;
